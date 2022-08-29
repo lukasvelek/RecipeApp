@@ -180,6 +180,12 @@ namespace RecipeApp
                     recipes.Add(new Recipe(recipeName, recipeIngredients));
                 }
             }
+            else
+            {
+                Directory.CreateDirectory(RECIPES_LOCATION);
+
+                LoadRecipes();
+            }
         }
 
         public void SaveRecipe(Recipe r)
