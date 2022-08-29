@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RecipeApp
+﻿namespace RecipeApp
 {
-    public enum MeasurementUnits
+    public class MeasurementUnits
     {
-        Grams,
-        Kilograms,
-        Pinch,
-        Ounces,
-        Milliliters,
-        Fluid_Ounces,
-        Liters,
-        Gallons,
-        Tablespoons,
-        Teaspoons,
-        Cups,
-        Pounds
+        public enum Units
+        {
+            Grams,
+            Kilograms,
+            Pinch,
+            Ounces,
+            Milliliters,
+            Fluid_Ounces,
+            Liters,
+            Gallons,
+            Tablespoons,
+            Teaspoons,
+            Cups,
+            Pounds
+        }
     }
 }

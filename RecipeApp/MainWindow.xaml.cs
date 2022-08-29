@@ -1,17 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace RecipeApp
 {
@@ -42,11 +32,11 @@ namespace RecipeApp
 
         private void LoadUI()
         {
-            if(backend.currentGrid == Main)
+            if (backend.currentGrid == Main)
             {
                 LoadMain();
             }
-            else if(backend.currentGrid == NewRecipe)
+            else if (backend.currentGrid == NewRecipe)
             {
                 LoadNewRecipe();
             }
@@ -70,18 +60,18 @@ namespace RecipeApp
             NewRecipeIngredientDescription.IsEnabled = false;
             NewRecipeIngredientUnit.IsEnabled = false;
 
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Pinch);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Grams);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Kilograms);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Ounces);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Pounds);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Milliliters);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Liters);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Teaspoons);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Tablespoons);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Cups);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Fluid_Ounces);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Gallons);
+            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Pinch);
+            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Grams);
+            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Kilograms);
+            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Ounces);
+            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Pounds);
+            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Milliliters);
+            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Liters);
+            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Teaspoons);
+            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Tablespoons);
+            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Cups);
+            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Fluid_Ounces);
+            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Gallons);
 
             NewRecipeIngredientUnit.SelectedIndex = 0;
         }
@@ -105,19 +95,19 @@ namespace RecipeApp
 
         private void UpdateNewRecipe()
         {
-            if(NewRecipeIngredientsList.Items.Count > 0 && NewRecipeIngredientsList.SelectedIndex < 0)
+            if (NewRecipeIngredientsList.Items.Count > 0 && NewRecipeIngredientsList.SelectedIndex < 0)
             {
                 NewRecipeIngredientsList.SelectedIndex = 0;
             }
 
-            if(NewRecipeIngredientsList.SelectedIndex >= 0)
+            if (NewRecipeIngredientsList.SelectedIndex >= 0)
             {
                 RecipeIngredient ri = (RecipeIngredient)NewRecipeIngredientsList.SelectedItem;
 
                 string name = ri.Name;
                 string description = ri.Description;
                 double measurement = ri.Measurement;
-                MeasurementUnits unit = ri.MeasurementUnit;
+                MeasurementUnits.Units unit = ri.MeasurementUnit;
 
                 NewRecipeIngredientName.Text = name;
                 NewRecipeIngredientDescription.Text = description;
@@ -133,7 +123,7 @@ namespace RecipeApp
         {
             int index = RecipeList.SelectedIndex;
 
-            if(index >= 0)
+            if (index >= 0)
             {
                 Recipe? r = backend.GetRecipeByIndex(index);
 
@@ -177,7 +167,7 @@ namespace RecipeApp
 
         private void NewRecipeSaveIngredient_Click(object sender, RoutedEventArgs e)
         {
-            if(NewRecipeIngredientName.Text != "" &&
+            if (NewRecipeIngredientName.Text != "" &&
                NewRecipeIngredientMeasurement.Text != "")
             {
                 NewRecipeAddIngredient.IsEnabled = true;
@@ -194,7 +184,7 @@ namespace RecipeApp
                 string name = NewRecipeIngredientName.Text;
                 string description;
 
-                if(NewRecipeIngredientDescription.Text == null)
+                if (NewRecipeIngredientDescription.Text == null)
                 {
                     description = "null";
                 }
@@ -204,7 +194,7 @@ namespace RecipeApp
                 }
 
                 double measurement = Convert.ToDouble(NewRecipeIngredientMeasurement.Text);
-                MeasurementUnits unit = (MeasurementUnits)NewRecipeIngredientUnit.SelectedItem;
+                MeasurementUnits.Units unit = (MeasurementUnits.Units)NewRecipeIngredientUnit.SelectedItem;
 
                 RecipeIngredient ri = new RecipeIngredient(name, description, measurement, unit);
 
@@ -231,18 +221,18 @@ namespace RecipeApp
             int index = NewRecipeIngredientsList.SelectedIndex;
             int n = 0;
 
-            if(index >= 0)
+            if (index >= 0)
             {
                 NewRecipeIngredientsList.Items.RemoveAt(index);
             }
 
-            if(NewRecipeIngredientsList.Items.Count > 0)
+            if (NewRecipeIngredientsList.Items.Count > 0)
             {
-                if(index == 0)
+                if (index == 0)
                 {
                     n = 0;
                 }
-                else if(index == (NewRecipeIngredientsList.Items.Count - 1))
+                else if (index == (NewRecipeIngredientsList.Items.Count - 1))
                 {
                     n = index - 1;
                 }
@@ -276,7 +266,7 @@ namespace RecipeApp
             string name = ri.Name;
             string description = ri.Description;
             double measurement = ri.Measurement;
-            MeasurementUnits unit = ri.MeasurementUnit;
+            MeasurementUnits.Units unit = ri.MeasurementUnit;
 
             NewRecipeIngredientName.Text = name;
             NewRecipeIngredientDescription.Text = description;
@@ -291,7 +281,7 @@ namespace RecipeApp
             string name = NewRecipeName.Text;
             List<RecipeIngredient> ingredients = new List<RecipeIngredient>();
 
-            foreach(RecipeIngredient f in NewRecipeIngredientsList.Items)
+            foreach (RecipeIngredient f in NewRecipeIngredientsList.Items)
             {
                 ingredients.Add(f);
             }

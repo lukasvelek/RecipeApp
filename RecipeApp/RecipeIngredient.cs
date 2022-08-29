@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RecipeApp
+﻿namespace RecipeApp
 {
     public class RecipeIngredient
     {
@@ -12,9 +6,9 @@ namespace RecipeApp
         private string description;
 
         private double measurement;
-        private MeasurementUnits measurementUnit;
+        private MeasurementUnits.Units measurementUnit;
 
-        public RecipeIngredient(string name, string description, double measurement, MeasurementUnits measurementUnit)
+        public RecipeIngredient(string name, string description, double measurement, MeasurementUnits.Units measurementUnit)
         {
             this.name = name;
             this.description = description;
@@ -40,7 +34,7 @@ namespace RecipeApp
             private set { measurement = value; }
         }
 
-        public MeasurementUnits MeasurementUnit
+        public MeasurementUnits.Units MeasurementUnit
         {
             get { return measurementUnit; }
             private set { measurementUnit = value; }

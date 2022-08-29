@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -30,9 +28,9 @@ namespace RecipeApp
         {
             bool add = true;
 
-            foreach(Grid g2 in grids)
+            foreach (Grid g2 in grids)
             {
-                if(g2 == g)
+                if (g2 == g)
                 {
                     add = false;
                 }
@@ -48,9 +46,9 @@ namespace RecipeApp
         {
             HideGrid(null);
 
-            foreach(Grid g2 in grids)
+            foreach (Grid g2 in grids)
             {
-                if(g == g2)
+                if (g == g2)
                 {
                     g2.Visibility = Visibility.Visible;
 
@@ -63,13 +61,13 @@ namespace RecipeApp
         {
             foreach (Grid g2 in grids)
             {
-                if(g == null)
+                if (g == null)
                 {
                     g2.Visibility = Visibility.Hidden;
                 }
                 else
                 {
-                    if(g == g2)
+                    if (g == g2)
                     {
                         g2.Visibility = Visibility.Hidden;
                     }
@@ -92,11 +90,11 @@ namespace RecipeApp
                     string recipeName = "";
                     List<RecipeIngredient> recipeIngredients = new List<RecipeIngredient>();
 
-                    foreach(string line in lines)
+                    foreach (string line in lines)
                     {
                         string lineName = line.Split('=')[0];
                         string lineData = line.Split('=')[1];
-                        
+
                         switch (lineName)
                         {
                             case "name":
@@ -116,56 +114,56 @@ namespace RecipeApp
                                     description = lineData.Split(',')[1];
                                 }
 
-                                MeasurementUnits unit = MeasurementUnits.Grams;
+                                MeasurementUnits.Units unit = MeasurementUnits.Units.Grams;
 
                                 switch (lineData.Split(',')[3])
                                 {
                                     case "g":
-                                        unit = MeasurementUnits.Grams;
+                                        unit = MeasurementUnits.Units.Grams;
                                         break;
 
                                     case "kg":
-                                        unit = MeasurementUnits.Kilograms;
+                                        unit = MeasurementUnits.Units.Kilograms;
                                         break;
 
                                     case "pinch":
-                                        unit = MeasurementUnits.Pinch;
+                                        unit = MeasurementUnits.Units.Pinch;
                                         break;
 
                                     case "ml":
-                                        unit = MeasurementUnits.Milliliters;
+                                        unit = MeasurementUnits.Units.Milliliters;
                                         break;
 
                                     case "lb":
-                                        unit = MeasurementUnits.Pounds;
+                                        unit = MeasurementUnits.Units.Pounds;
                                         break;
 
                                     case "oz":
-                                        unit = MeasurementUnits.Ounces;
+                                        unit = MeasurementUnits.Units.Ounces;
                                         break;
 
                                     case "fl_oz":
-                                        unit = MeasurementUnits.Fluid_Ounces;
+                                        unit = MeasurementUnits.Units.Fluid_Ounces;
                                         break;
 
                                     case "gal":
-                                        unit = MeasurementUnits.Gallons;
+                                        unit = MeasurementUnits.Units.Gallons;
                                         break;
 
                                     case "tbsp":
-                                        unit = MeasurementUnits.Tablespoons;
+                                        unit = MeasurementUnits.Units.Tablespoons;
                                         break;
 
                                     case "tsp":
-                                        unit = MeasurementUnits.Teaspoons;
+                                        unit = MeasurementUnits.Units.Teaspoons;
                                         break;
 
                                     case "l":
-                                        unit = MeasurementUnits.Liters;
+                                        unit = MeasurementUnits.Units.Liters;
                                         break;
 
                                     case "cup":
-                                        unit = MeasurementUnits.Cups;
+                                        unit = MeasurementUnits.Units.Cups;
                                         break;
                                 }
 
@@ -196,7 +194,7 @@ namespace RecipeApp
 
             flines[0] = "name=" + frname;
 
-            for(int i = 1; i < (1 + ring.Count); i++)
+            for (int i = 1; i < (1 + ring.Count); i++)
             {
                 RecipeIngredient ri = ring[i - 1];
 
@@ -204,40 +202,40 @@ namespace RecipeApp
 
                 switch (ri.MeasurementUnit)
                 {
-                    case MeasurementUnits.Pinch:
+                    case MeasurementUnits.Units.Pinch:
                         unit = "pinch";
                         break;
-                    case MeasurementUnits.Grams:
+                    case MeasurementUnits.Units.Grams:
                         unit = "g";
                         break;
-                    case MeasurementUnits.Kilograms:
+                    case MeasurementUnits.Units.Kilograms:
                         unit = "kg";
                         break;
-                    case MeasurementUnits.Gallons:
+                    case MeasurementUnits.Units.Gallons:
                         unit = "gal";
                         break;
-                    case MeasurementUnits.Cups:
+                    case MeasurementUnits.Units.Cups:
                         unit = "cup";
                         break;
-                    case MeasurementUnits.Teaspoons:
+                    case MeasurementUnits.Units.Teaspoons:
                         unit = "tsp";
                         break;
-                    case MeasurementUnits.Tablespoons:
+                    case MeasurementUnits.Units.Tablespoons:
                         unit = "tbsp";
                         break;
-                    case MeasurementUnits.Liters:
+                    case MeasurementUnits.Units.Liters:
                         unit = "l";
                         break;
-                    case MeasurementUnits.Ounces:
+                    case MeasurementUnits.Units.Ounces:
                         unit = "oz";
                         break;
-                    case MeasurementUnits.Fluid_Ounces:
+                    case MeasurementUnits.Units.Fluid_Ounces:
                         unit = "fl_oz";
                         break;
-                    case MeasurementUnits.Pounds:
+                    case MeasurementUnits.Units.Pounds:
                         unit = "lb";
                         break;
-                    case MeasurementUnits.Milliliters:
+                    case MeasurementUnits.Units.Milliliters:
                         unit = "ml";
                         break;
                 }
@@ -266,9 +264,9 @@ namespace RecipeApp
 
             Recipe? recipe = null;
 
-            foreach(Recipe r in recipes)
+            foreach (Recipe r in recipes)
             {
-                if(i == index)
+                if (i == index)
                 {
                     recipe = r;
                 }
