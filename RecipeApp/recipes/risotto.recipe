@@ -1,4 +1,6 @@
 ﻿name=Risotto
+portions=15
 ingredients=rice,null,200,g
 ingredients=chicken_meat,fried,200,g
 ingredients=salt,null,1,pinch
+instructions=test

@@ -77,7 +77,7 @@ namespace RecipeApp
 
         // RECIPE IO
 
-        public void LoadRecipes()
+        public void RefreshRecipes()
         {
             if (Directory.Exists(RECIPES_LOCATION))
             {
@@ -87,8 +87,12 @@ namespace RecipeApp
                 {
                     string[] lines = File.ReadAllLines(f);
 
+                    bool exists = false;
+
                     string recipeName = "";
+                    int recipePortions = -1;
                     List<RecipeIngredient> recipeIngredients = new List<RecipeIngredient>();
+                    List<string> recipeInstructions = new List<string>();
 
                     foreach (string line in lines)
                     {
@@ -173,11 +177,149 @@ namespace RecipeApp
                                                                            unit));
 
                                 break;
+
+                            case "instructions":
+                                recipeInstructions.Add(lineData);
+
+                                break;
+
+                            case "portions":
+                                recipePortions = Convert.ToInt32(lineData);
+                                break;
                         }
 
                     }
 
-                    recipes.Add(new Recipe(recipeName, recipeIngredients));
+                    foreach(Recipe r in recipes)
+                    {
+                        if(r.Name == recipeName)
+                        {
+                            exists = true;
+                        }
+                    }
+
+                    if (!exists)
+                    {
+                        recipes.Add(new Recipe(recipeName, recipePortions, recipeIngredients, recipeInstructions));
+                    }
+                }
+            }
+        }
+
+        public void LoadRecipes()
+        {
+            recipes.Clear();
+
+            if (Directory.Exists(RECIPES_LOCATION))
+            {
+                var files = from file in Directory.EnumerateFiles(RECIPES_LOCATION) select file;
+
+                foreach (var f in files)
+                {
+                    string[] lines = File.ReadAllLines(f);
+
+                    string recipeName = "";
+                    int recipePortions = -1;
+                    List<RecipeIngredient> recipeIngredients = new List<RecipeIngredient>();
+                    List<string> recipeInstructions = new List<string>();
+
+                    foreach (string line in lines)
+                    {
+                        string lineName = line.Split('=')[0];
+                        string lineData = line.Split('=')[1];
+
+                        switch (lineName)
+                        {
+                            case "name":
+                                recipeName = lineData;
+
+                                break;
+                            case "ingredients":
+                                // name, description, measurement, unit
+                                string? description = "";
+
+                                if (lineData.Split(',')[1] == "null")
+                                {
+                                    description = null;
+                                }
+                                else
+                                {
+                                    description = lineData.Split(',')[1];
+                                }
+
+                                MeasurementUnits.Units unit = MeasurementUnits.Units.Grams;
+
+                                switch (lineData.Split(',')[3])
+                                {
+                                    case "g":
+                                        unit = MeasurementUnits.Units.Grams;
+                                        break;
+
+                                    case "kg":
+                                        unit = MeasurementUnits.Units.Kilograms;
+                                        break;
+
+                                    case "pinch":
+                                        unit = MeasurementUnits.Units.Pinch;
+                                        break;
+
+                                    case "ml":
+                                        unit = MeasurementUnits.Units.Milliliters;
+                                        break;
+
+                                    case "lb":
+                                        unit = MeasurementUnits.Units.Pounds;
+                                        break;
+
+                                    case "oz":
+                                        unit = MeasurementUnits.Units.Ounces;
+                                        break;
+
+                                    case "fl_oz":
+                                        unit = MeasurementUnits.Units.Fluid_Ounces;
+                                        break;
+
+                                    case "gal":
+                                        unit = MeasurementUnits.Units.Gallons;
+                                        break;
+
+                                    case "tbsp":
+                                        unit = MeasurementUnits.Units.Tablespoons;
+                                        break;
+
+                                    case "tsp":
+                                        unit = MeasurementUnits.Units.Teaspoons;
+                                        break;
+
+                                    case "l":
+                                        unit = MeasurementUnits.Units.Liters;
+                                        break;
+
+                                    case "cup":
+                                        unit = MeasurementUnits.Units.Cups;
+                                        break;
+                                }
+
+                                recipeIngredients.Add(new RecipeIngredient(lineData.Split(',')[0],
+                                                                           description,
+                                                                           Convert.ToDouble(lineData.Split(',')[2]),
+                                                                           unit));
+
+                                break;
+
+                            case "instructions":
+                                recipeInstructions.Add(lineData);
+
+                                break;
+
+                            case "portions":
+                                recipePortions = Convert.ToInt32(lineData);
+                                break;
+                        }
+
+                    }
+
+                    recipes.Add(new Recipe(recipeName, recipePortions, recipeIngredients, recipeInstructions));
                 }
             }
             else
@@ -192,18 +334,19 @@ namespace RecipeApp
         {
             string rname = r.Name;
             List<RecipeIngredient> ring = r.Ingredients;
+            List<string> rins = r.Instructions;
 
             string fname = CreateFileNameFromRecipeName(rname) + ".recipe";
-            string[] flines = new string[1 + ring.Count];
+
+            List<string> flinesl = new List<string>();
 
             string frname = rname.ToLower();
 
-            flines[0] = "name=" + frname;
+            flinesl.Add("name=" + frname);
+            flinesl.Add("portions=" + r.PortionCount.ToString());
 
-            for (int i = 1; i < (1 + ring.Count); i++)
+            foreach(RecipeIngredient ri in ring)
             {
-                RecipeIngredient ri = ring[i - 1];
-
                 string unit = "";
 
                 switch (ri.MeasurementUnit)
@@ -246,10 +389,15 @@ namespace RecipeApp
                         break;
                 }
 
-                flines[i] = "ingredients=" + ri.Name.ToLower() + "," + ri.Description.ToLower() + "," + ri.Measurement + "," + unit;
+                flinesl.Add("ingredients=" + ri.Name.ToLower() + "," + ri.Description.ToLower() + "," + ri.Measurement + "," + unit);
             }
 
-            File.WriteAllLines("recipes/" + fname, flines);
+            foreach(string s in rins)
+            {
+                flinesl.Add("instructions=" + s);
+            }
+
+            File.WriteAllLines("recipes/" + fname, flinesl.ToArray());
         }
 
         public void DeleteRecipe(Recipe r)

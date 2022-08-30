@@ -7,32 +7,45 @@
         mc:Ignorable="d"
         Title="Recipe App" Height="450" Width="800" ResizeMode="CanMinimize">
     <Grid>
-        <Grid x:Name="Main" Visibility="Visible">
+        <Grid x:Name="Main" Visibility="Hidden">
             <ListBox x:Name="RecipeList" Margin="0,0,550,0" SelectionChanged="RecipeList_SelectionChanged" Height="356" VerticalAlignment="Top"/>
             <Label Content="Recipe name:" HorizontalAlignment="Left" Margin="255,10,0,0" VerticalAlignment="Top"/>
             <Label Content="Ingredients:" HorizontalAlignment="Left" Margin="255,41,0,0" VerticalAlignment="Top"/>
             <Label x:Name="RecipeName" Content="" HorizontalAlignment="Left" Margin="340,10,0,0" VerticalAlignment="Top"/>
-            <ListBox x:Name="RecipeIngredientsList" Margin="340,41,157,260"/>
+            <ListBox x:Name="RecipeIngredientsList" Margin="340,41,21,260"/>
             <Button x:Name="NewRecipeBtn" Content="New recipe" HorizontalAlignment="Left" Margin="10,361,0,0" VerticalAlignment="Top" Click="NewRecipeBtn_Click"/>
             <Button x:Name="DeleteRecipeBtn" Content="Delete recipe" HorizontalAlignment="Left" Margin="78,361,0,0" VerticalAlignment="Top" Click="DeleteRecipeBtn_Click"/>
+            <ListBox x:Name="RecipeInstructionsList" Margin="340,179,21,119"/>
+            <Label Content="Instructions:" HorizontalAlignment="Left" Margin="263,179,0,0" VerticalAlignment="Top"/>
+            <Label Content="Portion count:" HorizontalAlignment="Left" Margin="263,320,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="RecipePortionCount" Content="" HorizontalAlignment="Left" Margin="352,320,0,0" VerticalAlignment="Top"/>
         </Grid>
-        <Grid x:Name="NewRecipe" Visibility="Hidden">
+        <Grid x:Name="NewRecipe" Visibility="Visible">
             <Button x:Name="NewRecipeBack" Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="NewRecipeBack_Click"/>
             <Label Content="Name:" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
             <TextBox x:Name="NewRecipeName" HorizontalAlignment="Left" Margin="59,35,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="26"/>
-            <ListBox x:Name="NewRecipeIngredientsList" Margin="570,10,10,10" SelectionChanged="NewRecipeIngredientsList_SelectionChanged"/>
-            <Label Content="Ingredient name:" HorizontalAlignment="Left" Margin="262,35,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="NewRecipeIngredientName" HorizontalAlignment="Left" Margin="367,35,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="26"/>
-            <Label Content="Ingredient description:" HorizontalAlignment="Left" Margin="262,66,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="NewRecipeIngredientDescription" HorizontalAlignment="Left" Margin="400,66,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="165" Height="95"/>
-            <Label Content="Ingredient measurement:" HorizontalAlignment="Left" Margin="262,171,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="NewRecipeIngredientMeasurement" HorizontalAlignment="Left" Margin="410,171,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="26"/>
-            <ComboBox x:Name="NewRecipeIngredientUnit" HorizontalAlignment="Left" Margin="410,202,0,0" VerticalAlignment="Top" Width="60"/>
-            <Button x:Name="NewRecipeEditIngredient" Content="Edit ingredient" HorizontalAlignment="Left" Margin="291,229,0,0" VerticalAlignment="Top" Click="NewRecipeEditIngredient_Click"/>
-            <Button x:Name="NewRecipeAddIngredient" Content="Add ingredient" HorizontalAlignment="Left" Margin="203,229,0,0" VerticalAlignment="Top" Click="NewRecipeAddIngredient_Click"/>
-            <Button x:Name="NewRecipeDeleteIngredient" Content="Delete ingredient" HorizontalAlignment="Left" Margin="469,229,0,0" VerticalAlignment="Top" Click="NewRecipeDeleteIngredient_Click"/>
-            <Button x:Name="NewRecipeSaveIngredient" Content="Save ingredient" HorizontalAlignment="Left" Margin="378,229,0,0" VerticalAlignment="Top" Click="NewRecipeSaveIngredient_Click"/>
-            <Button x:Name="NewRecipeSaveRecipe" Content="Save recipe" HorizontalAlignment="Left" Margin="10,69,0,0" VerticalAlignment="Top" Click="NewRecipeSaveRecipe_Click"/>
+            <ListBox x:Name="NewRecipeIngredientsList" Margin="570,10,10,273" SelectionChanged="NewRecipeIngredientsList_SelectionChanged"/>
+            <Label Content="Ingredient name:" HorizontalAlignment="Left" Margin="487,166,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="NewRecipeIngredientName" HorizontalAlignment="Left" Margin="594,166,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="196" Height="26"/>
+            <Label Content="Ingredient description:" HorizontalAlignment="Left" Margin="487,202,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="NewRecipeIngredientDescription" HorizontalAlignment="Left" Margin="625,202,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="165" Height="95"/>
+            <Label Content="Ingredient measurement:" HorizontalAlignment="Left" Margin="487,304,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="NewRecipeIngredientMeasurement" HorizontalAlignment="Left" Margin="635,304,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="73" Height="26"/>
+            <ComboBox x:Name="NewRecipeIngredientUnit" HorizontalAlignment="Left" Margin="713,308,0,0" VerticalAlignment="Top" Width="77"/>
+            <Button x:Name="NewRecipeEditIngredient" Content="Edit ingredient" HorizontalAlignment="Left" Margin="483,38,0,0" VerticalAlignment="Top" Click="NewRecipeEditIngredient_Click"/>
+            <Button x:Name="NewRecipeAddIngredient" Content="Add ingredient" HorizontalAlignment="Left" Margin="482,13,0,0" VerticalAlignment="Top" Click="NewRecipeAddIngredient_Click"/>
+            <Button x:Name="NewRecipeDeleteIngredient" Content="Delete ingredient" HorizontalAlignment="Left" Margin="473,88,0,0" VerticalAlignment="Top" Click="NewRecipeDeleteIngredient_Click"/>
+            <Button x:Name="NewRecipeSaveIngredient" Content="Save ingredient" HorizontalAlignment="Left" Margin="483,63,0,0" VerticalAlignment="Top" Click="NewRecipeSaveIngredient_Click"/>
+            <Button x:Name="NewRecipeSaveRecipe" Content="Save recipe" HorizontalAlignment="Left" Margin="44,10,0,0" VerticalAlignment="Top" Click="NewRecipeSaveRecipe_Click"/>
+            <ListBox x:Name="NewRecipeInstructionsList" Margin="10,66,593,71" SelectionChanged="NewRecipeInstructionsList_SelectionChanged"/>
+            <Label Content="Instructions:" HorizontalAlignment="Left" Margin="212,63,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="NewRecipeInstructionText" HorizontalAlignment="Left" Margin="212,94,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="256" Height="98"/>
+            <Button x:Name="NewRecipeAddInstruction" Content="Add instruction" HorizontalAlignment="Left" Margin="212,197,0,0" VerticalAlignment="Top" Click="NewRecipeAddInstruction_Click"/>
+            <Button x:Name="NewRecipeEditInstruction" Content="Edit instruction" HorizontalAlignment="Left" Margin="212,222,0,0" VerticalAlignment="Top" Click="NewRecipeEditInstruction_Click"/>
+            <Button x:Name="NewRecipeSaveInstruction" Content="Save instruction" HorizontalAlignment="Left" Margin="212,247,0,0" VerticalAlignment="Top" Click="NewRecipeSaveInstruction_Click"/>
+            <Button x:Name="NewRecipeDeleteInstruction" Content="Delete instruction" HorizontalAlignment="Left" Margin="212,272,0,0" VerticalAlignment="Top" Click="NewRecipeDeleteInstruction_Click"/>
+            <Label Content="Portions:" HorizontalAlignment="Left" Margin="184,37,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="NewRecipePortionCount" HorizontalAlignment="Left" Margin="245,35,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="28"/>
         </Grid>
     </Grid>
 </Window>

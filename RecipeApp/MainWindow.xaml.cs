@@ -12,8 +12,11 @@ namespace RecipeApp
     {
         private RecipeAppBackend backend;
 
-        private bool newRecipe = false;
-        private int editRecipeIndex = -1;
+        private bool newIngredient = false;
+        private int editIngredientIndex = -1;
+
+        private bool newInstruction = false;
+        private int editInstructionIndex = -1;
 
         public MainWindow()
         {
@@ -40,7 +43,6 @@ namespace RecipeApp
             {
                 LoadNewRecipe();
             }
-
         }
 
         private void LoadNewRecipe()
@@ -74,10 +76,21 @@ namespace RecipeApp
             NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Gallons);
 
             NewRecipeIngredientUnit.SelectedIndex = 0;
+
+            NewRecipeInstructionText.Text = "";
+            NewRecipeInstructionsList.Items.Clear();
+
+            NewRecipeSaveInstruction.IsEnabled = false;
+            NewRecipeEditInstruction.IsEnabled = false;
+            NewRecipeDeleteInstruction.IsEnabled = false;
+
+            NewRecipeInstructionText.IsEnabled = false;
         }
 
         private void LoadMain()
         {
+            backend.LoadRecipes();
+            
             RecipeList.Items.Clear();
             RecipeIngredientsList.Items.Clear();
             RecipeName.Content = "";
@@ -91,6 +104,8 @@ namespace RecipeApp
             {
                 RecipeList.SelectedIndex = 0;
             }
+
+            backend.RefreshRecipes();
         }
 
         private void UpdateNewRecipe()
@@ -117,6 +132,21 @@ namespace RecipeApp
                 NewRecipeDeleteIngredient.IsEnabled = true;
                 NewRecipeEditIngredient.IsEnabled = true;
             }
+
+            if(NewRecipeInstructionsList.Items.Count > 0 && NewRecipeInstructionsList.SelectedIndex < 0)
+            {
+                NewRecipeInstructionsList.SelectedIndex = 0;
+            }
+
+            if(NewRecipeInstructionsList.SelectedIndex >= 0)
+            {
+                string? instruction = NewRecipeInstructionsList.SelectedItem.ToString();
+
+                NewRecipeInstructionText.Text = instruction;
+
+                NewRecipeEditInstruction.IsEnabled = true;
+                NewRecipeDeleteInstruction.IsEnabled = true;
+            }
         }
 
         private void RecipeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -130,10 +160,18 @@ namespace RecipeApp
                 RecipeIngredientsList.Items.Clear();
 
                 RecipeName.Content = r.Name;
+                RecipePortionCount.Content = r.PortionCount;
 
                 foreach (RecipeIngredient ri in r.Ingredients)
                 {
                     RecipeIngredientsList.Items.Add(ri.ToString());
+                }
+
+                RecipeInstructionsList.Items.Clear();
+
+                foreach(string ri in r.Instructions)
+                {
+                    RecipeInstructionsList.Items.Add(ri);
                 }
             }
         }
@@ -162,7 +200,7 @@ namespace RecipeApp
             NewRecipeIngredientMeasurement.Text = "";
             NewRecipeIngredientName.Text = "";
 
-            newRecipe = true;
+            newIngredient = true;
         }
 
         private void NewRecipeSaveIngredient_Click(object sender, RoutedEventArgs e)
@@ -198,15 +236,15 @@ namespace RecipeApp
 
                 RecipeIngredient ri = new RecipeIngredient(name, description, measurement, unit);
 
-                if (newRecipe)
+                if (newIngredient)
                 {
                     NewRecipeIngredientsList.Items.Add(ri);
-                    newRecipe = false;
+                    newIngredient = false;
                 }
                 else
                 {
-                    NewRecipeIngredientsList.Items[editRecipeIndex] = ri;
-                    NewRecipeIngredientsList.SelectedIndex = editRecipeIndex;
+                    NewRecipeIngredientsList.Items[editIngredientIndex] = ri;
+                    NewRecipeIngredientsList.SelectedIndex = editIngredientIndex;
                 }
             }
         }
@@ -248,7 +286,7 @@ namespace RecipeApp
         private void NewRecipeEditIngredient_Click(object sender, RoutedEventArgs e)
         {
             int index = NewRecipeIngredientsList.SelectedIndex;
-            editRecipeIndex = index;
+            editIngredientIndex = index;
 
             NewRecipeAddIngredient.IsEnabled = false;
             NewRecipeEditIngredient.IsEnabled = false;
@@ -279,16 +317,25 @@ namespace RecipeApp
             Recipe? r;
 
             string name = NewRecipeName.Text;
+            int portions = Convert.ToInt32(NewRecipePortionCount.Text);
             List<RecipeIngredient> ingredients = new List<RecipeIngredient>();
+            List<string> instructions = new List<string>();
 
             foreach (RecipeIngredient f in NewRecipeIngredientsList.Items)
             {
                 ingredients.Add(f);
             }
 
-            r = new Recipe(name, ingredients);
+            foreach(string s in NewRecipeInstructionsList.Items)
+            {
+                instructions.Add(s);
+            }
+
+            r = new Recipe(name, portions, ingredients, instructions);
 
             backend.SaveRecipe(r);
+
+            System.Threading.Thread.Sleep(1000);
 
             backend.DrawGrid(Main);
 
@@ -333,6 +380,99 @@ namespace RecipeApp
 
                 backend.DeleteRecipe(r);
             }
+        }
+
+        private void NewRecipeAddInstruction_Click(object sender, RoutedEventArgs e)
+        {
+            NewRecipeAddInstruction.IsEnabled = false;
+            NewRecipeEditInstruction.IsEnabled = false;
+            NewRecipeDeleteInstruction.IsEnabled = false;
+            NewRecipeSaveInstruction.IsEnabled = true;
+
+            NewRecipeInstructionText.IsEnabled = true;
+            NewRecipeInstructionsList.IsEnabled = false;
+
+            NewRecipeInstructionText.Text = "";
+
+            newInstruction = true;
+        }
+
+        private void NewRecipeEditInstruction_Click(object sender, RoutedEventArgs e)
+        {
+            int index = NewRecipeInstructionsList.SelectedIndex;
+            editInstructionIndex = index;
+
+            NewRecipeAddInstruction.IsEnabled = false;
+            NewRecipeEditInstruction.IsEnabled = false;
+            NewRecipeDeleteInstruction.IsEnabled = false;
+            NewRecipeSaveInstruction.IsEnabled = true;
+
+            NewRecipeInstructionText.IsEnabled = true;
+            NewRecipeInstructionsList.IsEnabled = false;
+
+            string? s = NewRecipeInstructionsList.SelectedItem.ToString();
+
+            NewRecipeInstructionText.Text = s;
+        }
+
+        private void NewRecipeSaveInstruction_Click(object sender, RoutedEventArgs e)
+        {
+            if(NewRecipeInstructionText.Text != "")
+            {
+                NewRecipeAddInstruction.IsEnabled = true;
+                NewRecipeEditInstruction.IsEnabled = true;
+                NewRecipeDeleteInstruction.IsEnabled = true;
+                NewRecipeSaveInstruction.IsEnabled = false;
+
+                NewRecipeInstructionText.IsEnabled = false;
+                NewRecipeInstructionsList.IsEnabled = true;
+
+                string text = NewRecipeInstructionText.Text;
+
+                if (newInstruction)
+                {
+                    NewRecipeInstructionsList.Items.Add(text);
+                }
+                else
+                {
+                    NewRecipeInstructionsList.Items[editInstructionIndex] = text;
+                    NewRecipeIngredientsList.SelectedIndex = editInstructionIndex;
+                }
+            }
+        }
+
+        private void NewRecipeDeleteInstruction_Click(object sender, RoutedEventArgs e)
+        {
+            int index = NewRecipeInstructionsList.SelectedIndex;
+            int n = 0;
+
+            if (index >= 0)
+            {
+                NewRecipeInstructionsList.Items.RemoveAt(index);
+            }
+
+            if (NewRecipeInstructionsList.Items.Count > 0)
+            {
+                if (index == 0)
+                {
+                    n = 0;
+                }
+                else if (index == (NewRecipeInstructionsList.Items.Count - 1))
+                {
+                    n = index - 1;
+                }
+                else
+                {
+                    n = NewRecipeInstructionsList.Items.Count - 1;
+                }
+
+                NewRecipeInstructionsList.SelectedIndex = n;
+            }
+        }
+
+        private void NewRecipeInstructionsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateNewRecipe();
         }
     }
 }
