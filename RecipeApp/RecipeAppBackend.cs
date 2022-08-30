@@ -252,6 +252,23 @@ namespace RecipeApp
             File.WriteAllLines("recipes/" + fname, flines);
         }
 
+        public void DeleteRecipe(Recipe r)
+        {
+            string fname = r.Name + ".recipe";
+
+            bool exists = false;
+
+            if(File.Exists("recipes/" + fname))
+            {
+                exists = true;
+            }
+
+            if (exists)
+            {
+                File.Delete("recipes/" + fname);
+            }
+        }
+
         // ESSENTIALS
 
         private string CreateFileNameFromRecipeName(string recipeName)

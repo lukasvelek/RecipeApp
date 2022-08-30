@@ -84,7 +84,7 @@ namespace RecipeApp
 
             foreach (Recipe r in backend.Recipes)
             {
-                RecipeList.Items.Add(r.ToString());
+                RecipeList.Items.Add(r);
             }
 
             if (RecipeList.Items.Count > 0)
@@ -300,6 +300,39 @@ namespace RecipeApp
             backend.DrawGrid(Main);
 
             LoadUI();
+        }
+
+        private void DeleteRecipeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if(RecipeList.SelectedIndex >= 0)
+            {
+                int index = RecipeList.SelectedIndex;
+                int nextIndex = -1;
+
+                Recipe r = (Recipe)RecipeList.SelectedItem;
+
+                RecipeList.Items.RemoveAt(index);
+
+                if(RecipeList.Items.Count > 0)
+                {
+                    if (index == 0)
+                    {
+                        nextIndex = 0;
+                    }
+                    else if (index == (RecipeList.Items.Count - 1))
+                    {
+                        nextIndex = index - 1;
+                    }
+                    else
+                    {
+                        nextIndex = RecipeList.Items.Count - 1;
+                    }
+
+                    RecipeList.SelectedIndex = nextIndex;
+                }
+
+                backend.DeleteRecipe(r);
+            }
         }
     }
 }
