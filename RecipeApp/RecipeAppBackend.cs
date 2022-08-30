@@ -10,16 +10,21 @@ namespace RecipeApp
     public class RecipeAppBackend
     {
         private const string RECIPES_LOCATION = "recipes";
+        private const string LANGUAGES_LOCATION = "languages";
 
         private List<Grid> grids;
         private List<Recipe> recipes;
+        private List<Language> languages;
 
         public Grid? currentGrid;
+
+        public Language? currentLanguage;
 
         public RecipeAppBackend()
         {
             recipes = new List<Recipe>();
             grids = new List<Grid>();
+            languages = new List<Language>();
         }
 
         // GRID
@@ -73,6 +78,106 @@ namespace RecipeApp
                     }
                 }
             }
+        }
+
+        // LANGUAGES
+
+        public void LoadLanguages()
+        {
+            if (Directory.Exists(LANGUAGES_LOCATION))
+            {
+                var files = from file in Directory.EnumerateFiles(LANGUAGES_LOCATION) select file;
+
+                foreach (var f in files)
+                {
+                    languages.Add(new Language(f));
+                }
+            }
+
+            foreach(Language l in languages)
+            {
+                if(l.Name == "Czech")
+                {
+                    currentLanguage = l;
+                }
+            }
+        }
+
+        public string GetText(string id)
+        {
+            string s = "";
+
+            switch (id)
+            {
+                case "btn_main_new_recipe":
+                    s = currentLanguage.BTN_MAIN_NEW_RECIPE;
+                    break;
+                case "btn_main_delete_recipe":
+                    s = currentLanguage.BTN_MAIN_DELETE_RECIPE;
+                    break;
+                case "lbl_main_recipe_name":
+                    s = currentLanguage.LBL_MAIN_RECIPE_NAME;
+                    break;
+                case "lbl_main_ingredients":
+                    s = currentLanguage.LBL_MAIN_INGREDIENTS;
+                    break;
+                case "lbl_main_instructions":
+                    s = currentLanguage.LBL_MAIN_INSTRUCTIONS;
+                    break;
+                case "lbl_main_portion_count":
+                    s = currentLanguage.LBL_MAIN_PORTION_COUNT;
+                    break;
+                case "btn_newrecipe_back":
+                    s = currentLanguage.BTN_NEWRECIPE_BACK;
+                    break;
+                case "btn_newrecipe_save_recipe":
+                    s = currentLanguage.BTN_NEWRECIPE_SAVE_RECIPE;
+                    break;
+                case "btn_newrecipe_add_instruction":
+                    s = currentLanguage.BTN_NEWRECIPE_ADD_INSTRUCTION;
+                    break;
+                case "btn_newrecipe_delete_instruction":
+                    s = currentLanguage.BTN_NEWRECIPE_DELETE_INSTRUCTION;
+                    break;
+                case "btn_newrecipe_edit_instruction":
+                    s = currentLanguage.BTN_NEWRECIPE_EDIT_INSTRUCTION;
+                    break;
+                case "btn_newrecipe_save_instruction":
+                    s = currentLanguage.BTN_NEWRECIPE_SAVE_INSTRUCTION;
+                    break;
+                case "btn_newrecipe_add_ingredient":
+                    s = currentLanguage.BTN_NEWRECIPE_ADD_INGREDIENT;
+                    break;
+                case "btn_newrecipe_delete_ingredient":
+                    s = currentLanguage.BTN_NEWRECIPE_DELETE_INGREDIENT;
+                    break;
+                case "btn_newrecipe_save_ingredient":
+                    s = currentLanguage.BTN_NEWRECIPE_SAVE_INGREDIENT;
+                    break;
+                case "btn_newrecipe_edit_ingredient":
+                    s = currentLanguage.BTN_NEWRECIPE_EDIT_INGREDIENT;
+                    break;
+                case "lbl_newrecipe_name":
+                    s = currentLanguage.LBL_NEWRECIPE_NAME;
+                    break;
+                case "lbl_newrecipe_portions":
+                    s = currentLanguage.LBL_NEWRECIPE_PORTIONS;
+                    break;
+                case "lbl_newrecipe_instructions":
+                    s = currentLanguage.LBL_NEWRECIPE_INSTRUCTIONS;
+                    break;
+                case "lbl_newrecipe_ingredient_name":
+                    s = currentLanguage.LBL_NEWRECIPE_INGREDIENT_NAME;
+                    break;
+                case "lbl_newrecipe_ingredient_description":
+                    s = currentLanguage.LBL_NEWRECIPE_INGREDIENT_DESCRIPTION;
+                    break;
+                case "lbl_newrecipe_ingredient_measurement":
+                    s = currentLanguage.LBL_NEWRECIPE_INGREDIENT_MEASUREMENT;
+                    break;
+            }
+
+            return s;
         }
 
         // RECIPE IO

@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="languages\Czech.language">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="languages\English.language">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="recipes\czech_spaghett.recipe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
