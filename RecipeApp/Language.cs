@@ -51,6 +51,11 @@ namespace RecipeApp
                     string name = line.Split('=')[0];
                     string data = line.Split('=')[1];
 
+                    if(name[0] == '#')
+                    {
+                        break;
+                    }
+
                     switch (name)
                     {
                         case "language_name":
