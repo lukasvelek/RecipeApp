@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+﻿using System.IO;
 
 namespace RecipeApp
 {
@@ -46,12 +41,12 @@ namespace RecipeApp
             {
                 string[] lines = File.ReadAllLines(filePath);
 
-                foreach(string line in lines)
+                foreach (string line in lines)
                 {
                     string name = line.Split('=')[0];
                     string data = line.Split('=')[1];
 
-                    if(name[0] == '#')
+                    if (name[0] == '#')
                     {
                         break;
                     }

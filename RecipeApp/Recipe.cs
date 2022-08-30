@@ -5,13 +5,13 @@ namespace RecipeApp
     public class Recipe
     {
         private string name;
-        
+
         private int portionCount;
-        
+
         private List<RecipeIngredient>? ingredients;
-        
+
         private List<string>? instructions;
-        
+
         public Recipe(string name, int portions, List<RecipeIngredient>? ingredients = null, List<string>? instructions = null)
         {
             this.name = name;
@@ -22,7 +22,7 @@ namespace RecipeApp
                 this.ingredients = ingredients;
             }
 
-            if(instructions != null)
+            if (instructions != null)
             {
                 this.instructions = instructions;
             }

@@ -94,9 +94,9 @@ namespace RecipeApp
                 }
             }
 
-            foreach(Language l in languages)
+            foreach (Language l in languages)
             {
-                if(l.Name == "Czech")
+                if (l.Name == "Czech")
                 {
                     currentLanguage = l;
                 }
@@ -295,9 +295,9 @@ namespace RecipeApp
 
                     }
 
-                    foreach(Recipe r in recipes)
+                    foreach (Recipe r in recipes)
                     {
-                        if(r.Name == recipeName)
+                        if (r.Name == recipeName)
                         {
                             exists = true;
                         }
@@ -450,7 +450,7 @@ namespace RecipeApp
             flinesl.Add("name=" + frname);
             flinesl.Add("portions=" + r.PortionCount.ToString());
 
-            foreach(RecipeIngredient ri in ring)
+            foreach (RecipeIngredient ri in ring)
             {
                 string unit = "";
 
@@ -497,7 +497,7 @@ namespace RecipeApp
                 flinesl.Add("ingredients=" + ri.Name.ToLower() + "," + ri.Description.ToLower() + "," + ri.Measurement + "," + unit);
             }
 
-            foreach(string s in rins)
+            foreach (string s in rins)
             {
                 flinesl.Add("instructions=" + s);
             }
@@ -511,7 +511,7 @@ namespace RecipeApp
 
             bool exists = false;
 
-            if(File.Exists("recipes/" + fname))
+            if (File.Exists("recipes/" + fname))
             {
                 exists = true;
             }

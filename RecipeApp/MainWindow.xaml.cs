@@ -26,7 +26,7 @@ namespace RecipeApp
 
             backend.LoadLanguages();
             backend.LoadRecipes();
-            
+
             backend.AddGrid(Main);
             backend.AddGrid(NewRecipe);
 
@@ -157,12 +157,12 @@ namespace RecipeApp
                 btn_newrecipe_edit_ingredient.IsEnabled = true;
             }
 
-            if(NewRecipeInstructionsList.Items.Count > 0 && NewRecipeInstructionsList.SelectedIndex < 0)
+            if (NewRecipeInstructionsList.Items.Count > 0 && NewRecipeInstructionsList.SelectedIndex < 0)
             {
                 NewRecipeInstructionsList.SelectedIndex = 0;
             }
 
-            if(NewRecipeInstructionsList.SelectedIndex >= 0)
+            if (NewRecipeInstructionsList.SelectedIndex >= 0)
             {
                 string? instruction = NewRecipeInstructionsList.SelectedItem.ToString();
 
@@ -193,7 +193,7 @@ namespace RecipeApp
 
                 RecipeInstructionsList.Items.Clear();
 
-                foreach(string ri in r.Instructions)
+                foreach (string ri in r.Instructions)
                 {
                     RecipeInstructionsList.Items.Add(ri);
                 }
@@ -350,7 +350,7 @@ namespace RecipeApp
                 ingredients.Add(f);
             }
 
-            foreach(string s in NewRecipeInstructionsList.Items)
+            foreach (string s in NewRecipeInstructionsList.Items)
             {
                 instructions.Add(s);
             }
@@ -375,7 +375,7 @@ namespace RecipeApp
 
         private void DeleteRecipeBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(RecipeList.SelectedIndex >= 0)
+            if (RecipeList.SelectedIndex >= 0)
             {
                 int index = RecipeList.SelectedIndex;
                 int nextIndex = -1;
@@ -384,7 +384,7 @@ namespace RecipeApp
 
                 RecipeList.Items.RemoveAt(index);
 
-                if(RecipeList.Items.Count > 0)
+                if (RecipeList.Items.Count > 0)
                 {
                     if (index == 0)
                     {
@@ -441,7 +441,7 @@ namespace RecipeApp
 
         private void NewRecipeSaveInstruction_Click(object sender, RoutedEventArgs e)
         {
-            if(NewRecipeInstructionText.Text != "")
+            if (NewRecipeInstructionText.Text != "")
             {
                 btn_newrecipe_add_instruction.IsEnabled = true;
                 btn_newrecipe_edit_instruction.IsEnabled = true;
