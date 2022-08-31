@@ -1,21 +1,20 @@
-﻿namespace RecipeApp
+﻿using System.Collections.Generic;
+
+namespace RecipeApp
 {
     public class MeasurementUnits
     {
-        public enum Units
+        private List<Unit> units;
+
+        public MeasurementUnits(List<Unit> units)
         {
-            Grams,
-            Kilograms,
-            Pinch,
-            Ounces,
-            Milliliters,
-            Fluid_Ounces,
-            Liters,
-            Gallons,
-            Tablespoons,
-            Teaspoons,
-            Cups,
-            Pounds
+            this.units = units;
+        }
+
+        public List<Unit> Units
+        {
+            get { return units; }
+            private set { units = value; }
         }
     }
 }

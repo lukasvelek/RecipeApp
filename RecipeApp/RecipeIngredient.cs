@@ -6,9 +6,9 @@
         private string description;
 
         private double measurement;
-        private MeasurementUnits.Units measurementUnit;
+        private string measurementUnit;
 
-        public RecipeIngredient(string name, string description, double measurement, MeasurementUnits.Units measurementUnit)
+        public RecipeIngredient(string name, string description, double measurement, string measurementUnit)
         {
             this.name = name;
             this.description = description;
@@ -34,7 +34,7 @@
             private set { measurement = value; }
         }
 
-        public MeasurementUnits.Units MeasurementUnit
+        public string MeasurementUnit
         {
             get { return measurementUnit; }
             private set { measurementUnit = value; }

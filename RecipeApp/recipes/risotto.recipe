@@ -1,6 +1,6 @@
 ﻿name=Risotto
 portions=15
-ingredients=rice,null,200,g
-ingredients=chicken_meat,fried,200,g
+ingredients=rice,null,200,grams
+ingredients=chicken_meat,fried,200,grams
 ingredients=salt,null,1,pinch
 instructions=test

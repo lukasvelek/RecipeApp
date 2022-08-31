@@ -20,6 +20,8 @@ namespace RecipeApp
 
         public Language? currentLanguage;
 
+        public MeasurementUnits mUnits;
+
         public RecipeAppBackend()
         {
             recipes = new List<Recipe>();
@@ -101,6 +103,19 @@ namespace RecipeApp
                     currentLanguage = l;
                 }
             }
+
+            List<Unit> units = new List<Unit>();
+            units.Add(new Unit("cups", currentLanguage.MU_CUPS));
+            units.Add(new Unit("pinch", currentLanguage.MU_PINCH));
+            units.Add(new Unit("piece", currentLanguage.MU_PIECE));
+            units.Add(new Unit("tbsp", currentLanguage.MU_TBSP));
+            units.Add(new Unit("tsp", currentLanguage.MU_TSP));
+            units.Add(new Unit("grams", currentLanguage.MU_GRAMS));
+            units.Add(new Unit("kilograms", currentLanguage.MU_KILOGRAMS));
+            units.Add(new Unit("milliliters", currentLanguage.MU_MILLILITERS));
+            units.Add(new Unit("liters", currentLanguage.MU_LITERS));
+
+            mUnits = new MeasurementUnits(units);
         }
 
         public string GetText(string id)
@@ -223,57 +238,14 @@ namespace RecipeApp
                                     description = lineData.Split(',')[1];
                                 }
 
-                                MeasurementUnits.Units unit = MeasurementUnits.Units.Grams;
+                                string unit = "";
 
-                                switch (lineData.Split(',')[3])
+                                foreach (Unit u in mUnits.Units)
                                 {
-                                    case "g":
-                                        unit = MeasurementUnits.Units.Grams;
-                                        break;
-
-                                    case "kg":
-                                        unit = MeasurementUnits.Units.Kilograms;
-                                        break;
-
-                                    case "pinch":
-                                        unit = MeasurementUnits.Units.Pinch;
-                                        break;
-
-                                    case "ml":
-                                        unit = MeasurementUnits.Units.Milliliters;
-                                        break;
-
-                                    case "lb":
-                                        unit = MeasurementUnits.Units.Pounds;
-                                        break;
-
-                                    case "oz":
-                                        unit = MeasurementUnits.Units.Ounces;
-                                        break;
-
-                                    case "fl_oz":
-                                        unit = MeasurementUnits.Units.Fluid_Ounces;
-                                        break;
-
-                                    case "gal":
-                                        unit = MeasurementUnits.Units.Gallons;
-                                        break;
-
-                                    case "tbsp":
-                                        unit = MeasurementUnits.Units.Tablespoons;
-                                        break;
-
-                                    case "tsp":
-                                        unit = MeasurementUnits.Units.Teaspoons;
-                                        break;
-
-                                    case "l":
-                                        unit = MeasurementUnits.Units.Liters;
-                                        break;
-
-                                    case "cup":
-                                        unit = MeasurementUnits.Units.Cups;
-                                        break;
+                                    if (u.Id == lineData.Split(',')[3])
+                                    {
+                                        unit = u.Name;
+                                    }
                                 }
 
                                 recipeIngredients.Add(new RecipeIngredient(lineData.Split(',')[0],
@@ -352,57 +324,14 @@ namespace RecipeApp
                                     description = lineData.Split(',')[1];
                                 }
 
-                                MeasurementUnits.Units unit = MeasurementUnits.Units.Grams;
+                                string unit = "";
 
-                                switch (lineData.Split(',')[3])
+                                foreach(Unit u in mUnits.Units)
                                 {
-                                    case "g":
-                                        unit = MeasurementUnits.Units.Grams;
-                                        break;
-
-                                    case "kg":
-                                        unit = MeasurementUnits.Units.Kilograms;
-                                        break;
-
-                                    case "pinch":
-                                        unit = MeasurementUnits.Units.Pinch;
-                                        break;
-
-                                    case "ml":
-                                        unit = MeasurementUnits.Units.Milliliters;
-                                        break;
-
-                                    case "lb":
-                                        unit = MeasurementUnits.Units.Pounds;
-                                        break;
-
-                                    case "oz":
-                                        unit = MeasurementUnits.Units.Ounces;
-                                        break;
-
-                                    case "fl_oz":
-                                        unit = MeasurementUnits.Units.Fluid_Ounces;
-                                        break;
-
-                                    case "gal":
-                                        unit = MeasurementUnits.Units.Gallons;
-                                        break;
-
-                                    case "tbsp":
-                                        unit = MeasurementUnits.Units.Tablespoons;
-                                        break;
-
-                                    case "tsp":
-                                        unit = MeasurementUnits.Units.Teaspoons;
-                                        break;
-
-                                    case "l":
-                                        unit = MeasurementUnits.Units.Liters;
-                                        break;
-
-                                    case "cup":
-                                        unit = MeasurementUnits.Units.Cups;
-                                        break;
+                                    if(u.Id == lineData.Split(',')[3])
+                                    {
+                                        unit = u.Name;
+                                    }
                                 }
 
                                 recipeIngredients.Add(new RecipeIngredient(lineData.Split(',')[0],
@@ -454,44 +383,12 @@ namespace RecipeApp
             {
                 string unit = "";
 
-                switch (ri.MeasurementUnit)
+                foreach(Unit u in mUnits.Units)
                 {
-                    case MeasurementUnits.Units.Pinch:
-                        unit = "pinch";
-                        break;
-                    case MeasurementUnits.Units.Grams:
-                        unit = "g";
-                        break;
-                    case MeasurementUnits.Units.Kilograms:
-                        unit = "kg";
-                        break;
-                    case MeasurementUnits.Units.Gallons:
-                        unit = "gal";
-                        break;
-                    case MeasurementUnits.Units.Cups:
-                        unit = "cup";
-                        break;
-                    case MeasurementUnits.Units.Teaspoons:
-                        unit = "tsp";
-                        break;
-                    case MeasurementUnits.Units.Tablespoons:
-                        unit = "tbsp";
-                        break;
-                    case MeasurementUnits.Units.Liters:
-                        unit = "l";
-                        break;
-                    case MeasurementUnits.Units.Ounces:
-                        unit = "oz";
-                        break;
-                    case MeasurementUnits.Units.Fluid_Ounces:
-                        unit = "fl_oz";
-                        break;
-                    case MeasurementUnits.Units.Pounds:
-                        unit = "lb";
-                        break;
-                    case MeasurementUnits.Units.Milliliters:
-                        unit = "ml";
-                        break;
+                    if(u.Name == ri.MeasurementUnit)
+                    {
+                        unit = u.Id;
+                    }
                 }
 
                 flinesl.Add("ingredients=" + ri.Name.ToLower() + "," + ri.Description.ToLower() + "," + ri.Measurement + "," + unit);

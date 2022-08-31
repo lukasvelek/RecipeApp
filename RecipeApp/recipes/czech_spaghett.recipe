@@ -1,9 +1,9 @@
 ﻿name=Czech spaghetti
 portions=10
-ingredients=spaghetti,boiled,200,g
+ingredients=spaghetti,boiled,200,grams
 ingredients=salt,null,1,pinch
-ingredients=ketchup,null,10,g
-ingredients=cheese,greated,25,g
+ingredients=ketchup,null,10,grams
+ingredients=cheese,greated,25,grams
 instructions=you boil water
 instructions=you put spaghetti into the boiling water
 instructions=you put salt into the water with spaghetti
