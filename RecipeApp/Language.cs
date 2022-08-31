@@ -30,6 +30,16 @@ namespace RecipeApp
         public string LBL_NEWRECIPE_INGREDIENT_DESCRIPTION;
         public string LBL_NEWRECIPE_INGREDIENT_MEASUREMENT;
 
+        public string MU_PINCH;
+        public string MU_MILLILITERS;
+        public string MU_LITERS;
+        public string MU_GRAMS;
+        public string MU_KILOGRAMS;
+        public string MU_TBSP;
+        public string MU_TSP;
+        public string MU_CUPS;
+        public string MU_PIECE;
+
         public Language(string filePath)
         {
             LoadData(filePath);
@@ -121,6 +131,33 @@ namespace RecipeApp
                             break;
                         case "lbl_newrecipe_ingredient_measurement":
                             LBL_NEWRECIPE_INGREDIENT_MEASUREMENT = data;
+                            break;
+                        case "mu_piece":
+                            MU_PIECE = data;
+                            break;
+                        case "mu_pinch":
+                            MU_PINCH = data;
+                            break;
+                        case "mu_milliliters":
+                            MU_MILLILITERS = data;
+                            break;
+                        case "mu_liters":
+                            MU_LITERS = data;
+                            break;
+                        case "mu_grams":
+                            MU_GRAMS = data;
+                            break;
+                        case "mu_kilograms":
+                            MU_KILOGRAMS = data;
+                            break;
+                        case "mu_tbsp":
+                            MU_TBSP = data;
+                            break;
+                        case "mu_tsp":
+                            MU_TSP = data;
+                            break;
+                        case "mu_cups":
+                            MU_CUPS = data;
                             break;
                     }
                 }

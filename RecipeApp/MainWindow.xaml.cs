@@ -64,18 +64,10 @@ namespace RecipeApp
             NewRecipeIngredientDescription.IsEnabled = false;
             NewRecipeIngredientUnit.IsEnabled = false;
 
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Pinch);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Grams);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Kilograms);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Ounces);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Pounds);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Milliliters);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Liters);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Teaspoons);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Tablespoons);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Cups);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Fluid_Ounces);
-            NewRecipeIngredientUnit.Items.Add(MeasurementUnits.Units.Gallons);
+            foreach(Unit u in backend.mUnits.Units)
+            {
+                NewRecipeIngredientUnit.Items.Add(u.Name);
+            }
 
             NewRecipeIngredientUnit.SelectedIndex = 0;
 
@@ -146,7 +138,7 @@ namespace RecipeApp
                 string name = ri.Name;
                 string description = ri.Description;
                 double measurement = ri.Measurement;
-                MeasurementUnits.Units unit = ri.MeasurementUnit;
+                string unit = ri.MeasurementUnit;
 
                 NewRecipeIngredientName.Text = name;
                 NewRecipeIngredientDescription.Text = description;
@@ -262,7 +254,7 @@ namespace RecipeApp
                 }
 
                 double measurement = Convert.ToDouble(NewRecipeIngredientMeasurement.Text);
-                MeasurementUnits.Units unit = (MeasurementUnits.Units)NewRecipeIngredientUnit.SelectedItem;
+                string unit = (string)NewRecipeIngredientUnit.SelectedItem;
 
                 RecipeIngredient ri = new RecipeIngredient(name, description, measurement, unit);
 
@@ -340,7 +332,7 @@ namespace RecipeApp
             string name = ri.Name;
             string description = ri.Description;
             double measurement = ri.Measurement;
-            MeasurementUnits.Units unit = ri.MeasurementUnit;
+            string unit = ri.MeasurementUnit;
 
             NewRecipeIngredientName.Text = name;
             NewRecipeIngredientDescription.Text = description;
