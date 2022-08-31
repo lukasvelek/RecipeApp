@@ -225,6 +225,12 @@ namespace RecipeApp
             NewRecipeIngredientName.Text = "";
 
             newIngredient = true;
+
+            btn_newrecipe_back.IsEnabled = false;
+            btn_newrecipe_save_recipe.IsEnabled = false;
+            btn_newrecipe_add_instruction.IsEnabled = false;
+            btn_newrecipe_edit_instruction.IsEnabled = false;
+            btn_newrecipe_delete_instruction.IsEnabled = false;
         }
 
         private void NewRecipeSaveIngredient_Click(object sender, RoutedEventArgs e)
@@ -270,6 +276,12 @@ namespace RecipeApp
                     NewRecipeIngredientsList.Items[editIngredientIndex] = ri;
                     NewRecipeIngredientsList.SelectedIndex = editIngredientIndex;
                 }
+            
+                btn_newrecipe_back.IsEnabled = true;
+                btn_newrecipe_save_recipe.IsEnabled = true;
+                btn_newrecipe_add_instruction.IsEnabled = true;
+                
+                UpdateNewRecipe();
             }
         }
 
@@ -334,6 +346,13 @@ namespace RecipeApp
             NewRecipeIngredientDescription.Text = description;
             NewRecipeIngredientMeasurement.Text = measurement.ToString();
             NewRecipeIngredientUnit.SelectedItem = unit;
+
+            btn_newrecipe_back.IsEnabled = false;
+            btn_newrecipe_save_recipe.IsEnabled = false;
+            btn_newrecipe_add_instruction.IsEnabled = false;
+            btn_newrecipe_add_instruction.IsEnabled = false;
+            btn_newrecipe_edit_instruction.IsEnabled = false;
+            btn_newrecipe_delete_instruction.IsEnabled = false;
         }
 
         private void NewRecipeSaveRecipe_Click(object sender, RoutedEventArgs e)
@@ -419,6 +438,12 @@ namespace RecipeApp
             NewRecipeInstructionText.Text = "";
 
             newInstruction = true;
+
+            btn_newrecipe_back.IsEnabled = false;
+            btn_newrecipe_save_recipe.IsEnabled = false;
+            btn_newrecipe_add_ingredient.IsEnabled = false;
+            btn_newrecipe_edit_ingredient.IsEnabled = false;
+            btn_newrecipe_delete_ingredient.IsEnabled = false;
         }
 
         private void NewRecipeEditInstruction_Click(object sender, RoutedEventArgs e)
@@ -437,6 +462,12 @@ namespace RecipeApp
             string? s = NewRecipeInstructionsList.SelectedItem.ToString();
 
             NewRecipeInstructionText.Text = s;
+
+            btn_newrecipe_back.IsEnabled = false;
+            btn_newrecipe_save_recipe.IsEnabled = false;
+            btn_newrecipe_add_ingredient.IsEnabled = false;
+            btn_newrecipe_edit_ingredient.IsEnabled = false;
+            btn_newrecipe_delete_ingredient.IsEnabled = false;
         }
 
         private void NewRecipeSaveInstruction_Click(object sender, RoutedEventArgs e)
@@ -462,6 +493,12 @@ namespace RecipeApp
                     NewRecipeInstructionsList.Items[editInstructionIndex] = text;
                     NewRecipeIngredientsList.SelectedIndex = editInstructionIndex;
                 }
+
+                btn_newrecipe_back.IsEnabled = true;
+                btn_newrecipe_save_recipe.IsEnabled = true;
+                btn_newrecipe_add_ingredient.IsEnabled = true;
+
+                UpdateNewRecipe();
             }
         }
 
