@@ -45,7 +45,7 @@ namespace RecipeApp
             {
                 SettingsLanguageList.Items.Add(language);
 
-                if(backend.currentLanguage == language)
+                if(backend.currentLanguage.Name == language.Name)
                 {
                     si = x;
                 }
