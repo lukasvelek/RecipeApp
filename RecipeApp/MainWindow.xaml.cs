@@ -10,6 +10,8 @@ namespace RecipeApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private SettingsWindow _settings;
+
         private RecipeAppBackend backend;
 
         private bool newIngredient = false;
@@ -21,19 +23,29 @@ namespace RecipeApp
         private bool editing = false;
         private Recipe? recipeToBeEdited = null;
 
+        private bool isSettingsOpened = false;
+
         public MainWindow()
         {
             InitializeComponent();
 
+            _settings = new SettingsWindow();
+
             backend = new RecipeAppBackend();
 
             backend.LoadLanguages();
+            backend.LoadConfig();
+            backend.LoadUnits();
             backend.LoadRecipes();
 
             backend.AddGrid(Main);
             backend.AddGrid(NewRecipe);
 
             backend.DrawGrid(Main);
+
+            _settings.backend = backend;
+            _settings.LoadLanguages();
+            _settings.LoadUI();
 
             LoadUI();
         }
@@ -206,6 +218,7 @@ namespace RecipeApp
             btn_main_new_recipe.Content = backend.GetText("btn_main_new_recipe");
             btn_main_delete_recipe.Content = backend.GetText("btn_main_delete_recipe");
             btn_main_edit_recipe.Content = backend.GetText("btn_main_edit_recipe");
+            btn_main_settings.Content = backend.GetText("btn_main_settings");
         }
 
         private void UpdateNewRecipe()
@@ -634,6 +647,35 @@ namespace RecipeApp
 
                 LoadUI();
             }
+        }
+
+        private void btn_main_settings_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isSettingsOpened)
+            {
+                _settings.Show();
+                isSettingsOpened = true;
+            }
+            else
+            {
+                if (!_settings.isOpened)
+                {
+                    _settings = new SettingsWindow();
+                    _settings.backend = backend;
+                    _settings.LoadLanguages();
+                    _settings.LoadUI();
+
+                    isSettingsOpened = false;
+
+                    btn_main_settings_Click(sender, e);
+                }
+            }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            _settings.Close();
+            _settings = null;
         }
     }
 }

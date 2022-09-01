@@ -9,6 +9,7 @@ namespace RecipeApp
         public string? BTN_MAIN_NEW_RECIPE;
         public string? BTN_MAIN_DELETE_RECIPE;
         public string? BTN_MAIN_EDIT_RECIPE;
+        public string? BTN_MAIN_SETTINGS;
         public string? LBL_MAIN_RECIPE_NAME;
         public string? LBL_MAIN_INGREDIENTS;
         public string? LBL_MAIN_INSTRUCTIONS;
@@ -40,6 +41,8 @@ namespace RecipeApp
         public string? MU_TSP;
         public string? MU_CUPS;
         public string? MU_PIECE;
+
+        public string? BTN_SETTINGS_SAVE;
 
         public Language(string filePath)
         {
@@ -75,6 +78,9 @@ namespace RecipeApp
                             break;
                         case "btn_main_edit_recipe":
                             BTN_MAIN_EDIT_RECIPE = data;
+                            break;
+                        case "btn_main_settings":
+                            BTN_MAIN_SETTINGS = data;
                             break;
                         case "lbl_main_recipe_name":
                             LBL_MAIN_RECIPE_NAME = data;
@@ -136,6 +142,9 @@ namespace RecipeApp
                         case "lbl_newrecipe_ingredient_measurement":
                             LBL_NEWRECIPE_INGREDIENT_MEASUREMENT = data;
                             break;
+                        case "btn_settings_save":
+                            BTN_SETTINGS_SAVE = data;
+                            break;
                         case "mu_piece":
                             MU_PIECE = data;
                             break;
@@ -166,6 +175,11 @@ namespace RecipeApp
                     }
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }
