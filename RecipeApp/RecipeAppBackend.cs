@@ -9,8 +9,8 @@ namespace RecipeApp
 {
     public class RecipeAppBackend
     {
-        private const string RECIPES_LOCATION = "recipes";
-        private const string LANGUAGES_LOCATION = "languages";
+        public const string RECIPES_LOCATION = "recipes";
+        public const string LANGUAGES_LOCATION = "languages";
 
         private List<Grid> grids;
         private List<Recipe> recipes;
@@ -82,10 +82,68 @@ namespace RecipeApp
             }
         }
 
+        // CONFIG
+
+        public void LoadConfig()
+        {
+            if (File.Exists("app.config"))
+            {
+                string[] lines = File.ReadAllLines("app.config");
+
+                foreach (string line in lines)
+                {
+                    string name = line.Split('=')[0];
+                    string data = line.Split('=')[1];
+
+                    if (name == "language")
+                    {
+                        foreach (Language l in languages)
+                        {
+                            if (l.Name == data)
+                            {
+                                currentLanguage = l;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (currentLanguage == null)
+            {
+                foreach (Language l in languages)
+                {
+                    if (l.Name == "English")
+                    {
+                        currentLanguage = l;
+                    }
+                }
+            }
+        }
+
+        public void UpdateConfig(Language language)
+        {
+            if (File.Exists("app.config"))
+            {
+                File.Delete("app.config");
+
+                UpdateConfig(language);
+            }
+            else
+            {
+                List<string> lines = new List<string>();
+
+                lines.Add("language=" + language.Name);
+
+                File.WriteAllLines("app.config", lines.ToArray());
+            }
+        }
+
         // LANGUAGES
 
-        public void LoadLanguages()
+        public List<Language> ReturnLanguagesFromFile()
         {
+            List<Language> languages = new List<Language>();
+
             if (Directory.Exists(LANGUAGES_LOCATION))
             {
                 var files = from file in Directory.EnumerateFiles(LANGUAGES_LOCATION) select file;
@@ -96,14 +154,16 @@ namespace RecipeApp
                 }
             }
 
-            foreach (Language l in languages)
-            {
-                if (l.Name == "Czech")
-                {
-                    currentLanguage = l;
-                }
-            }
+            return languages;
+        }
 
+        public void LoadLanguages()
+        {
+            languages = ReturnLanguagesFromFile();
+        }
+
+        public void LoadUnits()
+        {
             List<Unit> units = new List<Unit>();
             units.Add(new Unit("cups", currentLanguage.MU_CUPS));
             units.Add(new Unit("pinch", currentLanguage.MU_PINCH));
@@ -132,6 +192,9 @@ namespace RecipeApp
                     break;
                 case "btn_main_edit_recipe":
                     s = currentLanguage.BTN_MAIN_EDIT_RECIPE;
+                    break;
+                case "btn_main_settings":
+                    s = currentLanguage.BTN_MAIN_SETTINGS;
                     break;
                 case "lbl_main_recipe_name":
                     s = currentLanguage.LBL_MAIN_RECIPE_NAME;
@@ -192,6 +255,9 @@ namespace RecipeApp
                     break;
                 case "lbl_newrecipe_ingredient_measurement":
                     s = currentLanguage.LBL_NEWRECIPE_INGREDIENT_MEASUREMENT;
+                    break;
+                case "btn_settings_save":
+                    s = currentLanguage.BTN_SETTINGS_SAVE;
                     break;
             }
 

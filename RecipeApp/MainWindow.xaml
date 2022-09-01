@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RecipeApp"
         mc:Ignorable="d"
-        Title="Recipe App" Height="450" Width="800" ResizeMode="CanMinimize">
+        Title="Recipe App" Height="450" Width="800" ResizeMode="CanMinimize" Closed="Window_Closed">
     <Grid>
         <Grid x:Name="Main" Visibility="Visible">
             <ListBox x:Name="RecipeList" Margin="0,0,550,0" SelectionChanged="RecipeList_SelectionChanged" Height="356" VerticalAlignment="Top"/>
@@ -20,6 +20,7 @@
             <Label x:Name="lbl_main_portion_count" Content="Portion count:" HorizontalAlignment="Left" Margin="263,320,0,0" VerticalAlignment="Top"/>
             <Label x:Name="RecipePortionCount" Content="" HorizontalAlignment="Left" Margin="352,320,0,0" VerticalAlignment="Top"/>
             <Button x:Name="btn_main_edit_recipe" Content="Edit recipe" HorizontalAlignment="Left" Margin="157,361,0,0" VerticalAlignment="Top" Click="btn_main_edit_recipe_Click"/>
+            <Button x:Name="btn_main_settings" Content="Settings" HorizontalAlignment="Left" Margin="750,10,0,0" VerticalAlignment="Top" Click="btn_main_settings_Click"/>
         </Grid>
         <Grid x:Name="NewRecipe" Visibility="Hidden">
             <Button x:Name="btn_newrecipe_back" Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="NewRecipeBack_Click"/>

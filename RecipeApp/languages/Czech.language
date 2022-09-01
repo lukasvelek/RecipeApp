@@ -2,6 +2,7 @@
 btn_main_new_recipe=Novy recept
 btn_main_delete_recipe=Odstranit recept
 btn_main_edit_recipe=Upravit recept
+btn_main_settings=Nastaveni
 lbl_main_recipe_name=Jmeno receptu
 lbl_main_ingredients=Ingredience
 lbl_main_instructions=Postup
@@ -22,6 +23,7 @@ lbl_newrecipe_instructions=Instrukce
 lbl_newrecipe_ingredient_name=Jmeno
 lbl_newrecipe_ingredient_description=Popis
 lbl_newrecipe_ingredient_measurement=Mnozstvi
+btn_settings_save=Ulozit
 mu_pinch=Spetka
 mu_milliliters=Mililitr
 mu_liters=Litr

@@ -9,6 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="app.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="languages\Czech.language">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

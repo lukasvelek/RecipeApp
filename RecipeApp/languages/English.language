@@ -2,6 +2,7 @@
 btn_main_new_recipe=New recipe
 btn_main_delete_recipe=Delete recipe
 btn_main_edit_recipe=Edit recipe
+btn_main_settings=Settings
 lbl_main_recipe_name=Recipe name
 lbl_main_ingredients=Ingredients
 lbl_main_instructions=Instructions
@@ -22,6 +23,7 @@ lbl_newrecipe_instructions=Instructions
 lbl_newrecipe_ingredient_name=Ingredient name
 lbl_newrecipe_ingredient_description=Ingredient description
 lbl_newrecipe_ingredient_measurement=Ingredient measurement
+btn_settings_save=Save
 mu_pinch=Pinch
 mu_milliliters=Milliliter
 mu_liters=Liter
