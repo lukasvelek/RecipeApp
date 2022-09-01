@@ -32,11 +32,16 @@ namespace RecipeApp
             _settings = new SettingsWindow();
 
             backend = new RecipeAppBackend();
+            backend.logger.LogInfo("App started");
 
             backend.LoadLanguages();
+            backend.logger.LogInfo("Loaded languages");
             backend.LoadConfig();
+            backend.logger.LogInfo("Loaded config");
             backend.LoadUnits();
+            backend.logger.LogInfo("Loaded units");
             backend.LoadRecipes();
+            backend.logger.LogInfo("Loaded recipes");
 
             backend.AddGrid(Main);
             backend.AddGrid(NewRecipe);
@@ -369,6 +374,8 @@ namespace RecipeApp
                 btn_newrecipe_back.IsEnabled = true;
                 btn_newrecipe_save_recipe.IsEnabled = true;
                 btn_newrecipe_add_instruction.IsEnabled = true;
+
+                backend.logger.LogInfo("Saved ingredient");
                 
                 UpdateNewRecipe();
             }
@@ -480,6 +487,8 @@ namespace RecipeApp
 
             System.Threading.Thread.Sleep(1000);
 
+            backend.logger.LogInfo("Saved recipe");
+
             backend.DrawGrid(Main);
 
             LoadUI();
@@ -522,6 +531,7 @@ namespace RecipeApp
                 }
 
                 backend.DeleteRecipe(r);
+                backend.logger.LogInfo("Deleted recipe");
             }
         }
 
@@ -597,6 +607,8 @@ namespace RecipeApp
                 btn_newrecipe_back.IsEnabled = true;
                 btn_newrecipe_save_recipe.IsEnabled = true;
                 btn_newrecipe_add_ingredient.IsEnabled = true;
+
+                backend.logger.LogInfo("Instruction saved");
 
                 UpdateNewRecipe();
             }
@@ -674,6 +686,9 @@ namespace RecipeApp
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            backend.logger.LogInfo("Closing the app");
+            backend.logger.SaveLog();
+
             _settings.Close();
             _settings = null;
         }
