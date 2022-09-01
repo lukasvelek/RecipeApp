@@ -22,11 +22,15 @@ namespace RecipeApp
 
         public MeasurementUnits? mUnits;
 
+        public Logger logger;
+
         public RecipeAppBackend()
         {
             recipes = new List<Recipe>();
             grids = new List<Grid>();
             languages = new List<Language>();
+
+            logger = new Logger();
         }
 
         // GRID
@@ -47,6 +51,8 @@ namespace RecipeApp
             {
                 grids.Add(g);
             }
+
+            logger.LogInfo("Adding grid");
         }
 
         public void DrawGrid(Grid g)
@@ -62,6 +68,8 @@ namespace RecipeApp
                     currentGrid = g2;
                 }
             }
+
+            logger.LogInfo("Drawing grid");
         }
 
         public void HideGrid(Grid? g)
@@ -80,6 +88,8 @@ namespace RecipeApp
                     }
                 }
             }
+
+            logger.LogInfo("Hiding grid");
         }
 
         // CONFIG
@@ -151,6 +161,7 @@ namespace RecipeApp
                 foreach (var f in files)
                 {
                     languages.Add(new Language(f));
+                    logger.LogInfo("Loading language data from: '" + f + "'");
                 }
             }
 
