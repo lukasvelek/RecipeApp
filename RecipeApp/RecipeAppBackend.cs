@@ -20,7 +20,7 @@ namespace RecipeApp
 
         public Language? currentLanguage;
 
-        public MeasurementUnits mUnits;
+        public MeasurementUnits? mUnits;
 
         public RecipeAppBackend()
         {
@@ -130,6 +130,9 @@ namespace RecipeApp
                 case "btn_main_delete_recipe":
                     s = currentLanguage.BTN_MAIN_DELETE_RECIPE;
                     break;
+                case "btn_main_edit_recipe":
+                    s = currentLanguage.BTN_MAIN_EDIT_RECIPE;
+                    break;
                 case "lbl_main_recipe_name":
                     s = currentLanguage.LBL_MAIN_RECIPE_NAME;
                     break;
@@ -192,6 +195,11 @@ namespace RecipeApp
                     break;
             }
 
+            if (s == null)
+            {
+                s = "error";
+            }
+
             return s;
         }
 
@@ -231,7 +239,7 @@ namespace RecipeApp
 
                                 if (lineData.Split(',')[1] == "null")
                                 {
-                                    description = null;
+                                    description = "null";
                                 }
                                 else
                                 {
@@ -364,6 +372,18 @@ namespace RecipeApp
             }
         }
 
+        public void UpdateRecipe(Recipe r)
+        {
+            string path = "recipes/" + CreateFileNameFromRecipeName(r.Name) + ".recipe";
+
+            File.Delete(path);
+
+            if (!File.Exists(path))
+            {
+                SaveRecipe(r);
+            }
+        }
+
         public void SaveRecipe(Recipe r)
         {
             string rname = r.Name;
@@ -391,7 +411,7 @@ namespace RecipeApp
                     }
                 }
 
-                flinesl.Add("ingredients=" + ri.Name.ToLower() + "," + ri.Description.ToLower() + "," + ri.Measurement + "," + unit);
+                flinesl.Add("ingredients=" + ri.Name.ToLower() + "," + ri.Description?.ToLower() + "," + ri.Measurement + "," + unit);
             }
 
             foreach (string s in rins)
@@ -449,6 +469,8 @@ namespace RecipeApp
 
             return recipe;
         }
+
+        // GETTERS / SETTERS
 
         public List<Recipe> Recipes
         {

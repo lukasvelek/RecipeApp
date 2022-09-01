@@ -28,6 +28,25 @@ namespace RecipeApp
             }
         }
 
+        public void UpdateRecipe(string name, int portions, List<RecipeIngredient> ingredients, List<string> instructions)
+        {
+            this.name = name;
+            this.portionCount = portions;
+
+            if(ingredients != null)
+            {
+                this.ingredients.Clear();
+            }
+
+            if(instructions != null)
+            {
+                this.instructions.Clear();
+            }
+
+            this.ingredients = ingredients;
+            this.instructions = instructions;
+        }
+
         public string Name
         {
             get { return this.name; }

@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Recipe App" Height="450" Width="800" ResizeMode="CanMinimize">
     <Grid>
-        <Grid x:Name="Main" Visibility="Hidden">
+        <Grid x:Name="Main" Visibility="Visible">
             <ListBox x:Name="RecipeList" Margin="0,0,550,0" SelectionChanged="RecipeList_SelectionChanged" Height="356" VerticalAlignment="Top"/>
             <Label x:Name="lbl_main_recipe_name" Content="Recipe name:" HorizontalAlignment="Left" Margin="255,10,0,0" VerticalAlignment="Top"/>
             <Label x:Name="lbl_main_ingredients" Content="Ingredients:" HorizontalAlignment="Left" Margin="255,41,0,0" VerticalAlignment="Top"/>
@@ -19,8 +19,9 @@
             <Label x:Name="lbl_main_instructions" Content="Instructions:" HorizontalAlignment="Left" Margin="263,179,0,0" VerticalAlignment="Top"/>
             <Label x:Name="lbl_main_portion_count" Content="Portion count:" HorizontalAlignment="Left" Margin="263,320,0,0" VerticalAlignment="Top"/>
             <Label x:Name="RecipePortionCount" Content="" HorizontalAlignment="Left" Margin="352,320,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="btn_main_edit_recipe" Content="Edit recipe" HorizontalAlignment="Left" Margin="157,361,0,0" VerticalAlignment="Top" Click="btn_main_edit_recipe_Click"/>
         </Grid>
-        <Grid x:Name="NewRecipe" Visibility="Visible">
+        <Grid x:Name="NewRecipe" Visibility="Hidden">
             <Button x:Name="btn_newrecipe_back" Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="NewRecipeBack_Click"/>
             <Label x:Name="lbl_newrecipe_name" Content="Name:" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
             <TextBox x:Name="NewRecipeName" HorizontalAlignment="Left" Margin="59,35,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="26"/>

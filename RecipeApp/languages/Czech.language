@@ -1,6 +1,7 @@
 ﻿language_name=Czech
 btn_main_new_recipe=Novy recept
 btn_main_delete_recipe=Odstranit recept
+btn_main_edit_recipe=Upravit recept
 lbl_main_recipe_name=Jmeno receptu
 lbl_main_ingredients=Ingredience
 lbl_main_instructions=Postup

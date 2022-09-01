@@ -1,6 +1,7 @@
 ﻿language_name=English
 btn_main_new_recipe=New recipe
 btn_main_delete_recipe=Delete recipe
+btn_main_edit_recipe=Edit recipe
 lbl_main_recipe_name=Recipe name
 lbl_main_ingredients=Ingredients
 lbl_main_instructions=Instructions

@@ -4,41 +4,42 @@ namespace RecipeApp
 {
     public class Language
     {
-        public string Name;
+        public string? Name;
 
-        public string BTN_MAIN_NEW_RECIPE;
-        public string BTN_MAIN_DELETE_RECIPE;
-        public string LBL_MAIN_RECIPE_NAME;
-        public string LBL_MAIN_INGREDIENTS;
-        public string LBL_MAIN_INSTRUCTIONS;
-        public string LBL_MAIN_PORTION_COUNT;
+        public string? BTN_MAIN_NEW_RECIPE;
+        public string? BTN_MAIN_DELETE_RECIPE;
+        public string? BTN_MAIN_EDIT_RECIPE;
+        public string? LBL_MAIN_RECIPE_NAME;
+        public string? LBL_MAIN_INGREDIENTS;
+        public string? LBL_MAIN_INSTRUCTIONS;
+        public string? LBL_MAIN_PORTION_COUNT;
 
-        public string BTN_NEWRECIPE_BACK;
-        public string BTN_NEWRECIPE_SAVE_RECIPE;
-        public string BTN_NEWRECIPE_ADD_INSTRUCTION;
-        public string BTN_NEWRECIPE_DELETE_INSTRUCTION;
-        public string BTN_NEWRECIPE_EDIT_INSTRUCTION;
-        public string BTN_NEWRECIPE_SAVE_INSTRUCTION;
-        public string BTN_NEWRECIPE_ADD_INGREDIENT;
-        public string BTN_NEWRECIPE_DELETE_INGREDIENT;
-        public string BTN_NEWRECIPE_EDIT_INGREDIENT;
-        public string BTN_NEWRECIPE_SAVE_INGREDIENT;
-        public string LBL_NEWRECIPE_NAME;
-        public string LBL_NEWRECIPE_PORTIONS;
-        public string LBL_NEWRECIPE_INSTRUCTIONS;
-        public string LBL_NEWRECIPE_INGREDIENT_NAME;
-        public string LBL_NEWRECIPE_INGREDIENT_DESCRIPTION;
-        public string LBL_NEWRECIPE_INGREDIENT_MEASUREMENT;
+        public string? BTN_NEWRECIPE_BACK;
+        public string? BTN_NEWRECIPE_SAVE_RECIPE;
+        public string? BTN_NEWRECIPE_ADD_INSTRUCTION;
+        public string? BTN_NEWRECIPE_DELETE_INSTRUCTION;
+        public string? BTN_NEWRECIPE_EDIT_INSTRUCTION;
+        public string? BTN_NEWRECIPE_SAVE_INSTRUCTION;
+        public string? BTN_NEWRECIPE_ADD_INGREDIENT;
+        public string? BTN_NEWRECIPE_DELETE_INGREDIENT;
+        public string? BTN_NEWRECIPE_EDIT_INGREDIENT;
+        public string? BTN_NEWRECIPE_SAVE_INGREDIENT;
+        public string? LBL_NEWRECIPE_NAME;
+        public string? LBL_NEWRECIPE_PORTIONS;
+        public string? LBL_NEWRECIPE_INSTRUCTIONS;
+        public string? LBL_NEWRECIPE_INGREDIENT_NAME;
+        public string? LBL_NEWRECIPE_INGREDIENT_DESCRIPTION;
+        public string? LBL_NEWRECIPE_INGREDIENT_MEASUREMENT;
 
-        public string MU_PINCH;
-        public string MU_MILLILITERS;
-        public string MU_LITERS;
-        public string MU_GRAMS;
-        public string MU_KILOGRAMS;
-        public string MU_TBSP;
-        public string MU_TSP;
-        public string MU_CUPS;
-        public string MU_PIECE;
+        public string? MU_PINCH;
+        public string? MU_MILLILITERS;
+        public string? MU_LITERS;
+        public string? MU_GRAMS;
+        public string? MU_KILOGRAMS;
+        public string? MU_TBSP;
+        public string? MU_TSP;
+        public string? MU_CUPS;
+        public string? MU_PIECE;
 
         public Language(string filePath)
         {
@@ -71,6 +72,9 @@ namespace RecipeApp
                             break;
                         case "btn_main_delete_recipe":
                             BTN_MAIN_DELETE_RECIPE = data;
+                            break;
+                        case "btn_main_edit_recipe":
+                            BTN_MAIN_EDIT_RECIPE = data;
                             break;
                         case "lbl_main_recipe_name":
                             LBL_MAIN_RECIPE_NAME = data;
