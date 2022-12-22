@@ -14,6 +14,7 @@
 
         <Grid x:Name="RecipeList">
             <Button x:Name="RecipeList_Back" Content="Zpět" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="RecipeList_Back_Click"/>
+            <Button x:Name="RecipeList_NewRecipe" Content="Nový recept" HorizontalAlignment="Left" Margin="90,10,0,0" Width="125" Height="50" VerticalAlignment="Top"/>
             <ListBox x:Name="RecipeList_Recipes" Margin="10,65,564,20" SelectionChanged="RecipeList_Recipes_SelectionChanged"/>
             <Label Content="Název:" HorizontalAlignment="Left" Margin="241,65,0,0" VerticalAlignment="Top"/>
             <Label x:Name="RecipeList_RecipeName" Content="" HorizontalAlignment="Left" Margin="291,65,0,0" VerticalAlignment="Top"/>
@@ -23,7 +24,9 @@
             <Label x:Name="RecipeList_RecipeNote" Content="" HorizontalAlignment="Left" Margin="313,127,0,0" VerticalAlignment="Top"/>
             <Label Content="Přílohy:" HorizontalAlignment="Left" Margin="241,158,0,0" VerticalAlignment="Top"/>
             <ListBox x:Name="RecipeList_RecipeSideDishes" Margin="242,189,400,20"/>
-
+            <Button x:Name="RecipeList_EditRecipe" Content="Upravit" HorizontalAlignment="Left" Margin="405,377,0,0" Width="75" Height="37" VerticalAlignment="Top"/>
+            <Button x:Name="RecipeList_DeleteRecipe" Content="Odstranit" HorizontalAlignment="Left" Margin="485,377,0,0" Width="75" Height="37" VerticalAlignment="Top"/>
+            
         </Grid>
     </Grid>
 </Window>
