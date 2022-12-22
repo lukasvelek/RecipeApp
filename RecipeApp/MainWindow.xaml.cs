@@ -12,14 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace RecipeApp
 {
     public partial class MainWindow : Window
     {
-        public const string VERSION = "2.0";
+        private const string VERSION = "2.0";
+        private const string DATA_FILE = "recipes.dat";
 
         UIHandler uiHandler;
+        DataHandler dataHandler;
 
         public MainWindow()
         {
@@ -27,6 +30,7 @@ namespace RecipeApp
 
             // Object initialization
             uiHandler = new UIHandler();
+            dataHandler = new DataHandler();
 
 
             // Grid initialization
@@ -35,9 +39,16 @@ namespace RecipeApp
 
             uiHandler.HideAllGrids();
 
-            
-            // Data initialization
 
+            // Data initialization
+            if (File.Exists(DATA_FILE))
+            {
+                dataHandler.LoadRecipes(DATA_FILE);
+            }
+            else
+            {
+                File.Create(DATA_FILE);
+            }
 
 
             // Initial configuration
@@ -50,6 +61,21 @@ namespace RecipeApp
         private void RecipeList_Click(object sender, RoutedEventArgs e)
         {
             uiHandler.ShowGrid(RecipeList);
+        }
+
+        private void RecipeList_Back_Click(object sender, RoutedEventArgs e)
+        {
+            uiHandler.ShowGrid(RecipeMain);
+        }
+
+        private void RecipeList_Recipes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Recipe.Recipe r = (Recipe.Recipe)RecipeList_Recipes.SelectedItem;
+
+            if(r != null)
+            {
+                RecipeList_RecipeName.Content = r.Name;
+            }
         }
     }
 }

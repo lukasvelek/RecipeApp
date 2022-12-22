@@ -11,12 +11,10 @@ namespace RecipeApp
     public class DataHandler
     {
         public List<Recipe.Recipe> Recipes;
-        public List<SideDish> SideDishes;
 
         public DataHandler()
         {
             Recipes = new List<Recipe.Recipe>();
-            SideDishes = new List<SideDish>();
         }
 
         public void LoadRecipes(string file)
@@ -25,7 +23,7 @@ namespace RecipeApp
 
             foreach(string line in lines)
             {
-                // name-note\[ingredient]name-value-units;[ingredient];..\[sidedish]name;[sidedish];..
+                // name-note-servings\[ingredient]name-value-units;[ingredient];..\[sidedish]name;[sidedish];..
 
                 string[] parts = line.Split('\\');
 
@@ -35,6 +33,7 @@ namespace RecipeApp
 
                 string recipeName = recipeData.Split('-')[0];
                 string recipeNote = recipeData.Split('-')[1];
+                int recipeServings = Convert.ToInt32(recipeData.Split('-')[2]);
 
                 string[] sidedishDataSplit = sidedishData.Split(';');
                 
@@ -57,6 +56,8 @@ namespace RecipeApp
 
                     id.Add(new Ingredient(iname, ivalue, iunits));
                 }
+
+                Recipe.Recipe recipe = new Recipe.Recipe(recipeName, recipeNote, recipeServings, id, sd);
             }
         }
     }

@@ -13,8 +13,10 @@
         </Grid>
 
         <Grid x:Name="RecipeList">
-            <Button x:Name="RecipeList_Back" Content="Zpět" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Height="50"/>
-            <ListBox x:Name="RecipeList_Recipes" Margin="10,65,564,20"/>
+            <Button x:Name="RecipeList_Back" Content="Zpět" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="RecipeList_Back_Click"/>
+            <ListBox x:Name="RecipeList_Recipes" Margin="10,65,564,20" SelectionChanged="RecipeList_Recipes_SelectionChanged"/>
+            <Label Content="Název:" HorizontalAlignment="Left" Margin="241,65,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="RecipeList_RecipeName" Content="" HorizontalAlignment="Left" Margin="291,65,0,0" VerticalAlignment="Top"/>
         </Grid>
     </Grid>
 </Window>

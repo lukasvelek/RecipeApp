@@ -10,11 +10,13 @@ namespace RecipeApp.Recipe
     {
         public string Name { get; set; }
         public string Note { get; set; }
+
+        public int Servings { get; set; }
         
         public List<Ingredient> Ingredients { get; private set; }
         public List<SideDish> AvailableSideDish { get; private set; }
 
-        public Recipe(string name, string note, List<Ingredient>? ingredients = null, List<SideDish>? sideDish = null)
+        public Recipe(string name, string note, int servings, List<Ingredient>? ingredients = null, List<SideDish>? sideDish = null)
         {
             if(ingredients == null || ingredients.Count == 0)
             {
@@ -36,6 +38,7 @@ namespace RecipeApp.Recipe
 
             Name = name;
             Note = note;
+            Servings = servings;
         }
 
         public override string ToString()
