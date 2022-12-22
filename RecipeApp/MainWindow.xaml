@@ -17,6 +17,13 @@
             <ListBox x:Name="RecipeList_Recipes" Margin="10,65,564,20" SelectionChanged="RecipeList_Recipes_SelectionChanged"/>
             <Label Content="Název:" HorizontalAlignment="Left" Margin="241,65,0,0" VerticalAlignment="Top"/>
             <Label x:Name="RecipeList_RecipeName" Content="" HorizontalAlignment="Left" Margin="291,65,0,0" VerticalAlignment="Top"/>
+            <Label Content="Porce:" HorizontalAlignment="Left" Margin="241,96,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="RecipeList_RecipeServings" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="291,96,0,0"/>
+            <Label Content="Poznámka:" HorizontalAlignment="Left" Margin="241,127,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="RecipeList_RecipeNote" Content="" HorizontalAlignment="Left" Margin="313,127,0,0" VerticalAlignment="Top"/>
+            <Label Content="Přílohy:" HorizontalAlignment="Left" Margin="241,158,0,0" VerticalAlignment="Top"/>
+            <ListBox x:Name="RecipeList_RecipeSideDishes" Margin="242,189,400,20"/>
+
         </Grid>
     </Grid>
 </Window>

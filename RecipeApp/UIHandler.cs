@@ -42,16 +42,16 @@ namespace RecipeApp
 
         // END OF GRID MANAGEMENT
 
-        public void RecipeListFill(ListBox listBox, List<Ingredient> ingredients)
+        public void RecipeListFill(ListBox listBox, List<Recipe.Recipe> recipes)
         {
             if(listBox.Items.Count > 0)
             {
                 listBox.Items.Clear();
             }
 
-            foreach(Ingredient i in ingredients)
+            foreach(Recipe.Recipe r in recipes)
             {
-                listBox.Items.Add(i);
+                listBox.Items.Add(r);
             }
 
             listBox.SelectedIndex = 0;
