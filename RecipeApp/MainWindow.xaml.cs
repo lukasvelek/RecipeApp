@@ -75,16 +75,27 @@ namespace RecipeApp
             uiHandler.ShowGrid("ui_main_menu");
         }
 
-        private void RecipeList_Click(object sender, RoutedEventArgs e)
+        private void _RecipeList()
         {
-            uiHandler.ShowGrid("ui_recipe_list");
-
             if(RecipeList_Recipes.Items.Count > 0)
             {
                 RecipeList_Recipes.Items.Clear();
             }
 
             uiHandler.RecipeListFill(RecipeList_Recipes, dataHandler.Recipes);
+        }
+
+        private void _RecipeNew()
+        {
+            RecipeNew_RecipeServingsSlider.Value = 1;
+            RecipeNew_RecipeServings.Content = "1";
+        }
+
+        private void RecipeList_Click(object sender, RoutedEventArgs e)
+        {
+            uiHandler.ShowGrid("ui_recipe_list");
+
+            _RecipeList();
         }
 
         private void RecipeList_Back_Click(object sender, RoutedEventArgs e)
@@ -121,6 +132,26 @@ namespace RecipeApp
         private void RecipeList_NewRecipe_Click(object sender, RoutedEventArgs e)
         {
             uiHandler.ShowGrid("ui_recipe_new");
+
+            _RecipeNew();
+        }
+
+        private void RecipeNew_Back_Click(object sender, RoutedEventArgs e)
+        {
+            uiHandler.ShowGrid("ui_recipe_list");
+
+            _RecipeList();
+        }
+
+        private void RecipeNew_RecipeServingsSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if(RecipeNew_RecipeServingsSlider.Value >= 1 && RecipeNew_RecipeServingsSlider.Value <= 8)
+            {
+                if(RecipeNew_RecipeServings != null)
+                {
+                    RecipeNew_RecipeServings.Content = Convert.ToInt32(RecipeNew_RecipeServingsSlider.Value);
+                }
+            }
         }
     }
 }

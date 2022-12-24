@@ -31,7 +31,16 @@
         </Grid>
 
         <Grid x:Name="RecipeNew" Visibility="Visible">
-            
+            <Button x:Name="RecipeNew_Back" Content="Zpět" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="RecipeNew_Back_Click"/>
+            <Label Content="Název:" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="RecipeNew_RecipeName" HorizontalAlignment="Left" Margin="60,65,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="175" Height="25"/>
+            <Label Content="Poznámka:" HorizontalAlignment="Left" Margin="10,96,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="RecipeNew_RecipeNote" HorizontalAlignment="Left" Margin="82,95,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="350" Height="25"/>
+            <Label Content="Porce:" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top"/>
+            <Slider x:Name="RecipeNew_RecipeServingsSlider" HorizontalAlignment="Left" Margin="115,135,0,0" VerticalAlignment="Top" Width="120" Minimum="1" Maximum="8" ValueChanged="RecipeNew_RecipeServingsSlider_ValueChanged" SmallChange="1" Value="-1" TickPlacement="BottomRight" Cursor=""/>
+            <Label x:Name="RecipeNew_RecipeServings" Content="" HorizontalAlignment="Left" Margin="57,127,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="RecipeNew_Save" Content="Uložit" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Height="50"/>
+
         </Grid>
     </Grid>
 </Window>
