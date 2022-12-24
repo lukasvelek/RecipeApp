@@ -41,21 +41,21 @@ namespace RecipeApp.Recipe
             Servings = servings;
         }
 
-        public override string ToString()
+        public string GetString()
         {
-            string toReturn = Name+"-"+Note+";";
+            string toReturn = Name + "-" + Note + ";";
 
             int x = 0;
 
-            foreach(Ingredient i in Ingredients)
+            foreach (Ingredient i in Ingredients)
             {
-                if((x+1) == Ingredients.Count)
+                if ((x + 1) == Ingredients.Count)
                 {
-                    toReturn += i.ToString();
+                    toReturn += i.GetString();
                 }
                 else
                 {
-                    toReturn += i.ToString() + "\\";
+                    toReturn += i.GetString() + "\\";
                 }
 
                 x++;
@@ -63,21 +63,26 @@ namespace RecipeApp.Recipe
 
             int y = 0;
 
-            foreach(SideDish sd in AvailableSideDish)
+            foreach (SideDish sd in AvailableSideDish)
             {
-                if((y+1) == AvailableSideDish.Count)
+                if ((y + 1) == AvailableSideDish.Count)
                 {
-                    toReturn += sd.ToString();
+                    toReturn += sd.GetString();
                 }
                 else
                 {
-                    toReturn += sd.ToString() + "\\";
+                    toReturn += sd.GetString() + "\\";
                 }
 
                 y++;
             }
 
             return toReturn;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

@@ -19,9 +19,14 @@ namespace RecipeApp.Recipe
             Units = units;
         }
 
-        public override string ToString()
+        public string GetString()
         {
             return Name + "-" + Value + "-" + Units;
+        }
+
+        public override string ToString()
+        {
+            return Name + " - " + Value + Units;
         }
     }
 }

@@ -11,33 +11,50 @@ namespace RecipeApp
 {
     public class UIHandler
     {
-        public List<Grid> GridList;
+        public List<UI.GridElement> GridList;
 
         public UIHandler()
         {
-            GridList = new List<Grid>();
+            GridList = new List<UI.GridElement>();
+        }
+
+        public void AddGrid(Grid g, string name)
+        {
+            GridList.Add(new UI.GridElement(g, name));
         }
 
         // GRID MANAGEMENT
 
         public void HideAllGrids()
         {
-            foreach(Grid g in GridList)
+            foreach(UI.GridElement ge in GridList)
             {
-                HideGrid(g);
+                HideGrid(ge.Name);
             }
         }
 
-        public void HideGrid(Grid grid)
+        public void HideGrid(string name)
         {
-            grid.Visibility = Visibility.Hidden;
+            foreach(UI.GridElement ge in GridList)
+            {
+                if(ge.Name == name)
+                {
+                    ge.Grid.Visibility = Visibility.Hidden;
+                }
+            }
         }
 
-        public void ShowGrid(Grid grid)
+        public void ShowGrid(string name)
         {
             HideAllGrids();
 
-            grid.Visibility = Visibility.Visible;
+            foreach(UI.GridElement ge in GridList)
+            {
+                if(ge.Name == name)
+                {
+                    ge.Grid.Visibility = Visibility.Visible;
+                }
+            }
         }
 
         // END OF GRID MANAGEMENT

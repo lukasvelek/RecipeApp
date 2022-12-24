@@ -15,6 +15,11 @@ namespace RecipeApp.Recipe
             Name = name;
         }
 
+        public string GetString()
+        {
+            return Name;
+        }
+
         public override string ToString()
         {
             return Name;

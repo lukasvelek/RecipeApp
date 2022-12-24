@@ -36,8 +36,9 @@ namespace RecipeApp
 
 
             // Grid initialization
-            uiHandler.GridList.Add(RecipeMain);
-            uiHandler.GridList.Add(RecipeList);
+            uiHandler.AddGrid(RecipeMain, "ui_main_menu");
+            uiHandler.AddGrid(RecipeList, "ui_recipe_list");
+            uiHandler.AddGrid(RecipeNew, "ui_recipe_new");
 
             uiHandler.HideAllGrids();
 
@@ -55,10 +56,12 @@ namespace RecipeApp
             List<Ingredient> li = new List<Ingredient>();
 
             li.Add(new Ingredient("Ing Test", 3, "g"));
+            li.Add(new Ingredient("Ing Test 2", 2, "ml"));
 
             List<SideDish> lsd = new List<SideDish>();
 
             lsd.Add(new SideDish("Side Test"));
+            lsd.Add(new SideDish("Side Test 2"));
 
             Recipe.Recipe r = new Recipe.Recipe("Test", "Test", 3, li, lsd);
 
@@ -69,12 +72,12 @@ namespace RecipeApp
             Window.Title = "Recepty " + VERSION;
             Window.ResizeMode = ResizeMode.CanMinimize;
 
-            uiHandler.ShowGrid(RecipeMain);
+            uiHandler.ShowGrid("ui_main_menu");
         }
 
         private void RecipeList_Click(object sender, RoutedEventArgs e)
         {
-            uiHandler.ShowGrid(RecipeList);
+            uiHandler.ShowGrid("ui_recipe_list");
 
             if(RecipeList_Recipes.Items.Count > 0)
             {
@@ -86,7 +89,7 @@ namespace RecipeApp
 
         private void RecipeList_Back_Click(object sender, RoutedEventArgs e)
         {
-            uiHandler.ShowGrid(RecipeMain);
+            uiHandler.ShowGrid("ui_main_menu");
         }
 
         private void RecipeList_Recipes_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -105,7 +108,19 @@ namespace RecipeApp
                 {
                     RecipeList_RecipeSideDishes.Items.Add(sd);
                 }
+
+                RecipeList_RecipeIngredients.Items.Clear();
+
+                foreach(Ingredient i in r.Ingredients)
+                {
+                    RecipeList_RecipeIngredients.Items.Add(i);
+                }
             }
+        }
+
+        private void RecipeList_NewRecipe_Click(object sender, RoutedEventArgs e)
+        {
+            uiHandler.ShowGrid("ui_recipe_new");
         }
     }
 }
