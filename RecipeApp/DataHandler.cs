@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 
 namespace RecipeApp
 {
@@ -12,6 +13,40 @@ namespace RecipeApp
         public DataHandler()
         {
             Recipes = new List<Recipe.Recipe>();
+        }
+
+        public void LoadRecipes()
+        {
+            string recipesZip = "recipes.zip";
+
+            List<string> recipeNames = new List<string>();
+
+            using(ZipArchive archive = ZipFile.Open(recipesZip, ZipArchiveMode.Read))
+            {
+                ZipArchiveEntry? entry = archive.GetEntry("recipes.txt");
+
+                using(StreamReader reader = new StreamReader(entry.Open()))
+                {
+                    if(reader.ReadLine() != null)
+                    {
+                        recipeNames.Add(reader.ReadLine());
+                    }
+                }
+
+                foreach(string rnf in recipeNames)
+                {
+                    entry = archive.GetEntry(rnf + ".txt");
+
+                    using(StreamReader reader = new StreamReader(entry.Open()))
+                    {
+
+                    }
+
+                    entry = archive.GetEntry(rnf + "_ingredients.txt");
+
+                    entry = archive.GetEntry(rnf + "_sidedishes.txt");
+                }
+            }
         }
 
         public void LoadRecipes(string file)
