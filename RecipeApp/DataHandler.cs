@@ -1,9 +1,6 @@
 ﻿using RecipeApp.Recipe;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace RecipeApp
@@ -21,7 +18,7 @@ namespace RecipeApp
         {
             string[] lines = File.ReadAllLines(file);
 
-            foreach(string line in lines)
+            foreach (string line in lines)
             {
                 // name-note-servings\[ingredient]name-value-units;[ingredient];..\[sidedish]name;[sidedish];..
 
@@ -36,10 +33,10 @@ namespace RecipeApp
                 int recipeServings = Convert.ToInt32(recipeData.Split('-')[2]);
 
                 string[] sidedishDataSplit = sidedishData.Split(';');
-                
+
                 List<SideDish> sd = new List<SideDish>();
 
-                foreach(string sdd in sidedishDataSplit)
+                foreach (string sdd in sidedishDataSplit)
                 {
                     sd.Add(new SideDish(sdd));
                 }
@@ -48,7 +45,7 @@ namespace RecipeApp
 
                 List<Ingredient> id = new List<Ingredient>();
 
-                foreach(string idd in ingredientDataSplit)
+                foreach (string idd in ingredientDataSplit)
                 {
                     string iname = idd.Split('-')[0];
                     int ivalue = Convert.ToInt32(idd.Split('-')[1]);

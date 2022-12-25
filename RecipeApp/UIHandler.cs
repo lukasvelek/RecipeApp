@@ -1,11 +1,6 @@
-﻿using RecipeApp.Recipe;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace RecipeApp
 {
@@ -27,7 +22,7 @@ namespace RecipeApp
 
         public void HideAllGrids()
         {
-            foreach(UI.GridElement ge in GridList)
+            foreach (UI.GridElement ge in GridList)
             {
                 HideGrid(ge.Name);
             }
@@ -35,9 +30,9 @@ namespace RecipeApp
 
         public void HideGrid(string name)
         {
-            foreach(UI.GridElement ge in GridList)
+            foreach (UI.GridElement ge in GridList)
             {
-                if(ge.Name == name)
+                if (ge.Name == name)
                 {
                     ge.Grid.Visibility = Visibility.Hidden;
                 }
@@ -48,9 +43,9 @@ namespace RecipeApp
         {
             HideAllGrids();
 
-            foreach(UI.GridElement ge in GridList)
+            foreach (UI.GridElement ge in GridList)
             {
-                if(ge.Name == name)
+                if (ge.Name == name)
                 {
                     ge.Grid.Visibility = Visibility.Visible;
                 }
@@ -61,12 +56,12 @@ namespace RecipeApp
 
         public void RecipeListFill(ListBox listBox, List<Recipe.Recipe> recipes)
         {
-            if(listBox.Items.Count > 0)
+            if (listBox.Items.Count > 0)
             {
                 listBox.Items.Clear();
             }
 
-            foreach(Recipe.Recipe r in recipes)
+            foreach (Recipe.Recipe r in recipes)
             {
                 listBox.Items.Add(r);
             }

@@ -120,11 +120,6 @@ namespace RecipeApp
             RecipeNew_SideDishList_NewSideDish.IsEnabled = true;
         }
 
-        private void _RecipeNewClose()
-        {
-
-        }
-
         private void RecipeList_Click(object sender, RoutedEventArgs e)
         {
             uiHandler.ShowGrid("ui_recipe_list");
