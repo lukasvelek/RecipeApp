@@ -20,7 +20,6 @@ namespace RecipeApp
     public partial class MainWindow : Window
     {
         private const string VERSION = "2.0";
-        private const string DATA_FILE = "recipes.dat";
 
         UIHandler uiHandler;
         DataHandler dataHandler;
@@ -50,14 +49,7 @@ namespace RecipeApp
 
 
             // Data initialization
-            if (File.Exists(DATA_FILE))
-            {
-                dataHandler.LoadRecipes(DATA_FILE);
-            }
-            else
-            {
-                File.Create(DATA_FILE);
-            }
+            dataHandler.LoadRecipes();
 
             List<Ingredient> li = new List<Ingredient>();
 
@@ -438,6 +430,11 @@ namespace RecipeApp
 
                 _RecipeList();
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            dataHandler.SaveRecipes();
         }
     }
 }

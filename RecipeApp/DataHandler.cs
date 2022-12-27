@@ -1,13 +1,19 @@
 ﻿using RecipeApp.Recipe;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.IO;
 using System.IO.Compression;
+using System.Security.Cryptography;
+using System.Windows.Documents;
+using System.Windows.Shapes;
 
 namespace RecipeApp
 {
     public class DataHandler
     {
+        private const string RECIPES_ZIP = "recipes.zip";
+
         public List<Recipe.Recipe> Recipes;
 
         public DataHandler()
@@ -15,81 +21,186 @@ namespace RecipeApp
             Recipes = new List<Recipe.Recipe>();
         }
 
-        public void LoadRecipes()
+        public void SaveRecipes()
         {
-            string recipesZip = "recipes.zip";
+            List<string> recipeNamesZip = new List<string>();
 
-            List<string> recipeNames = new List<string>();
-
-            using(ZipArchive archive = ZipFile.Open(recipesZip, ZipArchiveMode.Read))
+            using(ZipArchive archive = ZipFile.OpenRead(RECIPES_ZIP))
             {
-                ZipArchiveEntry? entry = archive.GetEntry("recipes.txt");
-
-                using(StreamReader reader = new StreamReader(entry.Open()))
+                foreach(ZipArchiveEntry e in archive.Entries)
                 {
-                    if(reader.ReadLine() != null)
+                    if(e.Name == "recipes.txt")
                     {
-                        recipeNames.Add(reader.ReadLine());
+                        using(StreamReader sr = new StreamReader(e.Open()))
+                        {
+                            string line = "";
+
+                            recipeNamesZip.Add(line);
+                        }
                     }
                 }
+            }
 
-                foreach(string rnf in recipeNames)
+            foreach (Recipe.Recipe r in Recipes)
+            {
+                foreach (string rnz in recipeNamesZip)
                 {
-                    entry = archive.GetEntry(rnf + ".txt");
-
-                    using(StreamReader reader = new StreamReader(entry.Open()))
+                    if (r.Name == rnz)
                     {
 
                     }
+                    else
+                    {
+                        using (ZipArchive archive = ZipFile.Open(RECIPES_ZIP, ZipArchiveMode.Update))
+                        {
+                            foreach(ZipArchiveEntry e in archive.Entries)
+                            {
+                                if(e.Name == "recipes.txt")
+                                {
+                                    using (StreamWriter writer = new StreamWriter(e.Name, false))
+                                    {
+                                        writer.WriteLine(r.Name);
+                                    }
 
-                    entry = archive.GetEntry(rnf + "_ingredients.txt");
+                                    break;
+                                }
+                            }
 
-                    entry = archive.GetEntry(rnf + "_sidedishes.txt");
+                            ZipArchiveEntry ingredients = archive.CreateEntry(r.Name + "_ingredients.txt");
+
+                            using(StreamWriter writer = new StreamWriter(ingredients.Open()))
+                            {
+                                foreach(Ingredient i in r.Ingredients)
+                                {
+                                    string iName = i.Name;
+                                    string iValue = i.Value.ToString();
+                                    string iUnit = i.Units;
+
+                                    writer.WriteLine(iName + "-" + iValue + "-" + iUnit);
+                                }
+                            }
+
+                            ZipArchiveEntry sideDish = archive.CreateEntry(r.Name + "_sidedishes.txt");
+
+                            using(StreamWriter writer = new StreamWriter(sideDish.Open()))
+                            {
+                                foreach(SideDish sd in r.AvailableSideDish)
+                                {
+                                    string sdName = sd.Name;
+
+                                    writer.WriteLine(sdName);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        public void LoadRecipes(string file)
+        public void LoadRecipes()
         {
-            string[] lines = File.ReadAllLines(file);
-
-            foreach (string line in lines)
+            if (!File.Exists(RECIPES_ZIP))
             {
-                // name-note-servings\[ingredient]name-value-units;[ingredient];..\[sidedish]name;[sidedish];..
+                File.Create(RECIPES_ZIP);
+            }
+            else
+            {
+                List<string> recipeNames = new List<string>();
 
-                string[] parts = line.Split('\\');
-
-                string recipeData = parts[0];
-                string ingredientData = parts[1];
-                string sidedishData = parts[2];
-
-                string recipeName = recipeData.Split('-')[0];
-                string recipeNote = recipeData.Split('-')[1];
-                int recipeServings = Convert.ToInt32(recipeData.Split('-')[2]);
-
-                string[] sidedishDataSplit = sidedishData.Split(';');
-
-                List<SideDish> sd = new List<SideDish>();
-
-                foreach (string sdd in sidedishDataSplit)
+                using (ZipArchive archive = ZipFile.OpenRead(RECIPES_ZIP))
                 {
-                    sd.Add(new SideDish(sdd));
+                    foreach (ZipArchiveEntry e in archive.Entries)
+                    {
+                        if (e.Name == "recipes.txt")
+                        {
+                            using (StreamReader sr = new StreamReader(e.Open()))
+                            {
+                                string line = "";
+
+                                while ((line = sr.ReadLine()) != null)
+                                {
+                                    recipeNames.Add(line);
+                                }
+                            }
+                        }
+                    }
+
+                    foreach(string rn in recipeNames)
+                    {
+                        string recipeName = "";
+                        string recipeNote = "";
+                        string recipeServings = 0;
+
+                        List<string> ingredients = new List<string>();
+                        List<string> sideDishes = new List<string>();
+
+                        foreach(ZipArchiveEntry e in archive.Entries)
+                        {
+                            if(e.Name == (rn + ".txt"))
+                            {
+                                using(StreamReader sr = new StreamReader(e.Open()))
+                                {
+                                    string line = "";
+
+                                    while((line = sr.ReadLine()) != null)
+                                    {
+                                        string paramName = line.Split('=')[0];
+                                        string paramValue = line.Split('=')[1];
+
+                                        switch (paramName)
+                                        {
+                                            case "name":
+                                                recipeName = paramValue;
+                                                break;
+
+                                            case "servings":
+                                                recipeServings = paramValue;
+                                                break;
+
+                                            case "note":
+                                                recipeNote = paramValue;
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+                            else if(e.Name == (rn + "_ingredients.txt"))
+                            {
+                                using (StreamReader sr = new StreamReader(e.Open()))
+                                {
+                                    string line = "";
+
+                                    while ((line = sr.ReadLine()) != null)
+                                    {
+                                        string iName = line.Split('-')[0];
+                                        int iServings = Convert.ToInt32(line.Split('-')[1]);
+                                        string iUnit = line.Split('-')[2];
+
+                                        ingredients.Add(iName + "-" + iServings + "-" + iUnit);
+                                    }
+                                }
+                            }
+                            else if(e.Name == (rn + "_sidedishes.txt"))
+                            {
+                                using (StreamReader sr = new StreamReader(e.Open()))
+                                {
+                                    string line = "";
+
+                                    while ((line = sr.ReadLine()) != null)
+                                    {
+                                        string sdName = line;
+
+                                        sideDishes.Add(sdName);
+                                    }
+                                }
+                            }
+                        }
+
+                        RawRecipe rr = new RawRecipe(recipeName, recipeNote, recipeServings, ingredients, sideDishes);
+
+                        Recipes.Add(rr.GetRecipe());
+                    }
                 }
-
-                string[] ingredientDataSplit = ingredientData.Split(';');
-
-                List<Ingredient> id = new List<Ingredient>();
-
-                foreach (string idd in ingredientDataSplit)
-                {
-                    string iname = idd.Split('-')[0];
-                    int ivalue = Convert.ToInt32(idd.Split('-')[1]);
-                    string iunits = idd.Split('-')[2];
-
-                    id.Add(new Ingredient(iname, ivalue, iunits));
-                }
-
-                Recipe.Recipe recipe = new Recipe.Recipe(recipeName, recipeNote, recipeServings, id, sd);
             }
         }
     }
