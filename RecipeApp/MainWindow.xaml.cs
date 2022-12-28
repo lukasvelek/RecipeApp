@@ -67,6 +67,23 @@ namespace RecipeApp
             }
 
             uiHandler.RecipeListFill(RecipeList_Recipes, dataHandler.Recipes);
+
+            if(RecipeList_Recipes.SelectedIndex >= 0)
+            {
+                RecipeList_DeleteRecipe.IsEnabled = true;
+                RecipeList_EditRecipe.IsEnabled = true;
+            }
+            else
+            {
+                RecipeList_DeleteRecipe.IsEnabled = false;
+                RecipeList_EditRecipe.IsEnabled = false;
+
+                RecipeList_RecipeName.Content = "";
+                RecipeList_RecipeNote.Content = "";
+                RecipeList_RecipeServings.Content = "";
+                RecipeList_RecipeIngredients.Items.Clear();
+                RecipeList_RecipeSideDishes.Items.Clear();
+            }
         }
 
         private void _RecipeNew()
@@ -421,6 +438,20 @@ namespace RecipeApp
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             dataHandler.SaveRecipes();
+        }
+
+        private void RecipeList_DeleteRecipe_Click(object sender, RoutedEventArgs e)
+        {
+            if(RecipeList_Recipes.SelectedIndex >= 0)
+            {
+                int index = RecipeList_Recipes.SelectedIndex;
+                Recipe.Recipe r = (Recipe.Recipe)RecipeList_Recipes.SelectedItem;
+
+                RecipeList_Recipes.Items.RemoveAt(index);
+                dataHandler.Recipes.Remove(r);
+
+                _RecipeList();
+            }
         }
     }
 }
