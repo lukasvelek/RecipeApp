@@ -51,20 +51,6 @@ namespace RecipeApp
             // Data initialization
             dataHandler.LoadRecipes();
 
-            List<Ingredient> li = new List<Ingredient>();
-
-            li.Add(new Ingredient("Ing Test", 3, "g"));
-            li.Add(new Ingredient("Ing Test 2", 2, "ml"));
-
-            List<SideDish> lsd = new List<SideDish>();
-
-            lsd.Add(new SideDish("Side Test"));
-            lsd.Add(new SideDish("Side Test 2"));
-
-            Recipe.Recipe r = new Recipe.Recipe("Test", "Test", 3, li, lsd);
-
-            dataHandler.Recipes.Add(r);
-
 
             // Initial configuration
             Window.Title = "Recepty " + VERSION;

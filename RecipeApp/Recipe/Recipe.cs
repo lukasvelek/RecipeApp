@@ -37,6 +37,26 @@ namespace RecipeApp.Recipe
             Servings = servings;
         }
 
+        public RawRecipe GetRawRecipe()
+        {
+            List<string> ingredients = new List<string>();
+            List<string> sideDishes = new List<string>();
+
+            foreach (Ingredient i in Ingredients)
+            {
+                ingredients.Add(i.Name + "-" + i.Value.ToString() + "-" + i.Units);
+            }
+
+            foreach (SideDish sd in AvailableSideDish)
+            {
+                sideDishes.Add(sd.Name);
+            }
+
+            RawRecipe rr = new RawRecipe(Name, Note, Servings.ToString(), ingredients, sideDishes);
+
+            return rr;
+        }
+
         public string GetString()
         {
             string toReturn = Name + "-" + Note + ";";

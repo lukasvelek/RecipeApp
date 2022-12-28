@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.Xml;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RecipeApp.Recipe
 {
@@ -22,7 +18,7 @@ namespace RecipeApp.Recipe
             Note = note;
             Servings = servings;
 
-            if(ingredients != null)
+            if (ingredients != null)
             {
                 Ingredients = ingredients;
             }
@@ -31,7 +27,7 @@ namespace RecipeApp.Recipe
                 Ingredients = new List<string>();
             }
 
-            if(sideDishes != null)
+            if (sideDishes != null)
             {
                 SideDishes = sideDishes;
             }
@@ -46,7 +42,7 @@ namespace RecipeApp.Recipe
             List<Ingredient> ingredients = new List<Ingredient>();
             List<SideDish> sideDishes = new List<SideDish>();
 
-            foreach(string i in Ingredients)
+            foreach (string i in Ingredients)
             {
                 string name = i.Split('-')[0];
                 int value = Convert.ToInt32(i.Split('-')[1]);
@@ -55,7 +51,7 @@ namespace RecipeApp.Recipe
                 ingredients.Add(new Ingredient(name, value, unit));
             }
 
-            foreach(string s in SideDishes)
+            foreach (string s in SideDishes)
             {
                 string name = s;
 
