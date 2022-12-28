@@ -1,53 +1,62 @@
-﻿<Window x:Class="RecipeApp.MainWindow"
+﻿<Window x:Name="Window"
+        x:Class="RecipeApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RecipeApp"
         mc:Ignorable="d"
-        Title="Recipe App" Height="450" Width="800" ResizeMode="CanMinimize" Closed="Window_Closed">
+        Title="Recepty" Height="600" Width="800" Closing="Window_Closing">
     <Grid>
-        <Grid x:Name="Main" Visibility="Visible">
-            <ListBox x:Name="RecipeList" Margin="0,0,550,0" SelectionChanged="RecipeList_SelectionChanged" Height="356" VerticalAlignment="Top"/>
-            <Label x:Name="lbl_main_recipe_name" Content="Recipe name:" HorizontalAlignment="Left" Margin="255,10,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="lbl_main_ingredients" Content="Ingredients:" HorizontalAlignment="Left" Margin="255,41,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="RecipeName" Content="" HorizontalAlignment="Left" Margin="340,10,0,0" VerticalAlignment="Top"/>
-            <ListBox x:Name="RecipeIngredientsList" Margin="340,41,21,260"/>
-            <Button x:Name="btn_main_new_recipe" Content="New recipe" HorizontalAlignment="Left" Margin="10,361,0,0" VerticalAlignment="Top" Click="NewRecipeBtn_Click"/>
-            <Button x:Name="btn_main_delete_recipe" Content="Delete recipe" HorizontalAlignment="Left" Margin="78,361,0,0" VerticalAlignment="Top" Click="DeleteRecipeBtn_Click"/>
-            <ListBox x:Name="RecipeInstructionsList" Margin="340,179,21,119"/>
-            <Label x:Name="lbl_main_instructions" Content="Instructions:" HorizontalAlignment="Left" Margin="263,179,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="lbl_main_portion_count" Content="Portion count:" HorizontalAlignment="Left" Margin="263,320,0,0" VerticalAlignment="Top"/>
-            <Label x:Name="RecipePortionCount" Content="" HorizontalAlignment="Left" Margin="352,320,0,0" VerticalAlignment="Top"/>
-            <Button x:Name="btn_main_edit_recipe" Content="Edit recipe" HorizontalAlignment="Left" Margin="157,361,0,0" VerticalAlignment="Top" Click="btn_main_edit_recipe_Click"/>
-            <Button x:Name="btn_main_settings" Content="Settings" HorizontalAlignment="Left" Margin="750,10,0,0" VerticalAlignment="Top" Click="btn_main_settings_Click"/>
+        <Grid x:Name="RecipeMain" Visibility="Hidden">
+            <Button x:Name="OpenRecipeList" Content="Spravovat recepty" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="150" Height="50" Click="RecipeList_Click"/>
         </Grid>
-        <Grid x:Name="NewRecipe" Visibility="Hidden">
-            <Button x:Name="btn_newrecipe_back" Content="Back" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="NewRecipeBack_Click"/>
-            <Label x:Name="lbl_newrecipe_name" Content="Name:" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="NewRecipeName" HorizontalAlignment="Left" Margin="59,35,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="26"/>
-            <ListBox x:Name="NewRecipeIngredientsList" Margin="570,10,10,273" SelectionChanged="NewRecipeIngredientsList_SelectionChanged"/>
-            <Label x:Name="lbl_newrecipe_ingredient_name" Content="Ingredient name:" HorizontalAlignment="Left" Margin="487,166,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="NewRecipeIngredientName" HorizontalAlignment="Left" Margin="594,166,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="196" Height="26"/>
-            <Label x:Name="lbl_newrecipe_ingredient_description" Content="Ingredient description:" HorizontalAlignment="Left" Margin="487,202,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="NewRecipeIngredientDescription" HorizontalAlignment="Left" Margin="625,202,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="165" Height="95"/>
-            <Label x:Name="lbl_newrecipe_ingredient_measurement" Content="Ingredient measurement:" HorizontalAlignment="Left" Margin="487,304,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="NewRecipeIngredientMeasurement" HorizontalAlignment="Left" Margin="635,304,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="73" Height="26"/>
-            <ComboBox x:Name="NewRecipeIngredientUnit" HorizontalAlignment="Left" Margin="713,308,0,0" VerticalAlignment="Top" Width="77"/>
-            <Button x:Name="btn_newrecipe_edit_ingredient" Content="Edit ingredient" HorizontalAlignment="Left" Margin="483,38,0,0" VerticalAlignment="Top" Click="NewRecipeEditIngredient_Click"/>
-            <Button x:Name="btn_newrecipe_add_ingredient" Content="Add ingredient" HorizontalAlignment="Left" Margin="482,13,0,0" VerticalAlignment="Top" Click="NewRecipeAddIngredient_Click"/>
-            <Button x:Name="btn_newrecipe_delete_ingredient" Content="Delete ingredient" HorizontalAlignment="Left" Margin="473,88,0,0" VerticalAlignment="Top" Click="NewRecipeDeleteIngredient_Click"/>
-            <Button x:Name="btn_newrecipe_save_ingredient" Content="Save ingredient" HorizontalAlignment="Left" Margin="483,63,0,0" VerticalAlignment="Top" Click="NewRecipeSaveIngredient_Click"/>
-            <Button x:Name="btn_newrecipe_save_recipe" Content="Save recipe" HorizontalAlignment="Left" Margin="44,10,0,0" VerticalAlignment="Top" Click="NewRecipeSaveRecipe_Click"/>
-            <ListBox x:Name="NewRecipeInstructionsList" Margin="10,66,593,71" SelectionChanged="NewRecipeInstructionsList_SelectionChanged"/>
-            <Label x:Name="lbl_newrecipe_instructions" Content="Instructions:" HorizontalAlignment="Left" Margin="212,63,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="NewRecipeInstructionText" HorizontalAlignment="Left" Margin="212,94,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="256" Height="98"/>
-            <Button x:Name="btn_newrecipe_add_instruction" Content="Add instruction" HorizontalAlignment="Left" Margin="212,197,0,0" VerticalAlignment="Top" Click="NewRecipeAddInstruction_Click"/>
-            <Button x:Name="btn_newrecipe_edit_instruction" Content="Edit instruction" HorizontalAlignment="Left" Margin="212,222,0,0" VerticalAlignment="Top" Click="NewRecipeEditInstruction_Click"/>
-            <Button x:Name="btn_newrecipe_save_instruction" Content="Save instruction" HorizontalAlignment="Left" Margin="212,247,0,0" VerticalAlignment="Top" Click="NewRecipeSaveInstruction_Click"/>
-            <Button x:Name="btn_newrecipe_delete_instruction" Content="Delete instruction" HorizontalAlignment="Left" Margin="212,272,0,0" VerticalAlignment="Top" Click="NewRecipeDeleteInstruction_Click"/>
-            <Label x:Name="lbl_newrecipe_portions" Content="Portions:" HorizontalAlignment="Left" Margin="184,37,0,0" VerticalAlignment="Top"/>
-            <TextBox x:Name="NewRecipePortionCount" HorizontalAlignment="Left" Margin="245,35,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="28"/>
+
+        <Grid x:Name="RecipeList" Visibility="Visible">
+            <Button x:Name="RecipeList_Back" Content="Zpět" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="RecipeList_Back_Click"/>
+            <Button x:Name="RecipeList_NewRecipe" Content="Nový recept" HorizontalAlignment="Left" Margin="90,10,0,0" Width="125" Height="50" VerticalAlignment="Top" Click="RecipeList_NewRecipe_Click"/>
+            <ListBox x:Name="RecipeList_Recipes" Margin="10,65,564,20" SelectionChanged="RecipeList_Recipes_SelectionChanged"/>
+            <Label Content="Název:" HorizontalAlignment="Left" Margin="241,65,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="RecipeList_RecipeName" Content="" HorizontalAlignment="Left" Margin="291,65,0,0" VerticalAlignment="Top"/>
+            <Label Content="Porce:" HorizontalAlignment="Left" Margin="241,96,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="RecipeList_RecipeServings" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="291,96,0,0"/>
+            <Label Content="Poznámka:" HorizontalAlignment="Left" Margin="241,127,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="RecipeList_RecipeNote" Content="" HorizontalAlignment="Left" Margin="313,127,0,0" VerticalAlignment="Top"/>
+            <Label Content="Přílohy:" HorizontalAlignment="Left" Margin="241,158,0,0" VerticalAlignment="Top"/>
+            <ListBox x:Name="RecipeList_RecipeSideDishes" Margin="242,189,400,20"/>
+            <Button x:Name="RecipeList_EditRecipe" Content="Upravit" HorizontalAlignment="Left" Margin="405,377,0,0" Width="75" Height="37" VerticalAlignment="Top"/>
+            <Button x:Name="RecipeList_DeleteRecipe" Content="Odstranit" HorizontalAlignment="Left" Margin="485,377,0,0" Width="75" Height="37" VerticalAlignment="Top" Click="RecipeList_DeleteRecipe_Click"/>
+            <Label Content="Ingredience:" HorizontalAlignment="Left" Margin="405,65,0,0" VerticalAlignment="Top"/>
+            <ListBox x:Name="RecipeList_RecipeIngredients" Margin="405,96,200,212"/>
+        </Grid>
+
+        <Grid x:Name="RecipeNew" Visibility="Hidden">
+            <Button x:Name="RecipeNew_Back" Content="Zpět" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="RecipeNew_Back_Click"/>
+            <Label Content="Název:" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="RecipeNew_RecipeName" HorizontalAlignment="Left" Margin="60,65,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="175" Height="25"/>
+            <Label Content="Poznámka:" HorizontalAlignment="Left" Margin="10,96,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="RecipeNew_RecipeNote" HorizontalAlignment="Left" Margin="82,95,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="350" Height="25"/>
+            <Label Content="Porce:" HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top"/>
+            <Slider x:Name="RecipeNew_RecipeServingsSlider" HorizontalAlignment="Left" Margin="115,135,0,0" VerticalAlignment="Top" Width="120" Minimum="1" Maximum="8" ValueChanged="RecipeNew_RecipeServingsSlider_ValueChanged" SmallChange="1" Value="-1" TickPlacement="BottomRight" Cursor=""/>
+            <Label x:Name="RecipeNew_RecipeServings" Content="" HorizontalAlignment="Left" Margin="57,127,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="RecipeNew_Save" Content="Uložit" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="RecipeNew_Save_Click"/>
+            <ListBox x:Name="RecipeNew_IngredientsList" HorizontalAlignment="Left" Height="150" Margin="10,158,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="RecipeNew_IngredientsList_SelectionChanged"/>
+            <Label Content="Jméno ingredience:" HorizontalAlignment="Left" Margin="10,313,0,0" VerticalAlignment="Top"/>
+            <TextBox x:Name="RecipeNew_IngredientsList_Name" HorizontalAlignment="Left" Margin="128,313,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="26"/>
+            <TextBox x:Name="RecipeNew_IngredientsList_Volume" HorizontalAlignment="Left" Margin="57,344,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="26"/>
+            <ComboBox x:Name="RecipeNew_IngredientsList_Units" HorizontalAlignment="Left" Margin="182,344,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
+            <Label Content="Počet:" HorizontalAlignment="Left" Margin="10,344,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="RecipeNew_IngredientsList_NewIngredient" Content="Nová ingredience" HorizontalAlignment="Left" Margin="10,375,0,0" VerticalAlignment="Top" Width="125" Height="50" Click="RecipeNew_IngredientsList_NewIngredient_Click"/>
+            <Button x:Name="RecipeNew_IngredientsList_EditIngredient"  Content="Upravit ingredienci" HorizontalAlignment="Left" Margin="140,375,0,0" VerticalAlignment="Top" Width="125" Height="50" Click="RecipeNew_IngredientsList_EditIngredient_Click"/>
+            <Button x:Name="RecipeNew_IngredientsList_DeleteIngredient" Content="Odstranit ingredienci" HorizontalAlignment="Left" Margin="10,430,0,0" VerticalAlignment="Top" Width="125" Height="50" Click="RecipeNew_IngredientsList_DeleteIngredient_Click"/>
+            <Button x:Name="RecipeNew_IngredientsList_SaveIngredient"  Content="Uložit ingredienci" HorizontalAlignment="Left" Margin="140,430,0,0" VerticalAlignment="Top" Width="125" Height="50" Click="RecipeNew_IngredientsList_SaveIngredient_Click"/>
+            <ListBox x:Name="RecipeNew_SideDishList" HorizontalAlignment="Left" Height="150" Margin="640,158,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="RecipeNew_SideDishList_SelectionChanged"/>
+            <TextBox x:Name="RecipeNew_SideDishList_Name" HorizontalAlignment="Left" Margin="670,313,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="26"/>
+            <Label Content="Jméno přílohy:" HorizontalAlignment="Left" Margin="578,313,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="RecipeNew_SideDishList_NewSideDish" Content="Nová příloha" HorizontalAlignment="Left" Margin="535,344,0,0" VerticalAlignment="Top" Width="125" Height="50" Click="RecipeNew_SideDishList_NewSideDish_Click"/>
+            <Button x:Name="RecipeNew_SideDishList_EditSideDish"  Content="Upravit přílohu" HorizontalAlignment="Left" Margin="665,344,0,0" VerticalAlignment="Top" Width="125" Height="50" Click="RecipeNew_SideDishList_EditSideDish_Click"/>
+            <Button x:Name="RecipeNew_SideDishList_DeleteSideDish" Content="Odstranit přílohu" HorizontalAlignment="Left" Margin="535,399,0,0" VerticalAlignment="Top" Width="125" Height="50" Click="RecipeNew_SideDishList_DeleteSideDish_Click"/>
+            <Button x:Name="RecipeNew_SideDishList_SaveSideDish"  Content="Uložit přílohu" HorizontalAlignment="Left" Margin="665,399,0,0" VerticalAlignment="Top" Width="125" Height="50" Click="RecipeNew_SideDishList_SaveSideDish_Click"/>
         </Grid>
     </Grid>
 </Window>

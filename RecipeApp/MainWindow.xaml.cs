@@ -1,696 +1,457 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.IO;
+using RecipeApp.Recipe;
 
 namespace RecipeApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        private SettingsWindow _settings;
+        private const string VERSION = "2.0";
 
-        private RecipeAppBackend backend;
+        UIHandler uiHandler;
+        DataHandler dataHandler;
 
-        private bool newIngredient = false;
-        private int editIngredientIndex = -1;
+        bool newIngredient = false;
+        bool newSideDish = false;
 
-        private bool newInstruction = false;
-        private int editInstructionIndex = -1;
-
-        private bool editing = false;
-        private Recipe? recipeToBeEdited = null;
-
-        private bool isSettingsOpened = false;
+        bool isIngredientFormActive = false;
+        bool isSideDishFormActive = false;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _settings = new SettingsWindow();
 
-            backend = new RecipeAppBackend();
-            backend.logger.LogInfo("App started");
+            // Object initialization
+            uiHandler = new UIHandler();
+            dataHandler = new DataHandler();
 
-            backend.LoadLanguages();
-            backend.logger.LogInfo("Loaded languages");
-            backend.LoadConfig();
-            backend.logger.LogInfo("Loaded config");
-            backend.LoadUnits();
-            backend.logger.LogInfo("Loaded units");
-            backend.LoadRecipes();
-            backend.logger.LogInfo("Loaded recipes");
 
-            backend.AddGrid(Main);
-            backend.AddGrid(NewRecipe);
+            // Grid initialization
+            uiHandler.AddGrid(RecipeMain, "ui_main_menu");
+            uiHandler.AddGrid(RecipeList, "ui_recipe_list");
+            uiHandler.AddGrid(RecipeNew, "ui_recipe_new");
 
-            backend.DrawGrid(Main);
+            uiHandler.HideAllGrids();
 
-            _settings.backend = backend;
-            _settings.LoadLanguages();
-            _settings.LoadUI();
 
-            LoadUI();
+            // Data initialization
+            dataHandler.LoadRecipes();
+
+
+            // Initial configuration
+            Window.Title = "Recepty " + VERSION;
+            Window.ResizeMode = ResizeMode.CanMinimize;
+
+            uiHandler.ShowGrid("ui_main_menu");
         }
 
-        private void LoadUI()
+        private void _RecipeList()
         {
-            if (backend.currentGrid == Main)
+            if(RecipeList_Recipes.Items.Count > 0)
             {
-                LoadMain();
+                RecipeList_Recipes.Items.Clear();
             }
-            else if (backend.currentGrid == NewRecipe)
+
+            uiHandler.RecipeListFill(RecipeList_Recipes, dataHandler.Recipes);
+
+            if(RecipeList_Recipes.SelectedIndex >= 0)
             {
-                if (editing)
+                RecipeList_DeleteRecipe.IsEnabled = true;
+                RecipeList_EditRecipe.IsEnabled = true;
+            }
+            else
+            {
+                RecipeList_DeleteRecipe.IsEnabled = false;
+                RecipeList_EditRecipe.IsEnabled = false;
+
+                RecipeList_RecipeName.Content = "";
+                RecipeList_RecipeNote.Content = "";
+                RecipeList_RecipeServings.Content = "";
+                RecipeList_RecipeIngredients.Items.Clear();
+                RecipeList_RecipeSideDishes.Items.Clear();
+            }
+        }
+
+        private void _RecipeNew()
+        {
+            RecipeNew_RecipeServingsSlider.Value = 1;
+            RecipeNew_RecipeServings.Content = "1";
+
+            RecipeNew_IngredientsList_Units.Items.Add("g");
+            RecipeNew_IngredientsList_Units.Items.Add("kg");
+            RecipeNew_IngredientsList_Units.Items.Add("ml");
+            RecipeNew_IngredientsList_Units.Items.Add("l");
+            RecipeNew_IngredientsList_Units.Items.Add("ks");
+            RecipeNew_IngredientsList_Units.Items.Add("špetka");
+
+            RecipeNew_IngredientsList_Units.SelectedIndex = 0;
+
+            RecipeNew_IngredientsList_Name.IsEnabled = false;
+            RecipeNew_IngredientsList_Volume.IsEnabled = false;
+            RecipeNew_IngredientsList_Units.IsEnabled = false;
+
+            RecipeNew_IngredientsList_DeleteIngredient.IsEnabled = false;
+            RecipeNew_IngredientsList_EditIngredient.IsEnabled = false;
+            RecipeNew_IngredientsList_SaveIngredient.IsEnabled = false;
+
+            RecipeNew_SideDishList_Name.IsEnabled = false;
+            RecipeNew_SideDishList_DeleteSideDish.IsEnabled = false;
+            RecipeNew_SideDishList_EditSideDish.IsEnabled = false;
+            RecipeNew_SideDishList_SaveSideDish.IsEnabled = false;
+            RecipeNew_SideDishList_NewSideDish.IsEnabled = true;
+        }
+
+        private void RecipeList_Click(object sender, RoutedEventArgs e)
+        {
+            uiHandler.ShowGrid("ui_recipe_list");
+
+            _RecipeList();
+        }
+
+        private void RecipeList_Back_Click(object sender, RoutedEventArgs e)
+        {
+            uiHandler.ShowGrid("ui_main_menu");
+        }
+
+        private void RecipeList_Recipes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Recipe.Recipe r = (Recipe.Recipe)RecipeList_Recipes.SelectedItem;
+
+            if(r != null)
+            {
+                RecipeList_RecipeName.Content = r.Name;
+                RecipeList_RecipeServings.Content = r.Servings.ToString();
+                RecipeList_RecipeNote.Content = r.Note;
+
+                RecipeList_RecipeSideDishes.Items.Clear();
+                
+                foreach(SideDish sd in r.AvailableSideDish)
                 {
-                    LoadEditRecipe();
-                }
-                else
-                {
-                    LoadNewRecipe();
-                }
-            }
-        }
-
-        private void LoadEditRecipe()
-        {
-            NewRecipeIngredientsList.Items.Clear();
-            NewRecipeIngredientDescription.Text = "";
-            NewRecipeIngredientMeasurement.Text = "";
-            NewRecipeIngredientName.Text = "";
-            NewRecipeIngredientUnit.Text = "";
-            NewRecipeInstructionsList.Items.Clear();
-            NewRecipeInstructionText.Text = "";
-
-            btn_newrecipe_save_instruction.IsEnabled = false;
-            btn_newrecipe_edit_instruction.IsEnabled = false;
-            btn_newrecipe_delete_instruction.IsEnabled = false;
-
-            NewRecipeInstructionText.IsEnabled = false;
-
-            foreach(RecipeIngredient ri in recipeToBeEdited.Ingredients)
-            {
-                NewRecipeIngredientsList.Items.Add(ri);
-            }
-
-            foreach(string ri in recipeToBeEdited.Instructions)
-            {
-                NewRecipeInstructionsList.Items.Add(ri);
-            }
-
-            if(NewRecipeIngredientsList.Items.Count > 0)
-            {
-                NewRecipeIngredientsList.SelectedIndex = 0;
-            }
-
-            if(NewRecipeInstructionsList.Items.Count > 0)
-            {
-                NewRecipeInstructionsList.SelectedIndex = 0;
-            }
-
-            NewRecipeName.Text = recipeToBeEdited.Name;
-            NewRecipePortionCount.Text = recipeToBeEdited.PortionCount.ToString();
-
-            btn_newrecipe_save_ingredient.IsEnabled = false;
-            btn_newrecipe_delete_ingredient.IsEnabled = false;
-            btn_newrecipe_edit_ingredient.IsEnabled = false;
-
-            NewRecipeIngredientName.IsEnabled = false;
-            NewRecipeIngredientMeasurement.IsEnabled = false;
-            NewRecipeIngredientDescription.IsEnabled = false;
-            NewRecipeIngredientUnit.IsEnabled = false;
-
-            foreach (Unit u in backend.mUnits.Units)
-            {
-                NewRecipeIngredientUnit.Items.Add(u.Name);
-            }
-
-            NewRecipeIngredientUnit.SelectedIndex = 0;
-
-            btn_newrecipe_back.Content = backend.GetText("btn_newrecipe_back");
-            btn_newrecipe_save_recipe.Content = backend.GetText("btn_newrecipe_save_recipe");
-            btn_newrecipe_add_instruction.Content = backend.GetText("btn_newrecipe_add_instruction");
-            btn_newrecipe_delete_instruction.Content = backend.GetText("btn_newrecipe_delete_instruction");
-            btn_newrecipe_edit_instruction.Content = backend.GetText("btn_newrecipe_edit_instruction");
-            btn_newrecipe_save_instruction.Content = backend.GetText("btn_newrecipe_save_instruction");
-            btn_newrecipe_add_ingredient.Content = backend.GetText("btn_newrecipe_add_ingredient");
-            btn_newrecipe_delete_ingredient.Content = backend.GetText("btn_newrecipe_delete_ingredient");
-            btn_newrecipe_save_ingredient.Content = backend.GetText("btn_newrecipe_save_ingredient");
-            btn_newrecipe_edit_ingredient.Content = backend.GetText("btn_newrecipe_edit_ingredient");
-            lbl_newrecipe_name.Content = backend.GetText("lbl_newrecipe_name") + ":";
-            lbl_newrecipe_portions.Content = backend.GetText("lbl_newrecipe_portions") + ":";
-            lbl_newrecipe_instructions.Content = backend.GetText("lbl_newrecipe_isntructions") + ":";
-            lbl_newrecipe_ingredient_name.Content = backend.GetText("lbl_newrecipe_ingredient_name") + ":";
-            lbl_newrecipe_ingredient_description.Content = backend.GetText("lbl_newrecipe_ingredient_description") + ":";
-            lbl_newrecipe_ingredient_measurement.Content = backend.GetText("lbl_newrecipe_ingredient_measurement") + ":";
-        }
-
-        private void LoadNewRecipe()
-        {
-            NewRecipeIngredientsList.Items.Clear();
-            NewRecipeIngredientDescription.Text = "";
-            NewRecipeIngredientMeasurement.Text = "";
-            NewRecipeIngredientName.Text = "";
-            NewRecipeIngredientUnit.Text = "";
-
-            btn_newrecipe_save_ingredient.IsEnabled = false;
-            btn_newrecipe_delete_ingredient.IsEnabled = false;
-            btn_newrecipe_edit_ingredient.IsEnabled = false;
-
-            NewRecipeIngredientName.IsEnabled = false;
-            NewRecipeIngredientMeasurement.IsEnabled = false;
-            NewRecipeIngredientDescription.IsEnabled = false;
-            NewRecipeIngredientUnit.IsEnabled = false;
-
-            foreach(Unit u in backend.mUnits.Units)
-            {
-                NewRecipeIngredientUnit.Items.Add(u.Name);
-            }
-
-            NewRecipeIngredientUnit.SelectedIndex = 0;
-
-            NewRecipeInstructionText.Text = "";
-            NewRecipeInstructionsList.Items.Clear();
-
-            btn_newrecipe_save_instruction.IsEnabled = false;
-            btn_newrecipe_edit_instruction.IsEnabled = false;
-            btn_newrecipe_delete_instruction.IsEnabled = false;
-
-            NewRecipeInstructionText.IsEnabled = false;
-
-            btn_newrecipe_back.Content = backend.GetText("btn_newrecipe_back");
-            btn_newrecipe_save_recipe.Content = backend.GetText("btn_newrecipe_save_recipe");
-            btn_newrecipe_add_instruction.Content = backend.GetText("btn_newrecipe_add_instruction");
-            btn_newrecipe_delete_instruction.Content = backend.GetText("btn_newrecipe_delete_instruction");
-            btn_newrecipe_edit_instruction.Content = backend.GetText("btn_newrecipe_edit_instruction");
-            btn_newrecipe_save_instruction.Content = backend.GetText("btn_newrecipe_save_instruction");
-            btn_newrecipe_add_ingredient.Content = backend.GetText("btn_newrecipe_add_ingredient");
-            btn_newrecipe_delete_ingredient.Content = backend.GetText("btn_newrecipe_delete_ingredient");
-            btn_newrecipe_save_ingredient.Content = backend.GetText("btn_newrecipe_save_ingredient");
-            btn_newrecipe_edit_ingredient.Content = backend.GetText("btn_newrecipe_edit_ingredient");
-            lbl_newrecipe_name.Content = backend.GetText("lbl_newrecipe_name") + ":";
-            lbl_newrecipe_portions.Content = backend.GetText("lbl_newrecipe_portions") + ":";
-            lbl_newrecipe_instructions.Content = backend.GetText("lbl_newrecipe_isntructions") + ":";
-            lbl_newrecipe_ingredient_name.Content = backend.GetText("lbl_newrecipe_ingredient_name") + ":";
-            lbl_newrecipe_ingredient_description.Content = backend.GetText("lbl_newrecipe_ingredient_description") + ":";
-            lbl_newrecipe_ingredient_measurement.Content = backend.GetText("lbl_newrecipe_ingredient_measurement") + ":";
-        }
-
-        private void LoadMain()
-        {
-            RecipeList.Items.Clear();
-            RecipeIngredientsList.Items.Clear();
-            RecipeName.Content = "";
-
-            foreach (Recipe r in backend.Recipes)
-            {
-                RecipeList.Items.Add(r);
-            }
-
-            if (RecipeList.Items.Count > 0)
-            {
-                RecipeList.SelectedIndex = 0;
-            }
-
-            backend.RefreshRecipes();
-
-            lbl_main_ingredients.Content = backend.GetText("lbl_main_ingredients") + ":";
-            lbl_main_recipe_name.Content = backend.GetText("lbl_main_recipe_name") + ":";
-            lbl_main_portion_count.Content = backend.GetText("lbl_main_portion_count") + ":";
-            lbl_main_instructions.Content = backend.GetText("lbl_main_instructions") + ":";
-            btn_main_new_recipe.Content = backend.GetText("btn_main_new_recipe");
-            btn_main_delete_recipe.Content = backend.GetText("btn_main_delete_recipe");
-            btn_main_edit_recipe.Content = backend.GetText("btn_main_edit_recipe");
-            btn_main_settings.Content = backend.GetText("btn_main_settings");
-        }
-
-        private void UpdateNewRecipe()
-        {
-            if (NewRecipeIngredientsList.Items.Count > 0 && NewRecipeIngredientsList.SelectedIndex < 0)
-            {
-                NewRecipeIngredientsList.SelectedIndex = 0;
-            }
-
-            if (NewRecipeIngredientsList.SelectedIndex >= 0)
-            {
-                RecipeIngredient ri = (RecipeIngredient)NewRecipeIngredientsList.SelectedItem;
-
-                string name = ri.Name;
-                string description = ri.Description;
-                double measurement = ri.Measurement;
-                string unit = ri.MeasurementUnit;
-
-                NewRecipeIngredientName.Text = name;
-                NewRecipeIngredientDescription.Text = description;
-                NewRecipeIngredientMeasurement.Text = measurement.ToString();
-                NewRecipeIngredientUnit.SelectedItem = unit;
-
-                btn_newrecipe_delete_ingredient.IsEnabled = true;
-                btn_newrecipe_edit_ingredient.IsEnabled = true;
-            }
-
-            if (NewRecipeInstructionsList.Items.Count > 0 && NewRecipeInstructionsList.SelectedIndex < 0)
-            {
-                NewRecipeInstructionsList.SelectedIndex = 0;
-            }
-
-            if (NewRecipeInstructionsList.SelectedIndex >= 0)
-            {
-                string? instruction = NewRecipeInstructionsList.SelectedItem.ToString();
-
-                NewRecipeInstructionText.Text = instruction;
-
-                btn_newrecipe_edit_instruction.IsEnabled = true;
-                btn_newrecipe_delete_instruction.IsEnabled = true;
-            }
-        }
-
-        private void RecipeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            int index = RecipeList.SelectedIndex;
-
-            if (index >= 0)
-            {
-                Recipe? r = backend.GetRecipeByIndex(index);
-
-                RecipeIngredientsList.Items.Clear();
-
-                RecipeName.Content = r.Name;
-                RecipePortionCount.Content = r.PortionCount;
-
-                foreach (RecipeIngredient ri in r.Ingredients)
-                {
-                    RecipeIngredientsList.Items.Add(ri.ToString());
+                    RecipeList_RecipeSideDishes.Items.Add(sd);
                 }
 
-                RecipeInstructionsList.Items.Clear();
+                RecipeList_RecipeIngredients.Items.Clear();
 
-                foreach (string ri in r.Instructions)
+                foreach(Ingredient i in r.Ingredients)
                 {
-                    RecipeInstructionsList.Items.Add(ri);
+                    RecipeList_RecipeIngredients.Items.Add(i);
                 }
             }
         }
 
-        private void NewRecipeBtn_Click(object sender, RoutedEventArgs e)
+        private void RecipeList_NewRecipe_Click(object sender, RoutedEventArgs e)
         {
-            backend.DrawGrid(NewRecipe);
+            uiHandler.ShowGrid("ui_recipe_new");
 
-            LoadUI();
+            _RecipeNew();
         }
 
-        private void NewRecipeAddIngredient_Click(object sender, RoutedEventArgs e)
+        private void RecipeNew_Back_Click(object sender, RoutedEventArgs e)
         {
-            btn_newrecipe_add_ingredient.IsEnabled = false;
-            btn_newrecipe_edit_ingredient.IsEnabled = false;
-            btn_newrecipe_delete_ingredient.IsEnabled = false;
-            btn_newrecipe_save_ingredient.IsEnabled = true;
+            uiHandler.ShowGrid("ui_recipe_list");
 
-            NewRecipeIngredientDescription.IsEnabled = true;
-            NewRecipeIngredientName.IsEnabled = true;
-            NewRecipeIngredientMeasurement.IsEnabled = true;
-            NewRecipeIngredientUnit.IsEnabled = true;
-            NewRecipeIngredientsList.IsEnabled = false;
+            _RecipeList();
+        }
 
-            NewRecipeIngredientDescription.Text = "";
-            NewRecipeIngredientMeasurement.Text = "";
-            NewRecipeIngredientName.Text = "";
+        private void RecipeNew_RecipeServingsSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if(RecipeNew_RecipeServingsSlider.Value >= 1 && RecipeNew_RecipeServingsSlider.Value <= 8)
+            {
+                if(RecipeNew_RecipeServings != null)
+                {
+                    RecipeNew_RecipeServings.Content = Convert.ToInt32(RecipeNew_RecipeServingsSlider.Value);
+                }
+            }
+        }
+
+        private void RecipeNew_IngredientsList_NewIngredient_Click(object sender, RoutedEventArgs e)
+        {
+            RecipeNew_IngredientsList_Name.Text = "";
+            RecipeNew_IngredientsList_Volume.Text = "";
+            RecipeNew_IngredientsList_Units.SelectedIndex = 0;
+
+            RecipeNew_IngredientsList_Name.IsEnabled = true;
+            RecipeNew_IngredientsList_Units.IsEnabled = true;
+            RecipeNew_IngredientsList_Volume.IsEnabled = true;
+
+            RecipeNew_IngredientsList_NewIngredient.IsEnabled = false;
+            RecipeNew_IngredientsList_DeleteIngredient.IsEnabled = false;
+            RecipeNew_IngredientsList_EditIngredient.IsEnabled = false;
+            RecipeNew_IngredientsList_SaveIngredient.IsEnabled = true;
+            RecipeNew_IngredientsList.IsEnabled = false;
 
             newIngredient = true;
 
-            btn_newrecipe_back.IsEnabled = false;
-            btn_newrecipe_save_recipe.IsEnabled = false;
-            btn_newrecipe_add_instruction.IsEnabled = false;
-            btn_newrecipe_edit_instruction.IsEnabled = false;
-            btn_newrecipe_delete_instruction.IsEnabled = false;
+            isIngredientFormActive = true;
         }
 
-        private void NewRecipeSaveIngredient_Click(object sender, RoutedEventArgs e)
+        private void RecipeNew_IngredientsList_SaveIngredient_Click(object sender, RoutedEventArgs e)
         {
-            if (NewRecipeIngredientName.Text != "" &&
-               NewRecipeIngredientMeasurement.Text != "")
+            if (newIngredient)
             {
-                btn_newrecipe_add_ingredient.IsEnabled = true;
-                btn_newrecipe_edit_ingredient.IsEnabled = true;
-                btn_newrecipe_delete_ingredient.IsEnabled = true;
-                btn_newrecipe_save_ingredient.IsEnabled = false;
+                string name = RecipeNew_IngredientsList_Name.Text;
+                int count = Convert.ToInt32(RecipeNew_IngredientsList_Volume.Text);
+                string unit = RecipeNew_IngredientsList_Units.Text;
 
-                NewRecipeIngredientDescription.IsEnabled = false;
-                NewRecipeIngredientName.IsEnabled = false;
-                NewRecipeIngredientMeasurement.IsEnabled = false;
-                NewRecipeIngredientUnit.IsEnabled = false;
-                NewRecipeIngredientsList.IsEnabled = true;
+                Ingredient i = new Ingredient(name, count, unit);
 
-                string name = NewRecipeIngredientName.Text;
-                string description;
+                RecipeNew_IngredientsList.Items.Add(i);
 
-                if (NewRecipeIngredientDescription.Text == null)
-                {
-                    description = "null";
-                }
-                else
-                {
-                    description = NewRecipeIngredientDescription.Text;
-                }
-
-                double measurement = Convert.ToDouble(NewRecipeIngredientMeasurement.Text);
-                string unit = (string)NewRecipeIngredientUnit.SelectedItem;
-
-                RecipeIngredient ri = new RecipeIngredient(name, description, measurement, unit);
-
-                if (newIngredient)
-                {
-                    NewRecipeIngredientsList.Items.Add(ri);
-                    newIngredient = false;
-                }
-                else
-                {
-                    NewRecipeIngredientsList.Items[editIngredientIndex] = ri;
-                    NewRecipeIngredientsList.SelectedIndex = editIngredientIndex;
-                }
-            
-                btn_newrecipe_back.IsEnabled = true;
-                btn_newrecipe_save_recipe.IsEnabled = true;
-                btn_newrecipe_add_instruction.IsEnabled = true;
-
-                backend.logger.LogInfo("Saved ingredient");
-                
-                UpdateNewRecipe();
-            }
-        }
-
-        private void NewRecipeIngredientsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UpdateNewRecipe();
-        }
-
-        private void NewRecipeDeleteIngredient_Click(object sender, RoutedEventArgs e)
-        {
-            int index = NewRecipeIngredientsList.SelectedIndex;
-            int n = 0;
-
-            if (index >= 0)
-            {
-                NewRecipeIngredientsList.Items.RemoveAt(index);
-            }
-
-            if (NewRecipeIngredientsList.Items.Count > 0)
-            {
-                if (index == 0)
-                {
-                    n = 0;
-                }
-                else if (index == (NewRecipeIngredientsList.Items.Count - 1))
-                {
-                    n = index - 1;
-                }
-                else
-                {
-                    n = NewRecipeIngredientsList.Items.Count - 1;
-                }
-
-                NewRecipeIngredientsList.SelectedIndex = n;
-            }
-        }
-
-        private void NewRecipeEditIngredient_Click(object sender, RoutedEventArgs e)
-        {
-            int index = NewRecipeIngredientsList.SelectedIndex;
-            editIngredientIndex = index;
-
-            btn_newrecipe_add_ingredient.IsEnabled = false;
-            btn_newrecipe_edit_ingredient.IsEnabled = false;
-            btn_newrecipe_delete_ingredient.IsEnabled = false;
-            btn_newrecipe_save_ingredient.IsEnabled = true;
-
-            NewRecipeIngredientDescription.IsEnabled = true;
-            NewRecipeIngredientName.IsEnabled = true;
-            NewRecipeIngredientMeasurement.IsEnabled = true;
-            NewRecipeIngredientUnit.IsEnabled = true;
-            NewRecipeIngredientsList.IsEnabled = false;
-
-            RecipeIngredient? ri = (RecipeIngredient)NewRecipeIngredientsList.SelectedItem;
-
-            string name = ri.Name;
-            string description = ri.Description;
-            double measurement = ri.Measurement;
-            string unit = ri.MeasurementUnit;
-
-            NewRecipeIngredientName.Text = name;
-            NewRecipeIngredientDescription.Text = description;
-            NewRecipeIngredientMeasurement.Text = measurement.ToString();
-            NewRecipeIngredientUnit.SelectedItem = unit;
-
-            btn_newrecipe_back.IsEnabled = false;
-            btn_newrecipe_save_recipe.IsEnabled = false;
-            btn_newrecipe_add_instruction.IsEnabled = false;
-            btn_newrecipe_add_instruction.IsEnabled = false;
-            btn_newrecipe_edit_instruction.IsEnabled = false;
-            btn_newrecipe_delete_instruction.IsEnabled = false;
-        }
-
-        private void NewRecipeSaveRecipe_Click(object sender, RoutedEventArgs e)
-        {
-            Recipe? r;
-
-            string name = NewRecipeName.Text;
-            int portions = Convert.ToInt32(NewRecipePortionCount.Text);
-            List<RecipeIngredient> ingredients = new List<RecipeIngredient>();
-            List<string> instructions = new List<string>();
-
-            foreach (RecipeIngredient f in NewRecipeIngredientsList.Items)
-            {
-                ingredients.Add(f);
-            }
-
-            foreach (string s in NewRecipeInstructionsList.Items)
-            {
-                instructions.Add(s);
-            }
-
-            r = new Recipe(name, portions, ingredients, instructions);
-
-            if (editing)
-            {
-                recipeToBeEdited.UpdateRecipe(name, portions, ingredients, instructions);
-
-                editing = false;
-
-                backend.UpdateRecipe(recipeToBeEdited);
+                RecipeNew_IngredientsList.SelectedIndex = RecipeNew_IngredientsList.Items.Count - 1; // selects last item added
             }
             else
             {
-                backend.SaveRecipe(r);
+                Ingredient i = (Ingredient)RecipeNew_IngredientsList.SelectedItem;
+                int index = RecipeNew_IngredientsList.SelectedIndex;
+
+                i.Name = RecipeNew_IngredientsList_Name.Text;
+                i.Value = Convert.ToInt32(RecipeNew_IngredientsList_Volume);
+                i.Units = RecipeNew_IngredientsList_Units.Text;
+
+                RecipeNew_IngredientsList.Items[index] = i;
             }
 
-            System.Threading.Thread.Sleep(1000);
+            RecipeNew_IngredientsList_Name.IsEnabled = false;
+            RecipeNew_IngredientsList_Units.IsEnabled = false;
+            RecipeNew_IngredientsList_Volume.IsEnabled = false;
 
-            backend.logger.LogInfo("Saved recipe");
+            RecipeNew_IngredientsList_NewIngredient.IsEnabled = true;
+            RecipeNew_IngredientsList_DeleteIngredient.IsEnabled = true;
+            RecipeNew_IngredientsList_EditIngredient.IsEnabled = true;
+            RecipeNew_IngredientsList_SaveIngredient.IsEnabled = false;
+            RecipeNew_IngredientsList.IsEnabled = true;
 
-            backend.DrawGrid(Main);
+            newIngredient = false;
 
-            LoadUI();
+            isIngredientFormActive = false;
         }
 
-        private void NewRecipeBack_Click(object sender, RoutedEventArgs e)
+        private void RecipeNew_IngredientsList_DeleteIngredient_Click(object sender, RoutedEventArgs e)
         {
-            backend.DrawGrid(Main);
-
-            LoadUI();
-        }
-
-        private void DeleteRecipeBtn_Click(object sender, RoutedEventArgs e)
-        {
-            if (RecipeList.SelectedIndex >= 0)
+            if(RecipeNew_IngredientsList.SelectedIndex >= 0)
             {
-                int index = RecipeList.SelectedIndex;
-                int nextIndex = -1;
+                Ingredient i = (Ingredient)RecipeNew_IngredientsList.SelectedItem;
+                int index = RecipeNew_IngredientsList.SelectedIndex;
 
-                Recipe r = (Recipe)RecipeList.SelectedItem;
-
-                RecipeList.Items.RemoveAt(index);
-
-                if (RecipeList.Items.Count > 0)
+                if(RecipeNew_IngredientsList.Items.Count > 1)
                 {
-                    if (index == 0)
+                    if(index - 1 >= 0)
                     {
-                        nextIndex = 0;
-                    }
-                    else if (index == (RecipeList.Items.Count - 1))
-                    {
-                        nextIndex = index - 1;
+                        RecipeNew_IngredientsList.SelectedIndex = index - 1;
                     }
                     else
                     {
-                        nextIndex = RecipeList.Items.Count - 1;
+                        RecipeNew_IngredientsList.SelectedIndex = 0;
                     }
-
-                    RecipeList.SelectedIndex = nextIndex;
-                }
-
-                backend.DeleteRecipe(r);
-                backend.logger.LogInfo("Deleted recipe");
-            }
-        }
-
-        private void NewRecipeAddInstruction_Click(object sender, RoutedEventArgs e)
-        {
-            btn_newrecipe_add_instruction.IsEnabled = false;
-            btn_newrecipe_edit_instruction.IsEnabled = false;
-            btn_newrecipe_delete_instruction.IsEnabled = false;
-            btn_newrecipe_save_instruction.IsEnabled = true;
-
-            NewRecipeInstructionText.IsEnabled = true;
-            NewRecipeInstructionsList.IsEnabled = false;
-
-            NewRecipeInstructionText.Text = "";
-
-            newInstruction = true;
-
-            btn_newrecipe_back.IsEnabled = false;
-            btn_newrecipe_save_recipe.IsEnabled = false;
-            btn_newrecipe_add_ingredient.IsEnabled = false;
-            btn_newrecipe_edit_ingredient.IsEnabled = false;
-            btn_newrecipe_delete_ingredient.IsEnabled = false;
-        }
-
-        private void NewRecipeEditInstruction_Click(object sender, RoutedEventArgs e)
-        {
-            int index = NewRecipeInstructionsList.SelectedIndex;
-            editInstructionIndex = index;
-
-            btn_newrecipe_add_instruction.IsEnabled = false;
-            btn_newrecipe_edit_instruction.IsEnabled = false;
-            btn_newrecipe_delete_instruction.IsEnabled = false;
-            btn_newrecipe_save_instruction.IsEnabled = true;
-
-            NewRecipeInstructionText.IsEnabled = true;
-            NewRecipeInstructionsList.IsEnabled = false;
-
-            string? s = NewRecipeInstructionsList.SelectedItem.ToString();
-
-            NewRecipeInstructionText.Text = s;
-
-            btn_newrecipe_back.IsEnabled = false;
-            btn_newrecipe_save_recipe.IsEnabled = false;
-            btn_newrecipe_add_ingredient.IsEnabled = false;
-            btn_newrecipe_edit_ingredient.IsEnabled = false;
-            btn_newrecipe_delete_ingredient.IsEnabled = false;
-        }
-
-        private void NewRecipeSaveInstruction_Click(object sender, RoutedEventArgs e)
-        {
-            if (NewRecipeInstructionText.Text != "")
-            {
-                btn_newrecipe_add_instruction.IsEnabled = true;
-                btn_newrecipe_edit_instruction.IsEnabled = true;
-                btn_newrecipe_delete_instruction.IsEnabled = true;
-                btn_newrecipe_save_instruction.IsEnabled = false;
-
-                NewRecipeInstructionText.IsEnabled = false;
-                NewRecipeInstructionsList.IsEnabled = true;
-
-                string text = NewRecipeInstructionText.Text;
-
-                if (newInstruction)
-                {
-                    NewRecipeInstructionsList.Items.Add(text);
                 }
                 else
                 {
-                    NewRecipeInstructionsList.Items[editInstructionIndex] = text;
-                    NewRecipeIngredientsList.SelectedIndex = editInstructionIndex;
+                    RecipeNew_IngredientsList.SelectedIndex = -1;
                 }
 
-                btn_newrecipe_back.IsEnabled = true;
-                btn_newrecipe_save_recipe.IsEnabled = true;
-                btn_newrecipe_add_ingredient.IsEnabled = true;
-
-                backend.logger.LogInfo("Instruction saved");
-
-                UpdateNewRecipe();
+                RecipeNew_IngredientsList.Items.Remove(i);
             }
         }
 
-        private void NewRecipeDeleteInstruction_Click(object sender, RoutedEventArgs e)
+        private void RecipeNew_IngredientsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int index = NewRecipeInstructionsList.SelectedIndex;
-            int n = 0;
-
-            if (index >= 0)
+            if (RecipeNew_IngredientsList.Items.Count == 0)
             {
-                NewRecipeInstructionsList.Items.RemoveAt(index);
-            }
+                RecipeNew_IngredientsList_DeleteIngredient.IsEnabled = false;
+                RecipeNew_IngredientsList_SaveIngredient.IsEnabled = false;
+                RecipeNew_IngredientsList_EditIngredient.IsEnabled = false;
 
-            if (NewRecipeInstructionsList.Items.Count > 0)
-            {
-                if (index == 0)
-                {
-                    n = 0;
-                }
-                else if (index == (NewRecipeInstructionsList.Items.Count - 1))
-                {
-                    n = index - 1;
-                }
-                else
-                {
-                    n = NewRecipeInstructionsList.Items.Count - 1;
-                }
-
-                NewRecipeInstructionsList.SelectedIndex = n;
+                RecipeNew_IngredientsList_Name.Text = "";
+                RecipeNew_IngredientsList_Volume.Text = "";
+                RecipeNew_IngredientsList_Units.SelectedIndex = 0;
             }
         }
 
-        private void NewRecipeInstructionsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void RecipeNew_IngredientsList_EditIngredient_Click(object sender, RoutedEventArgs e)
         {
-            UpdateNewRecipe();
+            RecipeNew_IngredientsList_Name.IsEnabled = true;
+            RecipeNew_IngredientsList_Units.IsEnabled = true;
+            RecipeNew_IngredientsList_Volume.IsEnabled = true;
+
+            RecipeNew_IngredientsList_NewIngredient.IsEnabled = false;
+            RecipeNew_IngredientsList_DeleteIngredient.IsEnabled = false;
+            RecipeNew_IngredientsList_EditIngredient.IsEnabled = false;
+            RecipeNew_IngredientsList_SaveIngredient.IsEnabled = true;
+            RecipeNew_IngredientsList.IsEnabled = false;
+
+            newIngredient = false;
+
+            isIngredientFormActive = true;
         }
 
-        private void btn_main_edit_recipe_Click(object sender, RoutedEventArgs e)
+        private void RecipeNew_SideDishList_NewSideDish_Click(object sender, RoutedEventArgs e)
         {
-            if(RecipeList.SelectedIndex >= 0)
-            {
-                editing = true;
-                recipeToBeEdited = (Recipe) RecipeList.SelectedItem;
+            RecipeNew_SideDishList_Name.Text = "";
 
-                backend.DrawGrid(NewRecipe);
+            RecipeNew_SideDishList.IsEnabled = false;
+            
+            RecipeNew_SideDishList_Name.IsEnabled = true;
+            RecipeNew_SideDishList_DeleteSideDish.IsEnabled = false;
+            RecipeNew_SideDishList_EditSideDish.IsEnabled = false;
+            RecipeNew_SideDishList_NewSideDish.IsEnabled = false;
+            RecipeNew_SideDishList_SaveSideDish.IsEnabled = true;
 
-                LoadUI();
-            }
+            newSideDish = true;
+
+            isSideDishFormActive = true;
         }
 
-        private void btn_main_settings_Click(object sender, RoutedEventArgs e)
+        private void RecipeNew_SideDishList_SaveSideDish_Click(object sender, RoutedEventArgs e)
         {
-            if (!isSettingsOpened)
+            if (newSideDish)
             {
-                _settings.Show();
-                isSettingsOpened = true;
+                string name = RecipeNew_SideDishList_Name.Text;
+
+                SideDish sd = new SideDish(name);
+
+                RecipeNew_SideDishList.Items.Add(sd);
+
+                RecipeNew_SideDishList.SelectedIndex = RecipeNew_SideDishList.Items.Count - 1;
             }
             else
             {
-                if (!_settings.isOpened)
+                SideDish sd = (SideDish)RecipeNew_SideDishList.SelectedItem;
+                int index = RecipeNew_SideDishList.SelectedIndex;
+
+                sd.Name = RecipeNew_SideDishList_Name.Text;
+
+                RecipeNew_SideDishList.Items[index] = sd;
+            }
+
+            RecipeNew_SideDishList_Name.IsEnabled = false;
+
+            RecipeNew_SideDishList_NewSideDish.IsEnabled = true;
+            RecipeNew_SideDishList_DeleteSideDish.IsEnabled = true;
+            RecipeNew_SideDishList_EditSideDish.IsEnabled = true;
+            RecipeNew_SideDishList_SaveSideDish.IsEnabled = false;
+            RecipeNew_SideDishList.IsEnabled = true;
+
+            newSideDish = false;
+
+            isSideDishFormActive = false;
+        }
+
+        private void RecipeNew_SideDishList_EditSideDish_Click(object sender, RoutedEventArgs e)
+        {
+            RecipeNew_SideDishList.IsEnabled = false;
+
+            RecipeNew_SideDishList_Name.IsEnabled = true;
+            RecipeNew_SideDishList_DeleteSideDish.IsEnabled = false;
+            RecipeNew_SideDishList_EditSideDish.IsEnabled = false;
+            RecipeNew_SideDishList_NewSideDish.IsEnabled = false;
+            RecipeNew_SideDishList_SaveSideDish.IsEnabled = true;
+
+            newSideDish = false;
+
+            isSideDishFormActive = true;
+        }
+
+        private void RecipeNew_SideDishList_DeleteSideDish_Click(object sender, RoutedEventArgs e)
+        {
+            if (RecipeNew_SideDishList.SelectedIndex >= 0)
+            {
+                Ingredient i = (Ingredient)RecipeNew_SideDishList.SelectedItem;
+                int index = RecipeNew_SideDishList.SelectedIndex;
+
+                if (RecipeNew_SideDishList.Items.Count > 1)
                 {
-                    _settings = new SettingsWindow();
-                    _settings.backend = backend;
-                    _settings.LoadLanguages();
-                    _settings.LoadUI();
-
-                    isSettingsOpened = false;
-
-                    btn_main_settings_Click(sender, e);
+                    if (index - 1 >= 0)
+                    {
+                        RecipeNew_SideDishList.SelectedIndex = index - 1;
+                    }
+                    else
+                    {
+                        RecipeNew_SideDishList.SelectedIndex = 0;
+                    }
                 }
+                else
+                {
+                    RecipeNew_SideDishList.SelectedIndex = -1;
+                }
+
+                RecipeNew_SideDishList.Items.Remove(i);
             }
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void RecipeNew_SideDishList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            backend.logger.LogInfo("Closing the app");
-            backend.logger.SaveLog();
+            if (RecipeNew_SideDishList.Items.Count == 0)
+            {
+                RecipeNew_SideDishList_DeleteSideDish.IsEnabled = false;
+                RecipeNew_SideDishList_SaveSideDish.IsEnabled = false;
+                RecipeNew_SideDishList_EditSideDish.IsEnabled = false;
 
-            _settings.Close();
-            _settings = null;
+                RecipeNew_SideDishList_Name.Text = "";
+            }
+        }
+
+        private void RecipeNew_Save_Click(object sender, RoutedEventArgs e)
+        {
+            if(!isSideDishFormActive && !isIngredientFormActive)
+            {
+                string recipeName = RecipeNew_RecipeName.Text;
+                string recipeNote = RecipeNew_RecipeNote.Text;
+                int recipeServings = Convert.ToInt32(RecipeNew_RecipeServings.Content);
+
+                List<Ingredient> ingredients = new List<Ingredient>();
+                List<SideDish> sideDishes = new List<SideDish>();
+
+                foreach(Ingredient i in RecipeNew_IngredientsList.Items)
+                {
+                    ingredients.Add(i);
+                }
+
+                foreach(SideDish sd in RecipeNew_SideDishList.Items)
+                {
+                    sideDishes.Add(sd);
+                }
+
+                Recipe.Recipe recipe = new Recipe.Recipe(recipeName, recipeNote, recipeServings, ingredients, sideDishes);
+
+                dataHandler.Recipes.Add(recipe);
+
+                uiHandler.ShowGrid("ui_recipe_list");
+
+                _RecipeList();
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            dataHandler.SaveRecipes();
+        }
+
+        private void RecipeList_DeleteRecipe_Click(object sender, RoutedEventArgs e)
+        {
+            if(RecipeList_Recipes.SelectedIndex >= 0)
+            {
+                int index = RecipeList_Recipes.SelectedIndex;
+                Recipe.Recipe r = (Recipe.Recipe)RecipeList_Recipes.SelectedItem;
+
+                RecipeList_Recipes.Items.RemoveAt(index);
+                dataHandler.Recipes.Remove(r);
+
+                _RecipeList();
+            }
         }
     }
 }
