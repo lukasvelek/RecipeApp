@@ -1,3 +1,9 @@
+# Recipe App 2.1
+- new single recipe window
+- added support for preparation time (cooking time)
+- added support for random recipe
+- bugs fixed
+
 # Recipe App 2.0
 - complete overhaul
 	- deleted all previous files including all source code

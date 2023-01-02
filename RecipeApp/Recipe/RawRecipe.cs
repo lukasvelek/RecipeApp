@@ -8,15 +8,17 @@ namespace RecipeApp.Recipe
         public string Name { get; set; }
         public string Note { get; set; }
         public string Servings { get; set; }
+        public string TimeNeededMinutes { get; set; }
 
         public List<string> Ingredients { get; set; }
         public List<string> SideDishes { get; set; }
 
-        public RawRecipe(string name, string note, string servings, List<string>? ingredients = null, List<string>? sideDishes = null)
+        public RawRecipe(string name, string note, string servings, string timeNeededMinutes, List<string>? ingredients = null, List<string>? sideDishes = null)
         {
             Name = name;
             Note = note;
             Servings = servings;
+            TimeNeededMinutes = timeNeededMinutes;
 
             if (ingredients != null)
             {
@@ -58,7 +60,7 @@ namespace RecipeApp.Recipe
                 sideDishes.Add(new SideDish(name));
             }
 
-            Recipe r = new Recipe(Name, Note, Convert.ToInt32(Servings), ingredients, sideDishes);
+            Recipe r = new Recipe(Name, Note, Convert.ToInt32(Servings), Convert.ToInt32(TimeNeededMinutes), ingredients, sideDishes);
 
             return r;
         }
