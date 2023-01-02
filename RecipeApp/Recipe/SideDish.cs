@@ -2,7 +2,7 @@
 {
     public class SideDish
     {
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         public SideDish(string name)
         {

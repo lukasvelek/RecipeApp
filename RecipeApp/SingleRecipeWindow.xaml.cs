@@ -6,14 +6,11 @@ namespace RecipeApp
 {
     public partial class SingleRecipeWindow : Window
     {
-        UIHandler uiHandler;
+        private static UIHandler uiHandler = new UIHandler();
 
         public SingleRecipeWindow()
         {
             InitializeComponent();
-
-            // Handler initialization
-            uiHandler = new UIHandler();
 
             // Grid initialization
             uiHandler.AddGrid(RecipeSingle, "ui_recipe_single");

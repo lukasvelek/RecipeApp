@@ -4,11 +4,11 @@ namespace RecipeApp.Recipe
 {
     public class Recipe
     {
-        public string Name { get; set; }
-        public string Note { get; set; }
+        public string Name { get; private set; }
+        public string Note { get; private set; }
 
-        public int Servings { get; set; }
-        public int TimeNeededMinutes { get; set; }
+        public int Servings { get; private set; }
+        public int TimeNeededMinutes { get; private set; }
 
         public List<Ingredient> Ingredients { get; private set; }
         public List<SideDish> AvailableSideDish { get; private set; }

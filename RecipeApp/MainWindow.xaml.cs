@@ -324,10 +324,9 @@ namespace RecipeApp
             }
             else
             {
-                SideDish sd = (SideDish)RecipeNew_SideDishList.SelectedItem;
                 int index = RecipeNew_SideDishList.SelectedIndex;
 
-                sd.Name = RecipeNew_SideDishList_Name.Text;
+                SideDish sd = new SideDish(RecipeNew_SideDishList_Name.Text);
 
                 RecipeNew_SideDishList.Items[index] = sd;
             }
