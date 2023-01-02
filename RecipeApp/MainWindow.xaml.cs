@@ -32,7 +32,6 @@ namespace RecipeApp
             uiHandler.AddGrid(RecipeMain, "ui_main_menu");
             uiHandler.AddGrid(RecipeList, "ui_recipe_list");
             uiHandler.AddGrid(RecipeNew, "ui_recipe_new");
-            uiHandler.AddGrid(RecipeRandom, "ui_recipe_random");
 
             uiHandler.HideAllGrids();
 

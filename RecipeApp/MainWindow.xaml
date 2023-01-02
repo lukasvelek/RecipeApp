@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Recepty" Height="600" Width="800" Closing="Window_Closing" SnapsToDevicePixels="True">
     <Grid>
-        <Grid x:Name="RecipeMain" Visibility="Hidden">
+        <Grid x:Name="RecipeMain" Visibility="Visible">
             <Button x:Name="OpenRecipeList" Content="Spravovat recepty" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="150" Height="50" Click="RecipeList_Click"/>
             <Button x:Name="RecipeRandom_Generate" Content="Generovat náhodný recept" HorizontalAlignment="Left" Margin="10,65,0,0" Height="50" Width="175" VerticalAlignment="Top" Click="RecipeRandom_Generate_Click"/>
         </Grid>
@@ -62,10 +62,6 @@
             <Button x:Name="RecipeNew_SideDishList_SaveSideDish"  Content="Uložit přílohu" HorizontalAlignment="Left" Margin="639,399,0,0" VerticalAlignment="Top" Width="125" Height="50" Click="RecipeNew_SideDishList_SaveSideDish_Click"/>
             <Label Content="Potřebný čas (minuty):" HorizontalAlignment="Left" Margin="242,127,0,0" VerticalAlignment="Top"/>
             <TextBox x:Name="RecipeNew_RecipeTimeNeeded"  HorizontalAlignment="Left" Margin="374,130,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="110" Height="23"/>
-        </Grid>
-
-        <Grid x:Name="RecipeRandom" Visibility="Visible">
-            <Button x:Name="RecipeRandom_Back" Content="Zpět" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="RecipeRandom_Back_Click"/>
         </Grid>
     </Grid>
 </Window>
