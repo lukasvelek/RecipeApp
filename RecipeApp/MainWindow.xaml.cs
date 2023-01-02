@@ -91,6 +91,8 @@ namespace RecipeApp
             RecipeNew_RecipeServingsSlider.Value = 1;
             RecipeNew_RecipeServings.Content = "1";
 
+            RecipeNew_IngredientsList_Units.Items.Clear();
+
             RecipeNew_IngredientsList_Units.Items.Add("g");
             RecipeNew_IngredientsList_Units.Items.Add("kg");
             RecipeNew_IngredientsList_Units.Items.Add("ml");
@@ -215,14 +217,15 @@ namespace RecipeApp
             }
             else
             {
-                Ingredient i = (Ingredient)RecipeNew_IngredientsList.SelectedItem;
                 int index = RecipeNew_IngredientsList.SelectedIndex;
 
-                i.Name = RecipeNew_IngredientsList_Name.Text;
-                i.Value = Convert.ToInt32(RecipeNew_IngredientsList_Volume);
-                i.Units = RecipeNew_IngredientsList_Units.Text;
+                string name = RecipeNew_IngredientsList_Name.Text;
+                int value = Convert.ToInt32(RecipeNew_IngredientsList_Volume.Text);
+                string units = RecipeNew_IngredientsList_Units.Text;
 
-                RecipeNew_IngredientsList.Items[index] = i;
+                Ingredient ni = new Ingredient(name, value, units);
+
+                RecipeNew_IngredientsList.Items[index] = ni;
             }
 
             RecipeNew_IngredientsList_Name.IsEnabled = false;
