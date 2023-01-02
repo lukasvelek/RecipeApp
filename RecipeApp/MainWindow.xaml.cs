@@ -8,11 +8,11 @@ namespace RecipeApp
 {
     public partial class MainWindow : Window
     {
-        private const string VERSION = "2.1";
+        private const string VERSION = "2.2";
 
-        UIHandler uiHandler;
-        DataHandler dataHandler;
-        Randomizer randomizer;
+        private static UIHandler uiHandler = new UIHandler();
+        private static DataHandler dataHandler = new DataHandler();
+        private static Randomizer randomizer = new Randomizer();
 
         bool newIngredient = false;
         bool newSideDish = false;
@@ -26,9 +26,6 @@ namespace RecipeApp
 
 
             // Object initialization
-            uiHandler = new UIHandler();
-            dataHandler = new DataHandler();
-            randomizer = new Randomizer();
 
 
             // Grid initialization

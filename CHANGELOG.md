@@ -1,3 +1,5 @@
+# Recipe App 2.2
+
 # Recipe App 2.1
 - new single recipe window
 - added support for preparation time (cooking time)
