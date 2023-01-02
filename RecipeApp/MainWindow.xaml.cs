@@ -1,28 +1,18 @@
-﻿using System;
+﻿using RecipeApp.Recipe;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.IO;
-using RecipeApp.Recipe;
 
 namespace RecipeApp
 {
     public partial class MainWindow : Window
     {
-        private const string VERSION = "2.0";
+        private const string VERSION = "2.1";
 
         UIHandler uiHandler;
         DataHandler dataHandler;
+        Randomizer randomizer;
 
         bool newIngredient = false;
         bool newSideDish = false;
@@ -38,18 +28,21 @@ namespace RecipeApp
             // Object initialization
             uiHandler = new UIHandler();
             dataHandler = new DataHandler();
+            randomizer = new Randomizer();
 
 
             // Grid initialization
             uiHandler.AddGrid(RecipeMain, "ui_main_menu");
             uiHandler.AddGrid(RecipeList, "ui_recipe_list");
             uiHandler.AddGrid(RecipeNew, "ui_recipe_new");
+            uiHandler.AddGrid(RecipeRandom, "ui_recipe_random");
 
             uiHandler.HideAllGrids();
 
 
             // Data initialization
             dataHandler.LoadRecipes();
+            randomizer.Shuffle(dataHandler.Recipes);
 
 
             // Initial configuration
@@ -61,14 +54,14 @@ namespace RecipeApp
 
         private void _RecipeList()
         {
-            if(RecipeList_Recipes.Items.Count > 0)
+            if (RecipeList_Recipes.Items.Count > 0)
             {
                 RecipeList_Recipes.Items.Clear();
             }
 
             uiHandler.RecipeListFill(RecipeList_Recipes, dataHandler.Recipes);
 
-            if(RecipeList_Recipes.SelectedIndex >= 0)
+            if (RecipeList_Recipes.SelectedIndex >= 0)
             {
                 RecipeList_DeleteRecipe.IsEnabled = true;
                 RecipeList_EditRecipe.IsEnabled = true;
@@ -81,6 +74,7 @@ namespace RecipeApp
                 RecipeList_RecipeName.Content = "";
                 RecipeList_RecipeNote.Content = "";
                 RecipeList_RecipeServings.Content = "";
+                RecipeList_RecipeTimeNeeded.Content = "";
                 RecipeList_RecipeIngredients.Items.Clear();
                 RecipeList_RecipeSideDishes.Items.Clear();
             }
@@ -133,22 +127,23 @@ namespace RecipeApp
         {
             Recipe.Recipe r = (Recipe.Recipe)RecipeList_Recipes.SelectedItem;
 
-            if(r != null)
+            if (r != null)
             {
                 RecipeList_RecipeName.Content = r.Name;
-                RecipeList_RecipeServings.Content = r.Servings.ToString();
                 RecipeList_RecipeNote.Content = r.Note;
+                RecipeList_RecipeServings.Content = r.Servings.ToString();
+                RecipeList_RecipeTimeNeeded.Content = r.TimeNeededMinutes.ToString();
 
                 RecipeList_RecipeSideDishes.Items.Clear();
-                
-                foreach(SideDish sd in r.AvailableSideDish)
+
+                foreach (SideDish sd in r.AvailableSideDish)
                 {
                     RecipeList_RecipeSideDishes.Items.Add(sd);
                 }
 
                 RecipeList_RecipeIngredients.Items.Clear();
 
-                foreach(Ingredient i in r.Ingredients)
+                foreach (Ingredient i in r.Ingredients)
                 {
                     RecipeList_RecipeIngredients.Items.Add(i);
                 }
@@ -171,9 +166,9 @@ namespace RecipeApp
 
         private void RecipeNew_RecipeServingsSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if(RecipeNew_RecipeServingsSlider.Value >= 1 && RecipeNew_RecipeServingsSlider.Value <= 8)
+            if (RecipeNew_RecipeServingsSlider.Value >= 1 && RecipeNew_RecipeServingsSlider.Value <= 8)
             {
-                if(RecipeNew_RecipeServings != null)
+                if (RecipeNew_RecipeServings != null)
                 {
                     RecipeNew_RecipeServings.Content = Convert.ToInt32(RecipeNew_RecipeServingsSlider.Value);
                 }
@@ -245,14 +240,14 @@ namespace RecipeApp
 
         private void RecipeNew_IngredientsList_DeleteIngredient_Click(object sender, RoutedEventArgs e)
         {
-            if(RecipeNew_IngredientsList.SelectedIndex >= 0)
+            if (RecipeNew_IngredientsList.SelectedIndex >= 0)
             {
                 Ingredient i = (Ingredient)RecipeNew_IngredientsList.SelectedItem;
                 int index = RecipeNew_IngredientsList.SelectedIndex;
 
-                if(RecipeNew_IngredientsList.Items.Count > 1)
+                if (RecipeNew_IngredientsList.Items.Count > 1)
                 {
-                    if(index - 1 >= 0)
+                    if (index - 1 >= 0)
                     {
                         RecipeNew_IngredientsList.SelectedIndex = index - 1;
                     }
@@ -306,7 +301,7 @@ namespace RecipeApp
             RecipeNew_SideDishList_Name.Text = "";
 
             RecipeNew_SideDishList.IsEnabled = false;
-            
+
             RecipeNew_SideDishList_Name.IsEnabled = true;
             RecipeNew_SideDishList_DeleteSideDish.IsEnabled = false;
             RecipeNew_SideDishList_EditSideDish.IsEnabled = false;
@@ -372,7 +367,7 @@ namespace RecipeApp
         {
             if (RecipeNew_SideDishList.SelectedIndex >= 0)
             {
-                Ingredient i = (Ingredient)RecipeNew_SideDishList.SelectedItem;
+                SideDish sd = (SideDish)RecipeNew_SideDishList.SelectedItem;
                 int index = RecipeNew_SideDishList.SelectedIndex;
 
                 if (RecipeNew_SideDishList.Items.Count > 1)
@@ -391,7 +386,7 @@ namespace RecipeApp
                     RecipeNew_SideDishList.SelectedIndex = -1;
                 }
 
-                RecipeNew_SideDishList.Items.Remove(i);
+                RecipeNew_SideDishList.Items.Remove(sd);
             }
         }
 
@@ -409,28 +404,54 @@ namespace RecipeApp
 
         private void RecipeNew_Save_Click(object sender, RoutedEventArgs e)
         {
-            if(!isSideDishFormActive && !isIngredientFormActive)
+            if (!isSideDishFormActive && !isIngredientFormActive)
             {
-                string recipeName = RecipeNew_RecipeName.Text;
-                string recipeNote = RecipeNew_RecipeNote.Text;
-                int recipeServings = Convert.ToInt32(RecipeNew_RecipeServings.Content);
+                string recipeName = "";
+                string recipeNote = "";
+                int recipeServings = 0;
+                int recipeTimeNeededMinutes = 0;
+
+                if (RecipeNew_RecipeName.Text != "")
+                {
+                    recipeName = RecipeNew_RecipeName.Text;
+                }
+
+                if (RecipeNew_RecipeNote.Text != "")
+                {
+                    recipeNote = RecipeNew_RecipeNote.Text;
+                }
+
+                if (RecipeNew_RecipeTimeNeeded.Text != "")
+                {
+                    recipeTimeNeededMinutes = Convert.ToInt32(RecipeNew_RecipeTimeNeeded.Text);
+                }
+
+                recipeServings = Convert.ToInt32(RecipeNew_RecipeServings.Content);
 
                 List<Ingredient> ingredients = new List<Ingredient>();
                 List<SideDish> sideDishes = new List<SideDish>();
 
-                foreach(Ingredient i in RecipeNew_IngredientsList.Items)
+                foreach (Ingredient i in RecipeNew_IngredientsList.Items)
                 {
                     ingredients.Add(i);
                 }
 
-                foreach(SideDish sd in RecipeNew_SideDishList.Items)
+                foreach (SideDish sd in RecipeNew_SideDishList.Items)
                 {
                     sideDishes.Add(sd);
                 }
 
-                Recipe.Recipe recipe = new Recipe.Recipe(recipeName, recipeNote, recipeServings, ingredients, sideDishes);
+                Recipe.Recipe recipe = new Recipe.Recipe(recipeName, recipeNote, recipeServings, recipeTimeNeededMinutes, ingredients, sideDishes);
 
                 dataHandler.Recipes.Add(recipe);
+
+                RecipeNew_RecipeName.Text = "";
+                RecipeNew_RecipeNote.Text = "";
+                RecipeNew_RecipeTimeNeeded.Text = "";
+                RecipeNew_IngredientsList.Items.Clear();
+                RecipeNew_SideDishList.Items.Clear();
+                RecipeNew_RecipeServings.Content = "";
+                RecipeNew_RecipeServingsSlider.Value = 1;
 
                 uiHandler.ShowGrid("ui_recipe_list");
 
@@ -445,7 +466,7 @@ namespace RecipeApp
 
         private void RecipeList_DeleteRecipe_Click(object sender, RoutedEventArgs e)
         {
-            if(RecipeList_Recipes.SelectedIndex >= 0)
+            if (RecipeList_Recipes.SelectedIndex >= 0)
             {
                 int index = RecipeList_Recipes.SelectedIndex;
                 Recipe.Recipe r = (Recipe.Recipe)RecipeList_Recipes.SelectedItem;
@@ -455,6 +476,21 @@ namespace RecipeApp
 
                 _RecipeList();
             }
+        }
+
+        private void RecipeRandom_Back_Click(object sender, RoutedEventArgs e)
+        {
+            uiHandler.ShowGrid("ui_main_menu");
+        }
+
+        private void RecipeRandom_Generate_Click(object sender, RoutedEventArgs e)
+        {
+            SingleRecipeWindow srw = new SingleRecipeWindow();
+
+            randomizer.RandomRecipe();
+
+            srw.LoadRecipe(randomizer.LastRecipe);
+            srw.Show();
         }
     }
 }
