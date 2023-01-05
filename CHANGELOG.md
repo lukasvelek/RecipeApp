@@ -1,4 +1,5 @@
 # Recipe App 2.2
+- added support for exporting to HTML as website
 
 # Recipe App 2.1
 - new single recipe window

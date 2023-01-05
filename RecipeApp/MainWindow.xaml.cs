@@ -487,5 +487,17 @@ namespace RecipeApp
             srw.LoadRecipe(randomizer.LastRecipe);
             srw.Show();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            RecipeForm rf = new RecipeForm();
+
+            rf.ShowDialog();
+
+            if(rf._Recipe != null)
+            {
+                dataHandler.Recipes.Add(rf._Recipe);
+            }
+        }
     }
 }
