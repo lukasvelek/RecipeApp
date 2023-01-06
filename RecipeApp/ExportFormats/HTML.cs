@@ -5,11 +5,6 @@ namespace RecipeApp.ExportFormats
 {
     public class HTML
     {
-        public HTML()
-        {
-
-        }
-
         public List<ExportDocument> ExportRecipes(List<Recipe.Recipe> recipes)
         {
             List<ExportDocument> ed = new List<ExportDocument>();

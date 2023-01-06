@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Markup.Localizer;
 
 namespace RecipeApp
 {
@@ -23,9 +22,9 @@ namespace RecipeApp
 
         public void WindowOpen(string name)
         {
-            foreach(UI.WindowElement window in WindowList)
+            foreach (UI.WindowElement window in WindowList)
             {
-                if(window.Name == name)
+                if (window.Name == name)
                 {
                     Window w = window.Window;
 
@@ -52,7 +51,7 @@ namespace RecipeApp
 
         public void CloseAllWindows()
         {
-            for(int i = 1; i < WindowList.Count + 1; i++)
+            for (int i = 1; i < WindowList.Count + 1; i++)
             {
                 WindowList[i - 1].Window = null;
             }

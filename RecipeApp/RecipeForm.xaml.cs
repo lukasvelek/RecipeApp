@@ -1,18 +1,7 @@
 ﻿using RecipeApp.Recipe;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace RecipeApp
 {
@@ -65,12 +54,12 @@ namespace RecipeApp
             RecipeForm_Main_Name.Text = name;
             RecipeForm_Main_Note.Text = note;
 
-            foreach(Ingredient i in Ingredients)
+            foreach (Ingredient i in Ingredients)
             {
                 RecipeForm_Main_IngredientsList.Items.Add(i);
             }
 
-            foreach(SideDish sd in SideDishes)
+            foreach (SideDish sd in SideDishes)
             {
                 RecipeForm_Main_SideDishesList.Items.Add(sd);
             }
@@ -88,15 +77,15 @@ namespace RecipeApp
 
             RecipeForm_SideDishes_Name.IsEnabled = false;
 
-            if(SideDishes.Count > 0)
+            if (SideDishes.Count > 0)
             {
-                foreach(SideDish sd in SideDishes)
+                foreach (SideDish sd in SideDishes)
                 {
                     RecipeForm_SideDishes_List.Items.Add(sd);
                 }
             }
 
-            if(RecipeForm_SideDishes_List.Items.Count > 0)
+            if (RecipeForm_SideDishes_List.Items.Count > 0)
             {
                 RecipeForm_SideDishes_List.SelectedIndex = 0;
 
@@ -115,7 +104,7 @@ namespace RecipeApp
         {
             RecipeForm_Ingredients_List.Items.Clear();
             RecipeForm_Ingredients_Units.Items.Clear();
-            
+
             RecipeForm_Ingredients_Value.Text = "";
             RecipeForm_Ingredients_Name.Text = "";
 
@@ -136,9 +125,9 @@ namespace RecipeApp
             RecipeForm_Ingredients_Value.IsEnabled = false;
             RecipeForm_Ingredients_Units.IsEnabled = false;
 
-            if(Ingredients.Count > 0)
+            if (Ingredients.Count > 0)
             {
-                foreach(Ingredient i in Ingredients)
+                foreach (Ingredient i in Ingredients)
                 {
                     RecipeForm_Ingredients_List.Items.Add(i);
                 }
@@ -177,7 +166,7 @@ namespace RecipeApp
             double value = RecipeForm_Main_ServingsSlider.Value;
             string text = "1";
 
-            if(value == 11)
+            if (value == 11)
             {
                 text = "10+";
             }
@@ -186,7 +175,7 @@ namespace RecipeApp
                 text = value.ToString();
             }
 
-            if(RecipeForm_Main_ServingsText != null)
+            if (RecipeForm_Main_ServingsText != null)
             {
                 RecipeForm_Main_ServingsText.Content = text;
             }
@@ -196,7 +185,7 @@ namespace RecipeApp
 
         private void RecipeForm_Main_Save_Click(object sender, RoutedEventArgs e)
         {
-            if(RecipeForm_Main_Name.Text != "" &&
+            if (RecipeForm_Main_Name.Text != "" &&
                RecipeForm_Main_IngredientsList.Items.Count > 0)
             {
                 Recipe.Recipe r;
@@ -209,14 +198,14 @@ namespace RecipeApp
                 List<Ingredient> ingredients = new List<Ingredient>();
                 List<SideDish> sideDishes = new List<SideDish>();
 
-                foreach(var item in RecipeForm_Main_IngredientsList.Items)
+                foreach (var item in RecipeForm_Main_IngredientsList.Items)
                 {
                     Ingredient i = (Ingredient)item;
 
                     ingredients.Add(i);
                 }
 
-                foreach(var item in RecipeForm_Main_SideDishesList.Items)
+                foreach (var item in RecipeForm_Main_SideDishesList.Items)
                 {
                     SideDish sd = (SideDish)item;
 

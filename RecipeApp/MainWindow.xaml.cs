@@ -1,6 +1,4 @@
 ﻿using RecipeApp.Recipe;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -120,7 +118,7 @@ namespace RecipeApp
 
             uiHandler.WindowOpen("window_recipeform");
 
-            if(rf._Recipe != null)
+            if (rf._Recipe != null)
             {
                 dataHandler.Recipes.Add(rf._Recipe);
 
