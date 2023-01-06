@@ -1,5 +1,6 @@
 ﻿using RecipeApp.Recipe;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 
 namespace RecipeApp
@@ -20,8 +21,8 @@ namespace RecipeApp
         {
             string name = recipe.Name;
             string note = recipe.Note;
-            int servings = recipe.Servings;
-            int timeNeeded = recipe.TimeNeededMinutes;
+            string servings = recipe.Servings;
+            string timeNeeded = recipe.TimeNeededMinutes;
 
             List<Ingredient> ingredients = recipe.Ingredients;
             List<SideDish> sideDishes = recipe.AvailableSideDish;

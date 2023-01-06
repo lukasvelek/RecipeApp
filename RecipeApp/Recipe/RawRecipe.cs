@@ -60,7 +60,7 @@ namespace RecipeApp.Recipe
                 sideDishes.Add(new SideDish(name));
             }
 
-            Recipe r = new Recipe(Name, Note, Convert.ToInt32(Servings), Convert.ToInt32(TimeNeededMinutes), ingredients, sideDishes);
+            Recipe r = new Recipe(Name, Note, Servings, TimeNeededMinutes, ingredients, sideDishes);
 
             return r;
         }

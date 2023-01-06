@@ -7,13 +7,13 @@ namespace RecipeApp.Recipe
         public string Name { get; private set; }
         public string Note { get; private set; }
 
-        public int Servings { get; private set; }
-        public int TimeNeededMinutes { get; private set; }
+        public string Servings { get; private set; }
+        public string TimeNeededMinutes { get; private set; }
 
         public List<Ingredient> Ingredients { get; private set; }
         public List<SideDish> AvailableSideDish { get; private set; }
 
-        public Recipe(string name, string note, int servings, int timeNeededMinutes, List<Ingredient>? ingredients = null, List<SideDish>? sideDish = null)
+        public Recipe(string name, string note, string servings, string timeNeededMinutes, List<Ingredient>? ingredients = null, List<SideDish>? sideDish = null)
         {
             if (ingredients == null || ingredients.Count == 0)
             {

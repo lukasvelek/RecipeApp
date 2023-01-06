@@ -1,16 +1,61 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup.Localizer;
 
 namespace RecipeApp
 {
     public class UIHandler
     {
         public List<UI.GridElement> GridList;
+        public List<UI.WindowElement> WindowList;
 
         public UIHandler()
         {
             GridList = new List<UI.GridElement>();
+            WindowList = new List<UI.WindowElement>();
+        }
+
+        public void AddWindow(Window window, string name)
+        {
+            WindowList.Add(new UI.WindowElement(window, name));
+        }
+
+        public void WindowOpen(string name)
+        {
+            foreach(UI.WindowElement window in WindowList)
+            {
+                if(window.Name == name)
+                {
+                    Window w = window.Window;
+
+                    w.Show();
+                }
+            }
+        }
+
+        public Window GetWindow(string name)
+        {
+            Window? w = null;
+
+            foreach (UI.WindowElement window in WindowList)
+            {
+                if (window.Name == name)
+                {
+                    w = window.Window;
+                    break;
+                }
+            }
+
+            return w;
+        }
+
+        public void CloseAllWindows()
+        {
+            for(int i = 1; i < WindowList.Count + 1; i++)
+            {
+                WindowList[i - 1].Window = null;
+            }
         }
 
         public void AddGrid(Grid g, string name)
