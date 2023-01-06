@@ -6,8 +6,8 @@ namespace RecipeApp
 {
     public class UIHandler
     {
-        public List<UI.GridElement> GridList;
-        public List<UI.WindowElement> WindowList;
+        private List<UI.GridElement> GridList;
+        private List<UI.WindowElement> WindowList;
 
         public UIHandler()
         {
@@ -47,14 +47,6 @@ namespace RecipeApp
             }
 
             return w;
-        }
-
-        public void CloseAllWindows()
-        {
-            for (int i = 1; i < WindowList.Count + 1; i++)
-            {
-                WindowList[i - 1].Window = null;
-            }
         }
 
         public void AddGrid(Grid g, string name)

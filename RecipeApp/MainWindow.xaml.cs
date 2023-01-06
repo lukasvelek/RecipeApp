@@ -126,7 +126,7 @@ namespace RecipeApp
             }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
             dataHandler.SaveRecipes();
         }
@@ -159,13 +159,6 @@ namespace RecipeApp
             srw.LoadRecipe(randomizer.LastRecipe);
 
             uiHandler.WindowOpen("window_singlerecipe");
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            uiHandler.CloseAllWindows();
-
-            e.Cancel = false;
         }
     }
 }
