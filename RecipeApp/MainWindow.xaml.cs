@@ -1,5 +1,4 @@
-﻿using RecipeApp.Recipe;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -128,7 +127,7 @@ namespace RecipeApp
 
         private void RecipeList_OpenRecipe_Click(object sender, RoutedEventArgs e)
         {
-            if(RecipeList_Recipes.SelectedItem != null)
+            if (RecipeList_Recipes.SelectedItem != null)
             {
                 SingleRecipeWindow srw = new SingleRecipeWindow();
 
@@ -139,14 +138,14 @@ namespace RecipeApp
 
         private void RecipeList_EditRecipe_Click(object sender, RoutedEventArgs e)
         {
-            if(RecipeList_Recipes.SelectedItem != null)
+            if (RecipeList_Recipes.SelectedItem != null)
             {
                 RecipeForm rf = new RecipeForm();
 
                 rf.LoadEditRecipe((Recipe.Recipe)RecipeList_Recipes.SelectedItem);
                 rf.ShowDialog();
 
-                if(rf._Recipe != null)
+                if (rf._Recipe != null)
                 {
                     if (rf._Edit)
                     {

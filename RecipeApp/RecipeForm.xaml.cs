@@ -50,7 +50,7 @@ namespace RecipeApp
             name = recipe.Name;
             note = recipe.Note;
 
-            if(recipe.Servings == "10+")
+            if (recipe.Servings == "10+")
             {
                 servings = 11;
                 RecipeForm_Main_ServingsText.Content = servings.ToString();
@@ -61,7 +61,7 @@ namespace RecipeApp
                 RecipeForm_Main_ServingsText.Content = servings.ToString();
             }
 
-            if(recipe.TimeNeededMinutes == "240+")
+            if (recipe.TimeNeededMinutes == "240+")
             {
                 timeNeeded = 250;
                 RecipeForm_Main_TimeNeededText.Content = "240+ minut";
@@ -84,12 +84,12 @@ namespace RecipeApp
             RecipeForm_Main_ServingsText.Content = servings.ToString();
             RecipeForm_Main_TimeNeededText.Content = timeNeeded.ToString();
 
-            foreach(Ingredient i in Ingredients)
+            foreach (Ingredient i in Ingredients)
             {
                 RecipeForm_Main_IngredientsList.Items.Add(i);
             }
 
-            foreach(SideDish sd in SideDishes)
+            foreach (SideDish sd in SideDishes)
             {
                 RecipeForm_Main_SideDishesList.Items.Add(sd);
             }
