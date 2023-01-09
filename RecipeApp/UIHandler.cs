@@ -7,46 +7,10 @@ namespace RecipeApp
     public class UIHandler
     {
         private List<UI.GridElement> GridList;
-        private List<UI.WindowElement> WindowList;
 
         public UIHandler()
         {
             GridList = new List<UI.GridElement>();
-            WindowList = new List<UI.WindowElement>();
-        }
-
-        public void AddWindow(Window window, string name)
-        {
-            WindowList.Add(new UI.WindowElement(window, name));
-        }
-
-        public void WindowOpen(string name)
-        {
-            foreach (UI.WindowElement window in WindowList)
-            {
-                if (window.Name == name)
-                {
-                    Window w = window.Window;
-
-                    w.Show();
-                }
-            }
-        }
-
-        public Window GetWindow(string name)
-        {
-            Window? w = null;
-
-            foreach (UI.WindowElement window in WindowList)
-            {
-                if (window.Name == name)
-                {
-                    w = window.Window;
-                    break;
-                }
-            }
-
-            return w;
         }
 
         public void AddGrid(Grid g, string name)

@@ -11,6 +11,8 @@ namespace RecipeApp
 
         public Recipe.Recipe? _Recipe = null;
 
+        public bool _Edit = false;
+
         private List<Ingredient> Ingredients = new List<Ingredient>();
         private List<SideDish> SideDishes = new List<SideDish>();
 
@@ -22,8 +24,6 @@ namespace RecipeApp
 
         private bool newIngredient = false;
         private bool newSideDish = false;
-
-        private bool _enableClose = false;
 
         public RecipeForm()
         {
@@ -41,6 +41,58 @@ namespace RecipeApp
 
             RecipeForm_Main_ServingsText.Content = "1";
             RecipeForm_Main_TimeNeededText.Content = "10 minut";
+        }
+
+        public void LoadEditRecipe(Recipe.Recipe recipe)
+        {
+            _Edit = true;
+
+            name = recipe.Name;
+            note = recipe.Note;
+
+            if(recipe.Servings == "10+")
+            {
+                servings = 11;
+                RecipeForm_Main_ServingsText.Content = servings.ToString();
+            }
+            else
+            {
+                servings = Convert.ToInt32(recipe.Servings);
+                RecipeForm_Main_ServingsText.Content = servings.ToString();
+            }
+
+            if(recipe.TimeNeededMinutes == "240+")
+            {
+                timeNeeded = 250;
+                RecipeForm_Main_TimeNeededText.Content = "240+ minut";
+            }
+            else
+            {
+                timeNeeded = Convert.ToInt32(recipe.TimeNeededMinutes);
+                RecipeForm_Main_TimeNeededText.Content = timeNeeded;
+            }
+
+            Ingredients = recipe.Ingredients;
+            SideDishes = recipe.AvailableSideDish;
+
+            RecipeForm_Main_Name.Text = name;
+            RecipeForm_Main_Note.Text = note;
+
+            RecipeForm_Main_TimeNeededSlider.Value = timeNeeded;
+            RecipeForm_Main_ServingsSlider.Value = servings;
+
+            RecipeForm_Main_ServingsText.Content = servings.ToString();
+            RecipeForm_Main_TimeNeededText.Content = timeNeeded.ToString();
+
+            foreach(Ingredient i in Ingredients)
+            {
+                RecipeForm_Main_IngredientsList.Items.Add(i);
+            }
+
+            foreach(SideDish sd in SideDishes)
+            {
+                RecipeForm_Main_SideDishesList.Items.Add(sd);
+            }
         }
 
         private void _RecipeForm()
@@ -67,6 +119,9 @@ namespace RecipeApp
 
         private void _SideDishes()
         {
+            name = RecipeForm_Main_Name.Text;
+            note = RecipeForm_Main_Note.Text;
+
             RecipeForm_SideDishes_List.Items.Clear();
 
             RecipeForm_SideDishes_Name.Text = "";
@@ -102,6 +157,9 @@ namespace RecipeApp
 
         private void _Ingredients()
         {
+            name = RecipeForm_Main_Name.Text;
+            note = RecipeForm_Main_Note.Text;
+
             RecipeForm_Ingredients_List.Items.Clear();
             RecipeForm_Ingredients_Units.Items.Clear();
 

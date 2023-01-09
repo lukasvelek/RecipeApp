@@ -28,11 +28,6 @@ namespace RecipeApp
             uiHandler.HideAllGrids();
 
 
-            // Window initialization
-            uiHandler.AddWindow(new RecipeForm(), "window_recipeform");
-            uiHandler.AddWindow(new SingleRecipeWindow(), "window_singlerecipe");
-
-
             // Data initialization
             dataHandler.LoadRecipes();
             randomizer.Shuffle(dataHandler.Recipes);
@@ -63,13 +58,6 @@ namespace RecipeApp
             {
                 RecipeList_DeleteRecipe.IsEnabled = false;
                 RecipeList_EditRecipe.IsEnabled = false;
-
-                RecipeList_RecipeName.Content = "";
-                RecipeList_RecipeNote.Content = "";
-                RecipeList_RecipeServings.Content = "";
-                RecipeList_RecipeTimeNeeded.Content = "";
-                RecipeList_RecipeIngredients.Items.Clear();
-                RecipeList_RecipeSideDishes.Items.Clear();
             }
         }
 
@@ -88,35 +76,13 @@ namespace RecipeApp
         private void RecipeList_Recipes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Recipe.Recipe r = (Recipe.Recipe)RecipeList_Recipes.SelectedItem;
-
-            if (r != null)
-            {
-                RecipeList_RecipeName.Content = r.Name;
-                RecipeList_RecipeNote.Content = r.Note;
-                RecipeList_RecipeServings.Content = r.Servings.ToString();
-                RecipeList_RecipeTimeNeeded.Content = r.TimeNeededMinutes.ToString();
-
-                RecipeList_RecipeSideDishes.Items.Clear();
-
-                foreach (SideDish sd in r.AvailableSideDish)
-                {
-                    RecipeList_RecipeSideDishes.Items.Add(sd);
-                }
-
-                RecipeList_RecipeIngredients.Items.Clear();
-
-                foreach (Ingredient i in r.Ingredients)
-                {
-                    RecipeList_RecipeIngredients.Items.Add(i);
-                }
-            }
         }
 
         private void RecipeList_NewRecipe_Click(object sender, RoutedEventArgs e)
         {
-            RecipeForm rf = (RecipeForm)uiHandler.GetWindow("window_recipeform");
+            RecipeForm rf = new RecipeForm();
 
-            uiHandler.WindowOpen("window_recipeform");
+            rf.ShowDialog();
 
             if (rf._Recipe != null)
             {
@@ -152,13 +118,47 @@ namespace RecipeApp
 
         private void RecipeRandom_Generate_Click(object sender, RoutedEventArgs e)
         {
-            SingleRecipeWindow srw = (SingleRecipeWindow)uiHandler.GetWindow("window_singlerecipe");
+            SingleRecipeWindow srw = new SingleRecipeWindow();
 
             randomizer.RandomRecipe();
 
             srw.LoadRecipe(randomizer.LastRecipe);
+            srw.ShowDialog();
+        }
 
-            uiHandler.WindowOpen("window_singlerecipe");
+        private void RecipeList_OpenRecipe_Click(object sender, RoutedEventArgs e)
+        {
+            if(RecipeList_Recipes.SelectedItem != null)
+            {
+                SingleRecipeWindow srw = new SingleRecipeWindow();
+
+                srw.LoadRecipe((Recipe.Recipe)RecipeList_Recipes.SelectedItem);
+                srw.Show();
+            }
+        }
+
+        private void RecipeList_EditRecipe_Click(object sender, RoutedEventArgs e)
+        {
+            if(RecipeList_Recipes.SelectedItem != null)
+            {
+                RecipeForm rf = new RecipeForm();
+
+                rf.LoadEditRecipe((Recipe.Recipe)RecipeList_Recipes.SelectedItem);
+                rf.ShowDialog();
+
+                if(rf._Recipe != null)
+                {
+                    if (rf._Edit)
+                    {
+                        int index = RecipeList_Recipes.SelectedIndex;
+
+                        dataHandler.Recipes[index] = rf._Recipe;
+                    }
+
+                    rf._Edit = false;
+                    _RecipeList();
+                }
+            }
         }
     }
 }
