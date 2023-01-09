@@ -7,7 +7,7 @@ namespace RecipeApp
 {
     public partial class MainWindow : Window
     {
-        private const string VERSION = "2.2";
+        private const string VERSION = "2.3";
 
         private static UIHandler uiHandler = new UIHandler();
         private static DataHandler dataHandler = new DataHandler();
