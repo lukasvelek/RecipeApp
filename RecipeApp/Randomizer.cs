@@ -7,7 +7,7 @@ namespace RecipeApp
     {
         private List<Recipe.Recipe> ShuffledRecipes;
 
-        public Recipe.Recipe? LastRecipe { get; set; }
+        public Recipe.Recipe LastRecipe { get; set; }
 
         public Randomizer()
         {

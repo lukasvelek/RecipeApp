@@ -6,14 +6,11 @@ namespace RecipeApp
 {
     public partial class SingleRecipeWindow : Window
     {
-        UIHandler uiHandler;
+        private static UIHandler uiHandler = new UIHandler();
 
         public SingleRecipeWindow()
         {
             InitializeComponent();
-
-            // Handler initialization
-            uiHandler = new UIHandler();
 
             // Grid initialization
             uiHandler.AddGrid(RecipeSingle, "ui_recipe_single");
@@ -23,8 +20,8 @@ namespace RecipeApp
         {
             string name = recipe.Name;
             string note = recipe.Note;
-            int servings = recipe.Servings;
-            int timeNeeded = recipe.TimeNeededMinutes;
+            string servings = recipe.Servings;
+            string timeNeeded = recipe.TimeNeededMinutes;
 
             List<Ingredient> ingredients = recipe.Ingredients;
             List<SideDish> sideDishes = recipe.AvailableSideDish;

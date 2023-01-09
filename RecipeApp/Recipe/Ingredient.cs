@@ -2,9 +2,9 @@
 {
     public class Ingredient
     {
-        public string Name { get; set; }
-        public int Value { get; set; }
-        public string Units { get; set; }
+        public string Name { get; private set; }
+        public int Value { get; private set; }
+        public string Units { get; private set; }
 
         public Ingredient(string name, int value, string units)
         {

@@ -5,13 +5,13 @@ namespace RecipeApp.Recipe
 {
     public class RawRecipe
     {
-        public string Name { get; set; }
-        public string Note { get; set; }
-        public string Servings { get; set; }
-        public string TimeNeededMinutes { get; set; }
+        public string Name { get; private set; }
+        public string Note { get; private set; }
+        public string Servings { get; private set; }
+        public string TimeNeededMinutes { get; private set; }
 
-        public List<string> Ingredients { get; set; }
-        public List<string> SideDishes { get; set; }
+        public List<string> Ingredients { get; private set; }
+        public List<string> SideDishes { get; private set; }
 
         public RawRecipe(string name, string note, string servings, string timeNeededMinutes, List<string>? ingredients = null, List<string>? sideDishes = null)
         {
@@ -60,7 +60,7 @@ namespace RecipeApp.Recipe
                 sideDishes.Add(new SideDish(name));
             }
 
-            Recipe r = new Recipe(Name, Note, Convert.ToInt32(Servings), Convert.ToInt32(TimeNeededMinutes), ingredients, sideDishes);
+            Recipe r = new Recipe(Name, Note, Servings, TimeNeededMinutes, ingredients, sideDishes);
 
             return r;
         }

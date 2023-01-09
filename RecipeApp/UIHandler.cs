@@ -6,7 +6,7 @@ namespace RecipeApp
 {
     public class UIHandler
     {
-        public List<UI.GridElement> GridList;
+        private List<UI.GridElement> GridList;
 
         public UIHandler()
         {
