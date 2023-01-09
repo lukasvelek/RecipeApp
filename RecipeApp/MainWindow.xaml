@@ -10,7 +10,8 @@
     <Grid>
         <Grid x:Name="RecipeMain" Visibility="Hidden">
             <Button x:Name="OpenRecipeList" Content="Spravovat recepty" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="380" Height="285" Click="RecipeList_Click"/>
-            <Button x:Name="RecipeRandom_Generate" Content="Generovat náhodný recept" HorizontalAlignment="Center" Margin="0,300,0,0" Height="275" Width="380" VerticalAlignment="Top" Click="RecipeRandom_Generate_Click"/>
+            <Button x:Name="RecipeRandom_Generate" Content="Generovat náhodné recepty" HorizontalAlignment="Center" Margin="0,300,0,0" Height="208" Width="380" VerticalAlignment="Top" Click="RecipeRandom_Generate_Click"/>
+            <Button x:Name="Settings" Content="Nastavení" HorizontalAlignment="Center" Margin="0,513,0,0" VerticalAlignment="Top" Width="380" Height="62" Click="Settings_Click"/>
         </Grid>
 
         <Grid x:Name="RecipeList" Visibility="Visible">

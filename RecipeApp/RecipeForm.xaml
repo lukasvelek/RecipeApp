@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Recepty - Formulář" Height="450" Width="500" SnapsToDevicePixels="True" ResizeMode="NoResize" WindowStyle="ThreeDBorderWindow">
     <Grid>
-        <Grid x:Name="RecipeForm_Main" Visibility="Visible">
+        <Grid x:Name="RecipeForm_Main" Visibility="Hidden">
             <Button x:Name="RecipeForm_Main_Save" Content="Uložit" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Height="35" Click="RecipeForm_Main_Save_Click"/>
             <Button x:Name="RecipeForm_Main_Cancel" Content="Zrušit" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Height="35" Click="RecipeForm_Main_Cancel_Click"/>
             <Label Content="Název receptu" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
@@ -43,7 +43,7 @@
             <Button x:Name="RecipeForm_Ingredients_Delete" Content="Odstranit" HorizontalAlignment="Left" Margin="380,202,0,0" VerticalAlignment="Top" Height="35" Width="108" Click="RecipeForm_Ingredients_Delete_Click"/>
         </Grid>
 
-        <Grid x:Name="RecipeForm_SideDishes" Visibility="Hidden">
+        <Grid x:Name="RecipeForm_SideDishes" Visibility="Visible">
             <Button x:Name="RecipeForm_SideDishes_Back" Content="Zpět" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Height="35" Click="RecipeForm_SideDishes_Back_Click"/>
             <ListBox x:Name="RecipeForm_SideDishes_List" Margin="10,50,240,10"/>
             <Label Content="Název přílohy" HorizontalAlignment="Left" Margin="265,50,0,0" VerticalAlignment="Top"/>

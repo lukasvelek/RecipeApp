@@ -9,12 +9,29 @@ namespace RecipeApp
     public class DataHandler
     {
         private const string RECIPES_ZIP = "recipes.zip";
+        private const string RECIPES_CONFIG = "recipes.ini";
+
+        public string LANGUAGE = "";
 
         public List<Recipe.Recipe> Recipes;
 
         public DataHandler()
         {
             Recipes = new List<Recipe.Recipe>();
+        }
+
+        public void SaveConfig()
+        {
+            if (!File.Exists(RECIPES_CONFIG))
+            {
+                File.Create(RECIPES_CONFIG);
+            }
+
+            List<string> config = new List<string>();
+
+            config.Add("lang=" + LANGUAGE);
+
+            File.WriteAllLines(RECIPES_CONFIG, config);
         }
 
         public void SaveRecipes()
@@ -202,6 +219,29 @@ namespace RecipeApp
                         RawRecipe rr = new RawRecipe(recipeName, recipeNote, recipeServings, recipeTimeNeeded, ingredients, sideDishes);
 
                         Recipes.Add(rr.GetRecipe());
+                    }
+                }
+            }
+        }
+
+        public void LoadConfig()
+        {
+            if (!File.Exists(RECIPES_CONFIG))
+            {
+                File.Create(RECIPES_CONFIG);
+            }
+            else
+            {
+                string[] lines = File.ReadAllLines(RECIPES_CONFIG);
+
+                foreach(string line in lines)
+                {
+                    string varName = line.Split('=')[0];
+                    string varValue = line.Split('=')[1];
+
+                    if (varName == "lang")
+                    {
+                        LANGUAGE = varValue;
                     }
                 }
             }

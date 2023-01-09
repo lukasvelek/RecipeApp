@@ -11,6 +11,7 @@ namespace RecipeApp
         private static UIHandler uiHandler = new UIHandler();
         private static DataHandler dataHandler = new DataHandler();
         private static Randomizer randomizer = new Randomizer();
+        private static LanguageHandler langHandler = new LanguageHandler();
 
         public MainWindow()
         {
@@ -29,6 +30,7 @@ namespace RecipeApp
 
             // Data initialization
             dataHandler.LoadRecipes();
+            dataHandler.LoadConfig();
             randomizer.Shuffle(dataHandler.Recipes);
 
 
@@ -37,6 +39,8 @@ namespace RecipeApp
             Window.ResizeMode = ResizeMode.CanMinimize;
 
             uiHandler.ShowGrid("ui_main_menu");
+
+            langHandler.L
         }
 
         private void _RecipeList()
@@ -94,6 +98,7 @@ namespace RecipeApp
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             dataHandler.SaveRecipes();
+            dataHandler.SaveConfig();
         }
 
         private void RecipeList_DeleteRecipe_Click(object sender, RoutedEventArgs e)
@@ -158,6 +163,14 @@ namespace RecipeApp
                     _RecipeList();
                 }
             }
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow sw = new SettingsWindow();
+
+            sw.ShowDialog();
+            dataHandler.LANGUAGE = sw.language;
         }
     }
 }
