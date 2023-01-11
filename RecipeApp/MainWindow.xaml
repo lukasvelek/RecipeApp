@@ -9,16 +9,17 @@
         Title="Recepty" Height="620" Width="400" Closing="Window_Closing" SnapsToDevicePixels="True">
     <Grid>
         <Grid x:Name="RecipeMain" Visibility="Hidden">
-            <Button x:Name="OpenRecipeList" Content="Spravovat recepty" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="150" Height="50" Click="RecipeList_Click"/>
-            <Button x:Name="RecipeRandom_Generate" Content="Generovat náhodný recept" HorizontalAlignment="Left" Margin="10,65,0,0" Height="50" Width="175" VerticalAlignment="Top" Click="RecipeRandom_Generate_Click"/>
+            <Button x:Name="OpenRecipeList" Content="Spravovat recepty" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Width="380" Height="285" Click="RecipeList_Click"/>
+            <Button x:Name="RecipeRandom_Generate" Content="Generovat náhodné recepty" HorizontalAlignment="Center" Margin="0,300,0,0" Height="208" Width="380" VerticalAlignment="Top" Click="RecipeRandom_Generate_Click"/>
+            <Button x:Name="Settings" Content="Nastavení" HorizontalAlignment="Center" Margin="0,513,0,0" VerticalAlignment="Top" Width="380" Height="62" Click="Settings_Click"/>
         </Grid>
 
         <Grid x:Name="RecipeList" Visibility="Visible">
-            <Button x:Name="RecipeList_Back" Content="Zpět" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="96" Height="50" Click="RecipeList_Back_Click"/>
-            <Button x:Name="RecipeList_NewRecipe" Content="Nový recept" HorizontalAlignment="Left" Margin="111,10,0,0" Width="125" Height="50" VerticalAlignment="Top" Click="RecipeList_NewRecipe_Click"/>
+            <Button x:Name="RecipeList_Back" Content="Zpět" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="185" Height="50" Click="RecipeList_Back_Click"/>
+            <Button x:Name="RecipeList_NewRecipe" Content="Nový recept" HorizontalAlignment="Left" Margin="205,10,0,0" Width="170" Height="50" VerticalAlignment="Top" Click="RecipeList_NewRecipe_Click"/>
             <ListBox x:Name="RecipeList_Recipes" Margin="10,65,10,52" SelectionChanged="RecipeList_Recipes_SelectionChanged"/>
             <Button x:Name="RecipeList_EditRecipe" Content="Upravit" HorizontalAlignment="Left" Margin="165,537,0,0" Width="110" Height="37" VerticalAlignment="Top" Click="RecipeList_EditRecipe_Click"/>
-            <Button x:Name="RecipeList_DeleteRecipe" Content="Odstranit" HorizontalAlignment="Left" Margin="280,537,0,0" Width="110" Height="37" VerticalAlignment="Top" Click="RecipeList_DeleteRecipe_Click"/>
+            <Button x:Name="RecipeList_DeleteRecipe" Content="Odstranit" HorizontalAlignment="Left" Margin="280,537,0,0" Width="90" Height="37" VerticalAlignment="Top" Click="RecipeList_DeleteRecipe_Click"/>
             <Button x:Name="RecipeList_OpenRecipe" Content="Otevřít recept" HorizontalAlignment="Left" Margin="10,537,0,0" Width="150" Height="37" VerticalAlignment="Top" Click="RecipeList_OpenRecipe_Click"/>
         </Grid>
     </Grid>

@@ -16,6 +16,15 @@ namespace RecipeApp
             uiHandler.AddGrid(RecipeSingle, "ui_recipe_single");
         }
 
+        public void Translate(LanguageHandler lh)
+        {
+            Lbl_RecipeSingle_Ingredients.Content = lh.RECIPE_INGREDIENTS;
+            Lbl_RecipeSingle_RecipeNote.Content = lh.RECIPE_NOTE;
+            Lbl_RecipeSingle_Servings.Content = lh.RECIPE_SERVINGS;
+            Lbl_RecipeSingle_SideDishes.Content = lh.RECIPE_SIDE_DISHES;
+            Lbl_RecipeSingle_TimeNeeded.Content = lh.RECIPE_TIME_NEEDED;
+        }
+
         public void LoadRecipe(Recipe.Recipe recipe)
         {
             string name = recipe.Name;

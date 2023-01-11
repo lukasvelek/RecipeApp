@@ -1,5 +1,4 @@
-﻿using RecipeApp.Recipe;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -7,19 +6,16 @@ namespace RecipeApp
 {
     public partial class MainWindow : Window
     {
-        private const string VERSION = "2.2";
+        private const string VERSION = "2.3";
 
         private static UIHandler uiHandler = new UIHandler();
         private static DataHandler dataHandler = new DataHandler();
         private static Randomizer randomizer = new Randomizer();
+        private static LanguageHandler langHandler = new LanguageHandler();
 
         public MainWindow()
         {
             InitializeComponent();
-
-
-            // Object initialization
-
 
             // Grid initialization
             uiHandler.AddGrid(RecipeMain, "ui_main_menu");
@@ -30,6 +26,7 @@ namespace RecipeApp
 
             // Data initialization
             dataHandler.LoadRecipes();
+            dataHandler.LoadConfig();
             randomizer.Shuffle(dataHandler.Recipes);
 
 
@@ -38,6 +35,24 @@ namespace RecipeApp
             Window.ResizeMode = ResizeMode.CanMinimize;
 
             uiHandler.ShowGrid("ui_main_menu");
+
+            langHandler.Initialize(dataHandler.LANGUAGE);
+
+            Translate(langHandler);
+        }
+
+        private void Translate(LanguageHandler lh)
+        {
+            OpenRecipeList.Content = lh.MAINWINDOW_MANAGE_RECIPES;
+            RecipeRandom_Generate.Content = lh.MAINWINDOW_GENERATE_RANDOM_RECIPE;
+            Settings.Content = lh.MAINWINDOW_SETTINGS;
+            RecipeList_Back.Content = lh.GENERAL_BACK;
+            RecipeList_DeleteRecipe.Content = lh.GENERAL_DELETE;
+            RecipeList_EditRecipe.Content = lh.GENERAL_EDIT;
+            RecipeList_NewRecipe.Content = lh.GENERAL_NEW;
+            RecipeList_OpenRecipe.Content = lh.GENERAL_OPEN;
+
+            Title = lh.MAIN_WINDOW_TITLE;
         }
 
         private void _RecipeList()
@@ -82,6 +97,7 @@ namespace RecipeApp
         {
             RecipeForm rf = new RecipeForm();
 
+            rf.Translate(langHandler);
             rf.ShowDialog();
 
             if (rf._Recipe != null)
@@ -95,6 +111,7 @@ namespace RecipeApp
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             dataHandler.SaveRecipes();
+            dataHandler.SaveConfig();
         }
 
         private void RecipeList_DeleteRecipe_Click(object sender, RoutedEventArgs e)
@@ -128,10 +145,11 @@ namespace RecipeApp
 
         private void RecipeList_OpenRecipe_Click(object sender, RoutedEventArgs e)
         {
-            if(RecipeList_Recipes.SelectedItem != null)
+            if (RecipeList_Recipes.SelectedItem != null)
             {
                 SingleRecipeWindow srw = new SingleRecipeWindow();
 
+                srw.Translate(langHandler);
                 srw.LoadRecipe((Recipe.Recipe)RecipeList_Recipes.SelectedItem);
                 srw.Show();
             }
@@ -139,14 +157,15 @@ namespace RecipeApp
 
         private void RecipeList_EditRecipe_Click(object sender, RoutedEventArgs e)
         {
-            if(RecipeList_Recipes.SelectedItem != null)
+            if (RecipeList_Recipes.SelectedItem != null)
             {
                 RecipeForm rf = new RecipeForm();
 
+                rf.Translate(langHandler);
                 rf.LoadEditRecipe((Recipe.Recipe)RecipeList_Recipes.SelectedItem);
                 rf.ShowDialog();
 
-                if(rf._Recipe != null)
+                if (rf._Recipe != null)
                 {
                     if (rf._Edit)
                     {
@@ -159,6 +178,15 @@ namespace RecipeApp
                     _RecipeList();
                 }
             }
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow sw = new SettingsWindow();
+
+            sw.Translate(langHandler);
+            sw.ShowDialog();
+            dataHandler.LANGUAGE = sw.language;
         }
     }
 }

@@ -1,7 +1,13 @@
+# Recipe App 2.3
+- major UI update
+- support for multiple languages
+- added English and German
+
 # Recipe App 2.2
 - added support for exporting to HTML as website
 - added new recipe form
 - added support for editing recipes
+- added random generation of recipes
 
 # Recipe App 2.1
 - new single recipe window
