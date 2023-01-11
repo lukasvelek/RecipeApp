@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RecipeApp"
         mc:Ignorable="d"
-        Title="Settings" Height="400" Width="300">
+        Title="Settings" Height="400" Width="300" ResizeMode="NoResize">
     <Grid>
         <Grid x:Name="SettingsMain">
             <Label x:Name="Lbl_SettingsMain_Language" Content="Jazyk" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>

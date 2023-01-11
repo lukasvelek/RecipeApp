@@ -1,3 +1,6 @@
+# Recipe App 2.3.1
+- fixed window resizing
+
 # Recipe App 2.3
 - major UI update
 - support for multiple languages
