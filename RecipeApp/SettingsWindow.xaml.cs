@@ -35,6 +35,14 @@ namespace RecipeApp
             SettingsMain_LanguageList.SelectedIndex = 0;
         }
 
+        public void Translate(LanguageHandler lh)
+        {
+            Lbl_SettingsMain_Language.Content = lh.SETTINGS_LANGUAGE;
+            SettingsMain_Save.Content = lh.GENERAL_SAVE;
+
+            Title = lh.SETTINGS_WINDOW_TITLE;
+        }
+
         private void SettingsMain_Save_Click(object sender, RoutedEventArgs e)
         {
             language = (string)SettingsMain_LanguageList.SelectedItem;

@@ -8,10 +8,9 @@
         Title="Settings" Height="400" Width="300">
     <Grid>
         <Grid x:Name="SettingsMain">
-            <Label Content="Jazyk" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="Lbl_SettingsMain_Language" Content="Jazyk" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
             <ComboBox x:Name="SettingsMain_LanguageList" HorizontalAlignment="Center" Margin="0,41,0,0" VerticalAlignment="Top" Width="280"/>
             <Button x:Name="SettingsMain_Save" Content="Uložit" HorizontalAlignment="Center" Margin="0,313,0,0" VerticalAlignment="Top" Width="280" Height="50" Click="SettingsMain_Save_Click"/>
-
         </Grid>
     </Grid>
 </Window>

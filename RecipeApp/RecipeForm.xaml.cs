@@ -43,6 +43,37 @@ namespace RecipeApp
             RecipeForm_Main_TimeNeededText.Content = "10 minut";
         }
 
+        public void Translate(LanguageHandler lh)
+        {
+            Lbl_RecipeForm_Ingredients_Name.Content = lh.INGREDIENT_NAME;
+            Lbl_RecipeForm_Ingredients_Units.Content = lh.INGREDIENT_UNIT;
+            Lbl_RecipeForm_Ingredients_Value.Content = lh.INGREDIENT_VALUE;
+            Lbl_RecipeForm_SideDishes_Name.Content = lh.SIDE_DISHES_NAME;
+            Lbl_RecipeForm_Main_Ingredients.Content = lh.RECIPE_INGREDIENTS;
+            Lbl_RecipeForm_Main_Name.Content = lh.RECIPE_NAME;
+            Lbl_RecipeForm_Main_Note.Content = lh.RECIPE_NOTE;
+            Lbl_RecipeForm_Main_Servings.Content = lh.RECIPE_SERVINGS;
+            Lbl_RecipeForm_Main_SideDishes.Content = lh.RECIPE_SIDE_DISHES;
+            Lbl_RecipeForm_Main_TimeNeeded.Content = lh.RECIPE_TIME_NEEDED;
+
+            RecipeForm_Main_Cancel.Content = lh.GENERAL_CANCEL;
+            RecipeForm_Main_IngredientsManage.Content = lh.RECIPEFORM_MANAGE_INGREDIENTS;
+            RecipeForm_Main_Save.Content = lh.GENERAL_SAVE;
+            RecipeForm_Main_SideDishesManage.Content = lh.RECIPEFORM_MANAGE_SIDE_DISHES;
+            RecipeForm_Ingredients_Back.Content = lh.GENERAL_BACK;
+            RecipeForm_Ingredients_Delete.Content = lh.GENERAL_DELETE;
+            RecipeForm_Ingredients_Edit.Content = lh.GENERAL_EDIT;
+            RecipeForm_Ingredients_New.Content = lh.GENERAL_NEW;
+            RecipeForm_Ingredients_Save.Content = lh.GENERAL_SAVE;
+            RecipeForm_SideDishes_Back.Content = lh.GENERAL_BACK;
+            RecipeForm_SideDishes_Delete.Content = lh.GENERAL_DELETE;
+            RecipeForm_SideDishes_Edit.Content = lh.GENERAL_EDIT;
+            RecipeForm_SideDishes_New.Content = lh.GENERAL_NEW;
+            RecipeForm_SideDishes_Save.Content = lh.GENERAL_SAVE;
+
+            Title = lh.RECIPEFORM_WINDOW_TITLE;
+        }
+
         public void LoadEditRecipe(Recipe.Recipe recipe)
         {
             _Edit = true;

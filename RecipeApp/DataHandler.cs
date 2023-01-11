@@ -31,7 +31,7 @@ namespace RecipeApp
 
             config.Add("lang=" + LANGUAGE);
 
-            File.WriteAllLines(RECIPES_CONFIG, config);
+            File.WriteAllLines(RECIPES_CONFIG, config.ToArray());
         }
 
         public void SaveRecipes()
