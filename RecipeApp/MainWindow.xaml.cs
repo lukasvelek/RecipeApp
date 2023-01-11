@@ -17,10 +17,6 @@ namespace RecipeApp
         {
             InitializeComponent();
 
-
-            // Object initialization
-
-
             // Grid initialization
             uiHandler.AddGrid(RecipeMain, "ui_main_menu");
             uiHandler.AddGrid(RecipeList, "ui_recipe_list");

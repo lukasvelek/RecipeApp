@@ -229,6 +229,12 @@ namespace RecipeApp
             if (!File.Exists(RECIPES_CONFIG))
             {
                 File.Create(RECIPES_CONFIG);
+
+                string[] text = new string[1];
+
+                text[0] = "lang=cz";
+
+                File.WriteAllLines(RECIPES_CONFIG, text);
             }
             else
             {
