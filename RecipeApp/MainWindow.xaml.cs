@@ -6,7 +6,7 @@ namespace RecipeApp
 {
     public partial class MainWindow : Window
     {
-        private const string VERSION = "2.3";
+        private const string VERSION = "3.0 beta";
 
         private static UIHandler uiHandler = new UIHandler();
         private static DataHandler dataHandler = new DataHandler();
@@ -112,6 +112,8 @@ namespace RecipeApp
         {
             dataHandler.SaveRecipes();
             dataHandler.SaveConfig();
+
+            Application.Current.Shutdown();
         }
 
         private void RecipeList_DeleteRecipe_Click(object sender, RoutedEventArgs e)
