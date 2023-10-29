@@ -1,6 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections.Generic;
+using System;
+using RecipeApp.ExportFormats;
+using Microsoft.Win32;
+using System.IO;
 
 namespace RecipeApp
 {
@@ -20,6 +25,7 @@ namespace RecipeApp
             // Grid initialization
             uiHandler.AddGrid(RecipeMain, "ui_main_menu");
             uiHandler.AddGrid(RecipeList, "ui_recipe_list");
+            uiHandler.AddGrid(ExportMenu, "ui_export_menu");
 
             uiHandler.HideAllGrids();
 
@@ -189,6 +195,66 @@ namespace RecipeApp
             sw.Translate(langHandler);
             sw.ShowDialog();
             dataHandler.LANGUAGE = sw.language;
+        }
+
+        private void ExportMenu_Back_Click(object sender, RoutedEventArgs e)
+        {
+            uiHandler.ShowGrid("ui_main_menu");
+        }
+
+        private void ExportMenu_Export_Click(object sender, RoutedEventArgs e)
+        {
+            string format = "";
+
+            if(ExportMenu_FormatList.SelectedItem != null)
+            {
+                format = ExportMenu_FormatList.SelectedItem.ToString() ?? "";
+            }
+
+            List<ExportDocument> documentList = null;
+
+            if(format == "HTML")
+            {
+                documentList = HTML.ExportRecipes(dataHandler.Recipes);
+            }
+
+            if(documentList != null)
+            {
+                Stream myStream;
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+
+                saveFileDialog1.Filter = "All files (*.*)|*.*";
+                //saveFileDialog1.FilterIndex = 2;
+                saveFileDialog1.RestoreDirectory = true;
+
+                if (saveFileDialog1.ShowDialog() == /*DialogResult.OK*/ true)
+                {
+                    string filename = saveFileDialog1.FileName;
+                    /*if ((myStream = saveFileDialog1.OpenFile()) != null)
+                    {
+                        // Code to write the stream goes here.
+                        myStream.Write
+
+                        myStream.Close();
+                    }*/
+
+                    List<string> text = new List<string>();
+
+                    foreach(ExportDocument dl in documentList)
+                    {
+                        text.Add(dl.ToString());
+                    }
+
+                    File.WriteAllLines(filename, text);
+                }
+            }
+        }
+
+        private void Export_Click(object sender, RoutedEventArgs e)
+        {
+            uiHandler.ShowGrid("ui_export_menu");
+
+            ExportMenu_FormatList.Items.Add("HTML");
         }
     }
 }

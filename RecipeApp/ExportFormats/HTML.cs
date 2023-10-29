@@ -5,7 +5,7 @@ namespace RecipeApp.ExportFormats
 {
     public class HTML
     {
-        public List<ExportDocument> ExportRecipes(List<Recipe.Recipe> recipes)
+        public static List<ExportDocument> ExportRecipes(List<Recipe.Recipe> recipes)
         {
             List<ExportDocument> ed = new List<ExportDocument>();
 
@@ -17,7 +17,7 @@ namespace RecipeApp.ExportFormats
             return ed;
         }
 
-        public ExportDocument ExportRecipe(Recipe.Recipe recipe)
+        public static ExportDocument ExportRecipe(Recipe.Recipe recipe)
         {
             List<string> text = new List<string>();
 

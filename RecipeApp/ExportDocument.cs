@@ -12,5 +12,19 @@ namespace RecipeApp
             Name = name;
             Data = data;
         }
+
+        public override string ToString()
+        {
+            //return base.ToString();
+
+            string text = "";
+
+            foreach(string d in Data)
+            {
+                text += d;
+            }
+
+            return text;
+        }
     }
 }
